@@ -1,0 +1,110 @@
+// src/features/content/data/units/useState.ts
+
+export const useStateUnit = {
+  "id": "react-001-usestate",
+  "title": "useState Hook",
+  "description": "Master state management in React functional components",
+  "duration": 7,
+  "difficulty": "beginner" as const,
+  "tags": ["hooks", "state", "fundamentals"],
+  "prerequisites": [],
+  "unlocks": ["react-002-useeffect"],
+  "xp": 50,
+  "steps": {
+    "refresher": {
+      "type": "markdown",
+      "title": "What is useState?",
+      "content": "# useState Hook\n\n## What problem does it solve?\n\nReact components need to remember values between renders. Without state, your component would reset every time it re-renders.\n\n**useState** lets you add state to functional components.\n\n## When do you use it?\n\n- Storing form input values\n- Toggling UI elements (open/closed, show/hide)\n- Counting clicks or tracking numbers\n- Managing any data that changes over time\n\n## Basic Syntax\n\n```javascript\nconst [value, setValue] = useState(initialValue);\n```\n\n- `value` - the current state\n- `setValue` - function to update the state\n- `initialValue` - starting value (can be any type)\n\n**Next: Let's see it in action! →**"
+    },
+    "positive": {
+      "type": "interactive-code",
+      "title": "✅ Positive Case: Counter",
+      "description": "Here's useState working correctly. Click the button to see the count increase.",
+      "code": "import { useState } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <div className=\"p-6 bg-white rounded-lg shadow-md\">\n      <h2 className=\"text-2xl font-bold mb-4\">Counter App</h2>\n      <p className=\"text-4xl font-bold text-blue-600 mb-4\">{count}</p>\n      <button \n        onClick={() => setCount(count + 1)}\n        className=\"bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700\"\n      >\n        Increment\n      </button>\n    </div>\n  );\n}\n\nexport default Counter;",
+      "showPreview": true,
+      "explanation": "**How it works:**\n\n1. `useState(0)` creates state with initial value 0\n2. `count` holds the current value\n3. `setCount` is used to update the value\n4. Clicking the button calls `setCount(count + 1)`\n5. React re-renders with the new value\n\n✅ **Key Point:** Always use `setCount()` to update state, never mutate directly!"
+    },
+    "negative": {
+      "type": "debug-quiz",
+      "title": "🐛 Common Mistake: Direct Mutation",
+      "description": "This code looks correct, but the counter doesn't work. Why?",
+      "code": "import { useState } from 'react';\n\nfunction BrokenCounter() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <div className=\"p-6\">\n      <p className=\"text-4xl mb-4\">{count}</p>\n      <button \n        onClick={() => count++}\n        className=\"bg-blue-600 text-white px-4 py-2 rounded\"\n      >\n        Increment\n      </button>\n    </div>\n  );\n}\n\nexport default BrokenCounter;",
+      "question": "Why doesn't the counter update when you click the button?",
+      "options": [
+        {
+          "id": "a",
+          "text": "useState doesn't support increment operators",
+          "isCorrect": false,
+          "explanation": "The `++` operator works fine in JavaScript, that's not the issue."
+        },
+        {
+          "id": "b",
+          "text": "You must use setCount() to trigger a re-render",
+          "isCorrect": true,
+          "explanation": "✅ Correct! Direct mutation (`count++`) changes the variable but doesn't tell React to re-render. You must use `setCount()` to update state properly."
+        },
+        {
+          "id": "c",
+          "text": "The button onClick syntax is wrong",
+          "isCorrect": false,
+          "explanation": "The onClick syntax is correct. The problem is with how we're updating state."
+        },
+        {
+          "id": "d",
+          "text": "You need to refresh the page first",
+          "isCorrect": false,
+          "explanation": "React should update automatically without page refresh when state changes correctly."
+        }
+      ],
+      "correctCode": "import { useState } from 'react';\n\nfunction WorkingCounter() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <div className=\"p-6\">\n      <p className=\"text-4xl mb-4\">{count}</p>\n      <button \n        onClick={() => setCount(count + 1)}\n        className=\"bg-green-600 text-white px-4 py-2 rounded\"\n      >\n        Increment\n      </button>\n    </div>\n  );\n}\n\nexport default WorkingCounter;",
+      "lesson": "**Remember:** State is immutable. Always use the setter function (setCount) to update state. Direct mutations don't trigger re-renders."
+    },
+    "task": {
+      "type": "coding-task",
+      "title": "🛠️ Your Turn: Build a Toggle",
+      "description": "Create a component that toggles between 'ON' and 'OFF' when clicked.",
+      "requirements": [
+        "Use useState with initial value false",
+        "Display 'ON' when true, 'OFF' when false",
+        "Button should toggle the state",
+        "Style it nicely!"
+      ],
+      "starterCode": "import { useState } from 'react';\n\nfunction Toggle() {\n  // TODO: Add useState here\n  \n  return (\n    <div className=\"p-6\">\n      {/* TODO: Display ON/OFF text */}\n      {/* TODO: Add button to toggle */}\n    </div>\n  );\n}\n\nexport default Toggle;",
+      "solution": "import { useState } from 'react';\n\nfunction Toggle() {\n  const [isOn, setIsOn] = useState(false);\n  \n  return (\n    <div className=\"p-6 text-center\">\n      <div className={`text-4xl font-bold mb-4 ${\n        isOn ? 'text-green-600' : 'text-gray-400'\n      }`}>\n        {isOn ? 'ON' : 'OFF'}\n      </div>\n      <button \n        onClick={() => setIsOn(!isOn)}\n        className={`px-6 py-2 rounded-lg text-white ${\n          isOn ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-600 hover:bg-gray-700'\n        }`}\n      >\n        Toggle\n      </button>\n    </div>\n  );\n}\n\nexport default Toggle;",
+      "hints": [
+        "Start with: const [isOn, setIsOn] = useState(false);",
+        "Use the ternary operator: {isOn ? 'ON' : 'OFF'}",
+        "Toggle with: setIsOn(!isOn)"
+      ],
+      "tests": [
+        "Component renders without crashing",
+        "Displays 'OFF' initially",
+        "Button click toggles the text",
+        "Displays 'ON' after first click"
+      ]
+    },
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "🏆 Challenge: Multi-State Form",
+      "description": "Build a form that manages multiple pieces of state.",
+      "requirements": [
+        "Create inputs for name (text) and age (number)",
+        "Each input should have its own useState",
+        "Display both values below the form",
+        "Clear button to reset both fields"
+      ],
+      "starterCode": "import { useState } from 'react';\n\nfunction UserForm() {\n  // TODO: Add state for name and age\n  \n  return (\n    <div className=\"p-6 max-w-md\">\n      <h2 className=\"text-2xl font-bold mb-4\">User Info</h2>\n      {/* TODO: Add inputs and display */}\n    </div>\n  );\n}\n\nexport default UserForm;",
+      "solution": "import { useState } from 'react';\n\nfunction UserForm() {\n  const [name, setName] = useState('');\n  const [age, setAge] = useState('');\n  \n  return (\n    <div className=\"p-6 max-w-md\">\n      <h2 className=\"text-2xl font-bold mb-4\">User Info</h2>\n      <input\n        type=\"text\"\n        value={name}\n        onChange={(e) => setName(e.target.value)}\n        placeholder=\"Name\"\n        className=\"w-full px-4 py-2 border rounded mb-2\"\n      />\n      <input\n        type=\"number\"\n        value={age}\n        onChange={(e) => setAge(e.target.value)}\n        placeholder=\"Age\"\n        className=\"w-full px-4 py-2 border rounded mb-4\"\n      />\n      <button\n        onClick={() => { setName(''); setAge(''); }}\n        className=\"bg-red-600 text-white px-4 py-2 rounded mb-4\"\n      >\n        Clear\n      </button>\n      <div className=\"p-4 bg-gray-100 rounded\">\n        <p>Name: {name || 'Not set'}</p>\n        <p>Age: {age || 'Not set'}</p>\n      </div>\n    </div>\n  );\n}\n\nexport default UserForm;",
+      "hints": [
+        "You'll need two useState hooks",
+        "Use onChange={(e) => setName(e.target.value)}",
+        "Clear button calls both setters"
+      ],
+      "tests": [
+        "Both inputs update state",
+        "Display shows values",
+        "Clear button resets both"
+      ]
+    }
+  }
+};

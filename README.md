@@ -1,73 +1,84 @@
-# React + TypeScript + Vite
+🏋️ React Gym
+A gamified learning platform where developers master React through practice, debugging, and real-world scenarios.
+🚀 Features
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Bite-sized Units: 5-10 minute interactive learning sessions
+Debug Training: Learn common mistakes and how to fix them
+Real-world Tasks: Build practical skills, not just theory
+Gamified Progress: XP, unlocks, and achievement system
+Zero Setup: Learn directly in the browser
 
-Currently, two official plugins are available:
+📦 Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Frontend: React 18 + TypeScript + Vite
+Styling: Tailwind CSS
+State: Zustand
+Code Editor: Monaco Editor
+Code Execution: Sandpack (CodeSandbox)
+Routing: React Router
 
-## React Compiler
+🛠️ Development Setup
+bash# Install dependencies
+npm install
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+# Run development server
+npm run dev
 
-## Expanding the ESLint configuration
+# Build for production
+npm run build
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+# Preview production build
+npm run preview
+📁 Project Structure
+src/
+├── app/              # App-level configuration
+├── features/         # Feature modules
+│   ├── learning/     # Core learning engine
+│   ├── content/      # Content management
+│   └── gamification/ # XP, achievements
+├── shared/           # Shared utilities & components
+├── pages/            # Page components
+└── styles/           # Global styles
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+public/
+└── content/          # Learning content (JSON/MD)
+    └── react/        # React course content
+🎯 Roadmap
+Phase 1: MVP (Current)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+ Project setup
+ Core learning engine
+ First 10 React units
+ Basic gamification
+ Landing page
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Phase 2: Backend
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+ User authentication
+ Progress sync
+ Analytics
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Phase 3: Expansion
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+ Node.js Gym
+ DSA Gym
+ Community features
+
+📝 Content Structure
+Each unit follows a 5-step format:
+
+Refresher (1 min) - Quick concept overview
+Positive Case - See it working correctly
+Negative Case - Debug common mistakes
+Task - Build something yourself
+Challenge - Test your mastery
+
+🤝 Contributing
+Contributions welcome! See CONTRIBUTING.md for guidelines.
+📄 License
+MIT License - see LICENSE for details
+🔗 Links
+
+Website: [Coming Soon]
+Twitter: [Coming Soon]
+Discord: [Coming Soon]

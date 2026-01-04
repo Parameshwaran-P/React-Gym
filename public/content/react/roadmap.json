@@ -1,0 +1,34 @@
+{
+  "nodes": [
+    {
+      "id": "react-001-usestate",
+      "title": "useState Hook",
+      "prerequisites": [],
+      "unlocks": ["react-002-useeffect"]
+    },
+    {
+      "id": "react-002-useeffect",
+      "title": "useEffect Hook",
+      "prerequisites": ["react-001-usestate"],
+      "unlocks": ["react-003-props"]
+    },
+    {
+      "id": "react-003-props",
+      "title": "Props & Components",
+      "prerequisites": ["react-001-usestate"],
+      "unlocks": ["react-004-usecontext"]
+    },
+    {
+      "id": "react-004-usecontext",
+      "title": "useContext Hook",
+      "prerequisites": ["react-003-props"],
+      "unlocks": ["react-005-usereducer"]
+    },
+    {
+      "id": "react-005-usereducer",
+      "title": "useReducer Hook",
+      "prerequisites": ["react-001-usestate"],
+      "unlocks": []
+    }
+  ]
+}

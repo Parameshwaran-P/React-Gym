@@ -1,0 +1,43 @@
+{
+  "id": "react",
+  "name": "React Gym",
+  "description": "Master React through practical, hands-on learning",
+  "icon": "⚛️",
+  "color": "#61DAFB",
+  "version": "18.x",
+  "totalUnits": 50,
+  "estimatedHours": 25,
+  "categories": [
+    {
+      "id": "fundamentals",
+      "name": "React Fundamentals",
+      "units": [
+        "react-001-usestate",
+        "react-002-useeffect",
+        "react-003-props",
+        "react-004-components"
+      ]
+    },
+    {
+      "id": "hooks",
+      "name": "React Hooks",
+      "units": [
+        "react-005-usecontext",
+        "react-006-usereducer",
+        "react-007-usememo",
+        "react-008-usecallback",
+        "react-009-useref",
+        "react-010-custom-hooks"
+      ]
+    },
+    {
+      "id": "advanced",
+      "name": "Advanced Patterns",
+      "units": [
+        "react-011-performance",
+        "react-012-code-splitting",
+        "react-013-error-boundaries"
+      ]
+    }
+  ]
+}
