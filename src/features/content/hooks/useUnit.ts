@@ -1,45 +1,64 @@
 // src/features/content/hooks/useUnit.ts
 import { useState, useEffect } from 'react';
-import { loadUnit } from '../loaders/contentLoader';
+import { loadUnit, ContentLoadError } from '../loaders/contentLoader';
 
 interface UseUnitResult {
   unit: any | null;
   loading: boolean;
-  error: Error | null;
+  error: ContentLoadError | null;
+  retry: () => void;
 }
 
 export function useUnit(contentId: string, unitId: string): UseUnitResult {
   const [unit, setUnit] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<ContentLoadError | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
+
+  const fetchUnit = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const data = await loadUnit(contentId, unitId);
+      setUnit(data);
+    } catch (err) {
+      console.error('Error loading unit:', err);
+      
+      if (err instanceof ContentLoadError) {
+        setError(err);
+      } else {
+        setError(new ContentLoadError(
+          'An unexpected error occurred',
+          'NETWORK_ERROR',
+          contentId,
+          unitId
+        ));
+      }
+      setUnit(null);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     let isMounted = true;
 
-    async function fetchUnit() {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await loadUnit(contentId, unitId);
-        
-        if (isMounted) {
-          setUnit(data);
-          setLoading(false);
-        }
-      } catch (err) {
-        if (isMounted) {
-          setError(err as Error);
-          setLoading(false);
-        }
-      }
-    }
+    const load = async () => {
+      if (!isMounted) return;
+      await fetchUnit();
+    };
 
-    fetchUnit();
+    load();
 
     return () => {
       isMounted = false;
     };
-  }, [contentId, unitId]);
+  }, [contentId, unitId, retryCount]);
 
-  return { unit, loading, error };
+  const retry = () => {
+    setRetryCount(prev => prev + 1);
+  };
+
+  return { unit, loading, error, retry };
 }

@@ -31,7 +31,7 @@ const STEP_ICONS = ['📚', '✅', '🐛', '🛠️', '🏆'];
 const STEP_TITLES = ['Refresher', 'See It Work', 'Debug It', 'Build It', 'Master It'];
 
 export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
-  const { unit, loading, error } = useUnit(contentId, unitId);
+  const { unit, loading, error, retry } = useUnit(contentId, unitId);
   const [currentStep, setCurrentStep] = useState(0);
   const [startTime] = useState(Date.now());
   const [showCompletion, setShowCompletion] = useState(false);
@@ -117,21 +117,71 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
     );
   }
 
-  if (error || !unit) {
+  if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
         <Card className="text-center max-w-md">
-          <div className="text-6xl mb-4">❌</div>
-          <h2 className="text-2xl font-bold mb-2">Unit Not Found</h2>
+          {/* Error Icon Based on Type */}
+          <div className="text-6xl mb-4">
+            {error.code === 'NOT_FOUND' ? '🔍' : 
+             error.code === 'NETWORK_ERROR' ? '📡' : 
+             error.code === 'PARSE_ERROR' ? '⚠️' : '❌'}
+          </div>
+          
+          {/* Error Title */}
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            {error.code === 'NOT_FOUND' ? 'Unit Not Found' :
+             error.code === 'NETWORK_ERROR' ? 'Connection Error' :
+             error.code === 'PARSE_ERROR' ? 'Content Error' :
+             'Something Went Wrong'}
+          </h2>
+          
+          {/* Error Message */}
           <p className="text-gray-600 mb-6">
-            {error?.message || 'This unit does not exist'}
+            {error.message}
           </p>
-          <Button onClick={() => navigate('/dashboard')}>
-            ← Back to Dashboard
-          </Button>
+          
+          {/* Error Details (Development) */}
+          {import.meta.env.DEV && (
+            <details className="text-left mb-6 p-4 bg-gray-100 rounded text-sm">
+              <summary className="cursor-pointer font-medium mb-2">
+                Technical Details
+              </summary>
+              <div className="space-y-1 text-xs font-mono text-gray-700">
+                <p><strong>Code:</strong> {error.code}</p>
+                <p><strong>Content ID:</strong> {error.contentId || 'N/A'}</p>
+                <p><strong>Unit ID:</strong> {error.unitId || 'N/A'}</p>
+                <p><strong>Stack:</strong></p>
+                <pre className="bg-white p-2 rounded overflow-auto max-h-32">
+                  {error.stack}
+                </pre>
+              </div>
+            </details>
+          )}
+          
+          {/* Actions */}
+          <div className="space-y-3">
+            {error.code === 'NETWORK_ERROR' && (
+              <Button onClick={retry} size="lg" className="w-full">
+                Try Again
+              </Button>
+            )}
+            <Button 
+              onClick={() => navigate('/dashboard')}
+              variant={error.code === 'NETWORK_ERROR' ? 'outline' : 'primary'}
+              size="lg" 
+              className="w-full"
+            >
+              ← Back to Dashboard
+            </Button>
+          </div>
         </Card>
       </div>
     );
+  }
+  
+  if (!unit) {
+    return null; // Should not happen if loading/error are handled
   }
 
   const stepName = STEP_NAMES[currentStep];

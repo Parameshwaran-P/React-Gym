@@ -1,5 +1,7 @@
 // src/features/content/loaders/contentLoader.ts
 
+import { logError, logCriticalError } from '../../../shared/utils/errorLogger';
+
 export interface ContentConfig {
   id: string;
   name: string;
@@ -32,27 +34,128 @@ export const AVAILABLE_CONTENTS = [
     icon: '⚛️',
     color: '#61DAFB'
   },
+  // Future: Add more languages here
+  // { id: 'nodejs', name: 'Node.js Gym', path: '/content/nodejs', icon: '🟢', color: '#339933' },
+  // { id: 'python', name: 'Python Gym', path: '/content/python', icon: '🐍', color: '#3776AB' },
 ];
+
+/**
+ * Custom error class for content loading errors
+ */
+export class ContentLoadError extends Error {
+  constructor(
+    message: string,
+    public code: 'NOT_FOUND' | 'NETWORK_ERROR' | 'PARSE_ERROR' | 'INVALID_DATA',
+    public contentId?: string,
+    public unitId?: string
+  ) {
+    super(message);
+    this.name = 'ContentLoadError';
+  }
+}
+
+/**
+ * Validate JSON response
+ */
+function validateJSON(text: string, context: string): any {
+  try {
+    return JSON.parse(text);
+  } catch (error) {
+    throw new ContentLoadError(
+      `Invalid JSON in ${context}`,
+      'PARSE_ERROR'
+    );
+  }
+}
+
+/**
+ * Fetch with timeout and retry
+ */
+async function fetchWithRetry(
+  url: string, 
+  retries = 3, 
+  timeout = 5000
+): Promise<Response> {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeout);
+      
+      const response = await fetch(url, { 
+        signal: controller.signal,
+        cache: 'no-cache' // Always get fresh content
+      });
+      
+      clearTimeout(timeoutId);
+      return response;
+    } catch (error) {
+      if (i === retries - 1) {
+        if (error instanceof Error && error.name === 'AbortError') {
+          throw new ContentLoadError(
+            'Request timeout - please check your connection',
+            'NETWORK_ERROR'
+          );
+        }
+        throw new ContentLoadError(
+          'Network error - please check your connection',
+          'NETWORK_ERROR'
+        );
+      }
+      // Wait before retry (exponential backoff)
+      await new Promise(resolve => setTimeout(resolve, Math.pow(2, i) * 1000));
+    }
+  }
+  throw new ContentLoadError('Failed after retries', 'NETWORK_ERROR');
+}
 
 /**
  * Load content metadata
  */
 export async function loadContentMetadata(contentId: string): Promise<ContentConfig> {
   try {
-    const response = await fetch(`/content/${contentId}/metadata.json`);
+    const response = await fetchWithRetry(`/content/${contentId}/meta.json`);
+    
     if (!response.ok) {
-      throw new Error(`Failed to load ${contentId} metadata: ${response.status}`);
+      if (response.status === 404) {
+        throw new ContentLoadError(
+          `Content "${contentId}" not found`,
+          'NOT_FOUND',
+          contentId
+        );
+      }
+      throw new ContentLoadError(
+        `Failed to load content metadata: ${response.statusText}`,
+        'NETWORK_ERROR',
+        contentId
+      );
     }
+    
     const text = await response.text();
-    try {
-      return JSON.parse(text);
-    } catch (e) {
-      console.error('Invalid JSON:', text.substring(0, 200));
-      throw new Error('Invalid JSON response');
+    const data = validateJSON(text, `${contentId}/meta.json`);
+    
+    // Validate required fields
+    const requiredFields = ['id', 'name', 'description', 'icon', 'color'];
+    for (const field of requiredFields) {
+      if (!data[field]) {
+        throw new ContentLoadError(
+          `Missing required field "${field}" in metadata`,
+          'INVALID_DATA',
+          contentId
+        );
+      }
     }
+    
+    return data;
   } catch (error) {
-    console.error(`Error loading ${contentId} metadata:`, error);
-    throw error;
+    logError(error as Error, 'high', { contentId, context: 'loadContentMetadata' });
+    if (error instanceof ContentLoadError) {
+      throw error;
+    }
+    throw new ContentLoadError(
+      `Error loading ${contentId} metadata: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      'NETWORK_ERROR',
+      contentId
+    );
   }
 }
 
@@ -61,53 +164,116 @@ export async function loadContentMetadata(contentId: string): Promise<ContentCon
  */
 export async function loadContentRoadmap(contentId: string) {
   try {
-    const response = await fetch(`/content/${contentId}/roadmap.json`);
+    const response = await fetchWithRetry(`/content/${contentId}/roadmap.json`);
+    
     if (!response.ok) {
-      throw new Error(`Failed to load ${contentId} roadmap: ${response.status}`);
+      if (response.status === 404) {
+        throw new ContentLoadError(
+          `Roadmap for "${contentId}" not found`,
+          'NOT_FOUND',
+          contentId
+        );
+      }
+      throw new ContentLoadError(
+        `Failed to load roadmap: ${response.statusText}`,
+        'NETWORK_ERROR',
+        contentId
+      );
     }
+    
     const text = await response.text();
-    try {
-      return JSON.parse(text);
-    } catch (e) {
-      console.error('Invalid JSON:', text.substring(0, 200));
-      throw new Error('Invalid JSON response');
+    const data = validateJSON(text, `${contentId}/roadmap.json`);
+    
+    // Validate roadmap structure
+    if (!data.nodes || !Array.isArray(data.nodes)) {
+      throw new ContentLoadError(
+        'Invalid roadmap structure: missing nodes array',
+        'INVALID_DATA',
+        contentId
+      );
     }
+    
+    return data;
   } catch (error) {
-    console.error(`Error loading ${contentId} roadmap:`, error);
-    throw error;
+    logError(error as Error, 'high', { contentId, context: 'loadContentRoadmap' });
+    if (error instanceof ContentLoadError) {
+      throw error;
+    }
+    throw new ContentLoadError(
+      `Error loading ${contentId} roadmap: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      'NETWORK_ERROR',
+      contentId
+    );
   }
 }
 
 /**
- * Load a specific unit
- * Temporarily using inline data
+ * Load a specific unit dynamically
  */
 export async function loadUnit(contentId: string, unitId: string) {
   try {
-    // Temporary: Use inline data
-    if (contentId === 'react') {
-      if (unitId === 'react-001-usestate') {
-        const { useStateUnit } = await import('../data/units/useState');
-        return useStateUnit;
-      }
-      if (unitId === 'react-002-useeffect') {
-        const { useEffectUnit } = await import('../data/units/useEffect');
-        return useEffectUnit;
-      }
-    }
+    const url = `/content/${contentId}/${unitId}.json`;
     
-    // Fallback: Try to fetch from public folder
-    const url = `/content/${contentId}/units/${unitId}/unit.json`;
-    const response = await fetch(url);
+    const response = await fetchWithRetry(url);
     
     if (!response.ok) {
-      throw new Error(`Unit not found: ${unitId}`);
+      if (response.status === 404) {
+        throw new ContentLoadError(
+          `Unit "${unitId}" not found`,
+          'NOT_FOUND',
+          contentId,
+          unitId
+        );
+      }
+      throw new ContentLoadError(
+        `Failed to load unit: ${response.statusText}`,
+        'NETWORK_ERROR',
+        contentId,
+        unitId
+      );
     }
     
-    return await response.json();
+    const text = await response.text();
+    const data = validateJSON(text, `${contentId}/${unitId}.json`);
+    
+    // Validate unit structure
+    const requiredFields = ['id', 'title', 'description', 'steps', 'xp'];
+    for (const field of requiredFields) {
+      if (!data[field]) {
+        throw new ContentLoadError(
+          `Missing required field "${field}" in unit`,
+          'INVALID_DATA',
+          contentId,
+          unitId
+        );
+      }
+    }
+    
+    // Validate steps
+    const requiredSteps = ['refresher', 'positive', 'negative', 'task', 'challenge'];
+    for (const step of requiredSteps) {
+      if (!data.steps[step]) {
+        throw new ContentLoadError(
+          `Missing required step "${step}" in unit`,
+          'INVALID_DATA',
+          contentId,
+          unitId
+        );
+      }
+    }
+    
+    return data;
   } catch (error) {
-    console.error(`Error loading unit ${unitId}:`, error);
-    throw error;
+    logCriticalError(error as Error, { contentId, unitId, context: 'loadUnit' });
+    if (error instanceof ContentLoadError) {
+      throw error;
+    }
+    throw new ContentLoadError(
+      `Error loading unit ${unitId}: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      'NETWORK_ERROR',
+      contentId,
+      unitId
+    );
   }
 }
 
@@ -116,4 +282,17 @@ export async function loadUnit(contentId: string, unitId: string) {
  */
 export function isContentAvailable(contentId: string): boolean {
   return AVAILABLE_CONTENTS.some(c => c.id === contentId);
+}
+
+/**
+ * Get all available units for a content
+ */
+export async function getAvailableUnits(contentId: string): Promise<string[]> {
+  try {
+    const roadmap = await loadContentRoadmap(contentId);
+    return roadmap.nodes.map((node: any) => node.id);
+  } catch (error) {
+    console.error(`Failed to get available units for ${contentId}:`, error);
+    return [];
+  }
 }

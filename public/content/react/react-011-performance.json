@@ -1,0 +1,64 @@
+{
+    "id": "react-011-performance",
+    "title": "Performance Optimization",
+    "description": "Prevent unnecessary re-renders with useMemo, useCallback, and React.memo",
+    "duration": 16,
+    "difficulty": "advanced",
+    "tags": ["performance", "optimization", "memoization"],
+    "prerequisites": ["react-010-protected"],
+    "unlocks": ["react-012-testing"],
+    "xp": 130,
+    "steps": {
+      "refresher": {
+        "type": "markdown",
+        "title": "Why Optimize Performance?",
+        "content": "# Performance in React\n\n## The Problem\n\nReact is fast, but unnecessary re-renders of large component trees or expensive computations can slow down your app.\n\n## Tools\n\n- `React.memo` → memoize components\n- `useMemo` → memoize expensive values\n- `useCallback` → memoize functions\n\n**Let's see the difference! →**"
+      },
+      "positive": {
+        "type": "interactive-code",
+        "title": "✅ Positive Case: Optimized List",
+        "description": "Using React.memo and useCallback to prevent child re-renders.",
+        "code": "import { memo, useState, useCallback } from 'react';\n\nconst ExpensiveItem = memo(function ExpensiveItem({ onClick, text }) {\n  console.log('Rendering', text); // Check console!\n  return (\n    <li\n      onClick={onClick}\n      className=\"p-4 bg-white rounded shadow cursor-pointer hover:bg-blue-50\"\n    >\n      {text}\n    </li>\n  );\n});\n\nfunction OptimizedList() {\n  const [items, setItems] = useState(['Apple', 'Banana', 'Orange', 'Mango']);\n  const [count, setCount] = useState(0);\n\n  const handleClick = useCallback((item) => {\n    alert(`You clicked ${item}`);\n  }, []);\n\n  return (\n    <div className=\"p-8 max-w-md mx-auto\">\n      <div className=\"mb-6 flex justify-between\">\n        <button onClick={() => setCount(c => c + 1)} className=\"px-4 py-2 bg-gray-600 text-white rounded\">\n          Parent Count: {count}\n        </button>\n      </div>\n      <ul className=\"space-y-3\">\n        {items.map(item => (\n          <ExpensiveItem key={item} text={item} onClick={() => handleClick(item)} />\n        ))}\n      </ul>\n      <p className=\"mt-6 text-sm text-gray-600\">Click parent button — items don't re-render!</p>\n    </div>\n  );\n}\n\nexport default OptimizedList;",
+        "showPreview": true,
+        "explanation": "Even when parent re-renders, memoized children stay unchanged."
+      },
+      "negative": {
+        "type": "debug-quiz",
+        "title": "🐛 Common Mistake: Forgetting Dependency in useCallback",
+        "description": "This callback captures stale state. Why?",
+        "code": "function BadCounter() {\n  const [count, setCount] = useState(0);\n  const [step, setStep] = useState(1);\n\n  const increment = useCallback(() => {\n    setCount(count + step); // Stale count & step!\n  }, []); // Missing dependencies\n\n  return (\n    <div>\n      <p>Count: {count}</p>\n      <button onClick={increment}>+{step}</button>\n      <button onClick={() => setStep(s => s + 1)}>Increase Step</button>\n    </div>\n  );\n}",
+        "question": "Why does increasing step not affect increment?",
+        "options": [
+          { "id": "a", "text": "useCallback is broken", "isCorrect": false },
+          { "id": "b", "text": "Dependencies missing — callback captures initial values", "isCorrect": true, "explanation": "✅ Correct! Empty array means callback is created once with initial count=0, step=1." },
+          { "id": "c", "text": "Need useMemo", "isCorrect": false }
+        ],
+        "correctCode": "// Fix: add [step] or use functional update\nconst increment = useCallback(() => {\n  setCount(c => c + step);\n}, [step]);",
+        "lesson": "**Include all dependencies in useCallback/useMemo, or use functional updates.**"
+      },
+      "task": {
+        "type": "coding-task",
+        "title": "🛠️ Your Turn: Memoize Expensive Calculation",
+        "description": "Use useMemo to cache a heavy computation.",
+        "requirements": [
+          "Compute fibonacci(n)",
+          "Memoize result",
+          "Button to change input — only recompute when needed"
+        ],
+        "starterCode": "import { useState, useMemo } from 'react';\n\nfunction fib(n) {\n  if (n <= 1) return n;\n  return fib(n - 1) + fib(n - 2);\n}\n\nfunction FibCalculator() {\n  const [num, setNum] = useState(30);\n\n  // TODO: Memoize fib(num)\n\n  return (\n    <div className=\"p-8 text-center\">\n      <input type=\"number\" value={num} onChange={e => setNum(+e.target.value)} className=\"px-4 py-2 border rounded\" />\n      <p className=\"text-3xl mt-6\">Result: {result}</p>\n    </div>\n  );\n}\n\nexport default FibCalculator;",
+        "solution": "import { useState, useMemo } from 'react';\n\nfunction fib(n) {\n  if (n <= 1) return n;\n  return fib(n - 1) + fib(n - 2);\n}\n\nfunction FibCalculator() {\n  const [num, setNum] = useState(30);\n\n  const result = useMemo(() => {\n    console.log('Computing fib...');\n    return fib(num);\n  }, [num]);\n\n  return (\n    <div className=\"p-12 text-center bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-xl\">\n      <h2 className=\"text-3xl mb-6\">Fibonacci Calculator</h2>\n      <input\n        type=\"number\"\n        value={num}\n        onChange={e => setNum(+e.target.value)}\n        className=\"px-6 py-3 text-black rounded-lg text-xl\"\n        min=\"1\"\n        max=\"40\"\n      />\n      <p className=\"text-5xl font-bold mt-8\">fib({num}) = {result}</p>\n      <p className=\"mt-4 text-lg\">Check console — only recomputes on change!</p>\n    </div>\n  );\n}\n\nexport default FibCalculator;"
+      },
+      "challenge": {
+        "type": "coding-challenge",
+        "title": "🏆 Challenge: Optimized Todo List",
+        "description": "Combine React.memo, useMemo, and useCallback in a full todo app.",
+        "requirements": [
+          "Todo list with add/complete",
+          "Filter by all/active/completed (useMemo)",
+          "Each Todo item memoized",
+          "Add button doesn't re-render items"
+        ],
+        "starterCode": "// Build a performant todo app using all memoization tools"
+      }
+    }
+  }

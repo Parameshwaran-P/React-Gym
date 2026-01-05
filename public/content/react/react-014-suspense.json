@@ -1,0 +1,55 @@
+{
+    "id": "react-014-suspense",
+    "title": "Suspense & Concurrent Features",
+    "description": "Lazy loading and better loading states with React 18+",
+    "duration": 14,
+    "difficulty": "advanced",
+    "tags": ["suspense", "lazy", "concurrent", "code-splitting"],
+    "prerequisites": ["react-013-portals"],
+    "unlocks": ["react-015-final-project"],
+    "xp": 125,
+    "steps": {
+      "refresher": {
+        "type": "markdown",
+        "title": "Suspense for Code Splitting",
+        "content": "# Suspense & Lazy\n\n## Goal\n\nLoad components only when needed → faster initial load.\n\n## Tools\n\n- `React.lazy()` → dynamic import\n- `<Suspense fallback>` → loading state\n\n**Perfect for routes or heavy components!**"
+      },
+      "positive": {
+        "type": "interactive-code",
+        "title": "✅ Positive Case: Lazy Loaded Heavy Component",
+        "description": "Heavy chart loads only when shown.",
+        "code": "import { lazy, Suspense, useState } from 'react';\n\nconst HeavyChart = lazy(() => import('./HeavyChart')); // Assume this is big\n\nfunction App() {\n  const [show, setShow] = useState(false);\n\n  return (\n    <div className=\"p-12 text-center\">\n      <button\n        onClick={() => setShow(true)}\n        className=\"px-8 py-4 bg-green-600 text-white rounded-lg text-xl mb-8\"\n      >\n        Load Heavy Chart\n      </button>\n\n      {show && (\n        <Suspense fallback={<div className=\"text-2xl\">Loading chart...</div>}>\n          <HeavyChart />\n        </Suspense>\n      )}\n    </div>\n  );\n}\n\nexport default App;",
+        "showPreview": true,
+        "explanation": "Smooth loading experience with fallback."
+      },
+      "negative": {
+        "type": "debug-quiz",
+        "title": "🐛 Common Mistake: Suspense Too High",
+        "description": "Suspense placed around entire app shows fallback too long.",
+        "question": "Why is wrapping whole app in Suspense bad?",
+        "options": [
+          { "id": "b", "text": "User sees loading forever while lazy components load", "isCorrect": true }
+        ],
+        "lesson": "**Wrap Suspense close to lazy components, not at root.**"
+      },
+      "task": {
+        "type": "coding-task",
+        "title": "🛠️ Your Turn: Lazy Routes",
+        "description": "Convert routes to use lazy + Suspense.",
+        "requirements": [
+          "Lazy load Dashboard and Profile",
+          "Different fallbacks",
+          "Smooth navigation"
+        ]
+      },
+      "challenge": {
+        "type": "coding-challenge",
+        "title": "🏆 Challenge: Data Fetching with Suspense (Experimental)",
+        "description": "Use Suspense for data fetching with a resource library (e.g., simple cache).",
+        "requirements": [
+          "Throw promise in data fetcher",
+          "Suspense catches and shows loading"
+        ]
+      }
+    }
+  }

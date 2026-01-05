@@ -1,0 +1,62 @@
+{
+    "id": "react-009-router",
+    "title": "React Router v6",
+    "description": "Navigation and dynamic routing in single-page apps",
+    "duration": 15,
+    "difficulty": "intermediate",
+    "tags": ["routing", "navigation", "spa", "react-router"],
+    "prerequisites": ["react-008-custom-hooks"],
+    "unlocks": ["react-010-protected"],
+    "xp": 120,
+    "steps": {
+      "refresher": {
+        "type": "markdown",
+        "title": "Why React Router?",
+        "content": "# React Router v6\n\n## Problem\n\nSingle Page Apps need client-side routing — changing URL without full page reload.\n\n## React Router v6 Features\n\n- `<BrowserRouter>`\n- `<Routes>` and `<Route>`\n- `<Link>` and `<NavLink>`\n- `useParams`, `useNavigate`\n- Nested routes\n\n**Let's build a multi-page dashboard! →**"
+      },
+      "positive": {
+        "type": "interactive-code",
+        "title": "✅ Positive Case: Multi-Page App",
+        "description": "Navigation between Home, Dashboard, and Profile.",
+        "code": "import { BrowserRouter, Routes, Route, Link, NavLink } from 'react-router-dom';\n\nfunction Home() { return <div className=\"p-8\"><h1 className=\"text-4xl\">Welcome Home 🏠</h1></div>; }\nfunction Dashboard() { return <div className=\"p-8\"><h1 className=\"text-4xl\">Dashboard 📊</h1></div>; }\nfunction Profile() { return <div className=\"p-8\"><h1 className=\"text-4xl\">Profile 👤</h1></div>; }\n\nfunction Navbar() {\n  return (\n    <nav className=\"bg-indigo-600 text-white p-4 shadow-lg\">\n      <ul className=\"flex gap-8 max-w-4xl mx-auto\">\n        <li><NavLink to=\"/\" end className={({ isActive }) => isActive ? 'font-bold underline' : ''}>Home</NavLink></li>\n        <li><NavLink to=\"/dashboard\" className={({ isActive }) => isActive ? 'font-bold underline' : ''}>Dashboard</NavLink></li>\n        <li><NavLink to=\"/profile\" className={({ isActive }) => isActive ? 'font-bold underline' : ''}>Profile</NavLink></li>\n      </ul>\n    </nav>\n  );\n}\n\nfunction App() {\n  return (\n    <BrowserRouter>\n      <Navbar />\n      <Routes>\n        <Route path=\"/\" element={<Home />} />\n        <Route path=\"/dashboard\" element={<Dashboard />} />\n        <Route path=\"/profile\" element={<Profile />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}\n\nexport default App;",
+        "showPreview": true,
+        "explanation": "Clean navigation with active styling using NavLink."
+      },
+      "negative": {
+        "type": "debug-quiz",
+        "title": "🐛 Common Mistake: Using <a> instead of <Link>",
+        "description": "This link causes full page reload. Why?",
+        "code": "<a href=\"/dashboard\">Go to Dashboard</a>",
+        "question": "Why does this cause a full reload?",
+        "options": [
+          { "id": "a", "text": "href is wrong", "isCorrect": false },
+          { "id": "b", "text": "<a> tag triggers full navigation — use <Link>", "isCorrect": true, "explanation": "✅ Correct! Regular <a> reloads the page. <Link> enables client-side routing." },
+          { "id": "c", "text": "React Router not installed", "isCorrect": false }
+        ],
+        "lesson": "**Always use <Link> or <NavLink> instead of <a> for internal navigation.**"
+      },
+      "task": {
+        "type": "coding-task",
+        "title": "🛠️ Your Turn: Add Dynamic Route",
+        "description": "Create a /users/:id route that shows user details.",
+        "requirements": [
+          "Use useParams",
+          "Link to /users/1, /users/2, etc.",
+          "Display user ID and fake name"
+        ],
+        "starterCode": "import { BrowserRouter, Routes, Route, Link, useParams } from 'react-router-dom';\n\nfunction UserDetail() {\n  const { id } = useParams();\n  return <div>User ID: {id}</div>;\n}\n\nfunction App() {\n  return (\n    <BrowserRouter>\n      <nav className=\"p-4 bg-gray-800 text-white\">\n        <Link to=\"/users/1\">User 1</Link>\n        {/* More links */}\n      </nav>\n      <Routes>\n        <Route path=\"/users/:id\" element={<UserDetail />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}\n\nexport default App;",
+        "solution": "import { BrowserRouter, Routes, Route, Link, useParams } from 'react-router-dom';\n\nfunction UserDetail() {\n  const { id } = useParams();\n  const names = { '1': 'Alex', '2': 'Jordan', '3': 'Taylor' };\n\n  return (\n    <div className=\"p-12 text-center\">\n      <h1 className=\"text-5xl font-bold mb-4\">User Profile</h1>\n      <p className=\"text-2xl\">ID: {id}</p>\n      <p className=\"text-3xl mt-4\">Name: {names[id] || 'Unknown'}</p>\n    </div>\n  );\n}\n\nfunction App() {\n  return (\n    <BrowserRouter>\n      <nav className=\"p-6 bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg\">\n        <div className=\"max-w-4xl mx-auto flex gap-8 justify-center\">\n          <Link to=\"/users/1\" className=\"px-6 py-3 bg-white/20 rounded hover:bg-white/30\">User 1 - Alex</Link>\n          <Link to=\"/users/2\" className=\"px-6 py-3 bg-white/20 rounded hover:bg-white/30\">User 2 - Jordan</Link>\n          <Link to=\"/users/3\" className=\"px-6 py-3 bg-white/20 rounded hover:bg-white/30\">User 3 - Taylor</Link>\n        </div>\n      </nav>\n      <Routes>\n        <Route path=\"/users/:id\" element={<UserDetail />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}\n\nexport default App;"
+      },
+      "challenge": {
+        "type": "coding-challenge",
+        "title": "🏆 Challenge: Nested Dashboard Layout",
+        "description": "Build a dashboard with sidebar and nested routes (Overview, Stats, Settings).",
+        "requirements": [
+          "Shared sidebar layout",
+          "Nested routes under /dashboard/*",
+          "Active link highlighting"
+        ],
+        "starterCode": "import { BrowserRouter, Routes, Route, Outlet, NavLink } from 'react-router-dom';\n\n// TODO: Create Layout and pages\n\nfunction App() {\n  return (\n    <BrowserRouter>\n      <Routes>\n        <Route path=\"/dashboard/*\" element={<DashboardLayout />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}\n\nexport default App;"
+      }
+    }
+  }

@@ -1,0 +1,64 @@
+{
+    "id": "react-003-props",
+    "title": "Props & Component Composition",
+    "description": "Pass data and build reusable components",
+    "duration": 8,
+    "difficulty": "beginner",
+    "tags": ["components", "props", "reusability"],
+    "prerequisites": ["react-002-useeffect"],
+    "unlocks": ["react-004-conditional"],
+    "xp": 60,
+    "steps": {
+      "refresher": {
+        "type": "markdown",
+        "title": "What are Props?",
+        "content": "# Props (Properties)\n\n## Why do we need them?\n\nComponents should be reusable and configurable. Props let parent components pass data and behavior to children.\n\n## Key Rules\n\n- Props are **read-only**\n- Can be any data type: strings, numbers, objects, functions\n- Destructure for cleaner code\n\n## Example\n\n```jsx\n<Greeting name=\"Alex\" age={25} />\n```\n\nInside Greeting component:\n```jsx\nconst Greeting = ({ name, age }) => {\n  return <p>Hello {name}, you are {age}!</p>;\n};\n```\n\n**Let's build a reusable card!**"
+      },
+      "positive": {
+        "type": "interactive-code",
+        "title": "✅ Positive Case: Reusable Profile Card",
+        "description": "A reusable card component receiving props.",
+        "code": "function ProfileCard({ name, title, avatar, bio }) {\n  return (\n    <div className=\"max-w-sm p-6 bg-white rounded-xl shadow-lg\">\n      <img src={avatar} alt={name} className=\"w-24 h-24 rounded-full mx-auto mb-4\" />\n      <h3 className=\"text-xl font-bold text-center\">{name}</h3>\n      <p className=\"text-gray-600 text-center mb-4\">{title}</p>\n      <p className=\"text-sm text-gray-700\">{bio}</p>\n    </div>\n  );\n}\n\nfunction App() {\n  return (\n    <div className=\"p-8 grid grid-cols-3 gap-6\">\n      <ProfileCard\n        name=\"Sarah Chen\"\n        title=\"Frontend Engineer\"\n        avatar=\"https://randomuser.me/api/portraits/women/44.jpg\"\n        bio=\"Loves React and building beautiful UIs\"\n      />\n      <ProfileCard\n        name=\"Mike Johnson\"\n        title=\"UX Designer\"\n        avatar=\"https://randomuser.me/api/portraits/men/32.jpg\"\n        bio=\"Passionate about user-centered design\"\n      />\n    </div>\n  );\n}\n\nexport default App;",
+        "showPreview": true,
+        "explanation": "Same component used twice with different data → true reusability!"
+      },
+      "negative": {
+        "type": "debug-quiz",
+        "title": "🐛 Common Mistake: Mutating Props",
+        "description": "This component tries to modify props directly. Why is this wrong?",
+        "code": "function BadCard({ user }) {\n  user.name = \"Hacked!\"; // Trying to change prop\n\n  return <div>{user.name}</div>;\n}\n\nexport default BadCard;",
+        "question": "What's wrong with modifying props directly?",
+        "options": [
+          { "id": "a", "text": "It's allowed in React", "isCorrect": false },
+          { "id": "b", "text": "Props are immutable – changes won't trigger re-renders and break one-way data flow", "isCorrect": true },
+          { "id": "c", "text": "user.name syntax is invalid", "isCorrect": false },
+          { "id": "d", "text": "You need useState to modify data", "isCorrect": false }
+        ],
+        "lesson": "**Props are immutable.** Never mutate them directly. Use state or derive new values instead."
+      },
+      "task": {
+        "type": "coding-task",
+        "title": "🛠️ Your Turn: Button Component",
+        "description": "Create a reusable Button component with customizable text, color, and onClick.",
+        "requirements": [
+          "Accept text, variant (primary/secondary/danger), and onClick props",
+          "Apply different styles based on variant",
+          "Use proper destructuring"
+        ],
+        "starterCode": "function CustomButton({ text, variant, onClick }) {\n  // TODO: Add styles based on variant\n\n  return (\n    <button onClick={onClick}>\n      {text}\n    </button>\n  );\n}\n\nfunction App() {\n  return (\n    <div className=\"p-8 space-x-4\">\n      <CustomButton text=\"Primary\" variant=\"primary\" onClick={() => alert('Primary!')} />\n      <CustomButton text=\"Danger\" variant=\"danger\" onClick={() => alert('Danger!')} />\n    </div>\n  );\n}\n\nexport default App;",
+        "solution": "function CustomButton({ text, variant = 'primary', onClick }) {\n  const variants = {\n    primary: 'bg-blue-600 hover:bg-blue-700 text-white',\n    secondary: 'bg-gray-600 hover:bg-gray-700 text-white',\n    danger: 'bg-red-600 hover:bg-red-700 text-white'\n  };\n\n  return (\n    <button\n      onClick={onClick}\n      className={`px-6 py-3 rounded-lg font-medium ${variants[variant] || variants.primary}`}\n    >\n      {text}\n    </button>\n  );\n}\n\nfunction App() {\n  return (\n    <div className=\"p-8 space-x-4\">\n      <CustomButton text=\"Save\" variant=\"primary\" onClick={() => alert('Saved!')} />\n      <CustomButton text=\"Cancel\" variant=\"secondary\" onClick={() => alert('Cancelled')} />\n      <CustomButton text=\"Delete\" variant=\"danger\" onClick={() => alert('Deleted!')} />\n    </div>\n  );\n}\n\nexport default App;"
+      },
+      "challenge": {
+        "type": "coding-challenge",
+        "title": "🏆 Challenge: User List with Cards",
+        "description": "Map over an array of users and render ProfileCard for each.",
+        "requirements": [
+          "Use the ProfileCard from positive example",
+          "Map over users array",
+          "Pass correct props",
+          "Use proper key"
+        ],
+        "starterCode": "const users = [\n  { id: 1, name: 'Emma Wilson', title: 'Product Manager', avatar: 'https://randomuser.me/api/portraits/women/68.jpg', bio: 'Building great products' },\n  { id: 2, name: 'Liam Park', title: 'Backend Developer', avatar: 'https://randomuser.me/api/portraits/men/86.jpg', bio: 'Node.js & databases' },\n  { id: 3, name: 'Sofia Rivera', title: 'UI Designer', avatar: 'https://randomuser.me/api/portraits/women/22.jpg', bio: 'Making things beautiful' }\n];\n\n// TODO: Create ProfileCard and use it here\n\nfunction App() {\n  return (\n    <div className=\"p-8 grid grid-cols-1 md:grid-cols-3 gap-8\">\n      {/* TODO: Map users */}\n    </div>\n  );\n}\n\nexport default App;"
+      }
+    }
+  }

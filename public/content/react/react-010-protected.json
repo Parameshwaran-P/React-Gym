@@ -1,0 +1,62 @@
+{
+    "id": "react-010-protected",
+    "title": "Protected Routes & Auth Flow",
+    "description": "Guard routes based on authentication state",
+    "duration": 12,
+    "difficulty": "intermediate",
+    "tags": ["auth", "routing", "security", "protected-routes"],
+    "prerequisites": ["react-009-router"],
+    "unlocks": ["react-011-performance"],
+    "xp": 105,
+    "steps": {
+      "refresher": {
+        "type": "markdown",
+        "title": "Protected Routes",
+        "content": "# Protected Routes\n\n## Goal\n\nPrevent unauthorized access to certain pages (e.g., dashboard).\n\n## Common Pattern\n\n- Auth context holds login state\n- ProtectedRoute component checks auth\n- Redirect to login if not authenticated\n\n**Let's secure the dashboard! →**"
+      },
+      "positive": {
+        "type": "interactive-code",
+        "title": "✅ Positive Case: Protected Dashboard",
+        "description": "Only logged-in users can access dashboard.",
+        "code": "import { createContext, useContext, useState } from 'react';\nimport { BrowserRouter, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';\n\nconst AuthContext = createContext();\n\nfunction AuthProvider({ children }) {\n  const [user, setUser] = useState(null);\n  return <AuthContext.Provider value={{ user, login: () => setUser({ name: 'Alex' }), logout: () => setUser(null) }}>{children}</AuthContext.Provider>;\n}\n\nfunction ProtectedRoute({ children }) {\n  const { user } = useContext(AuthContext);\n  return user ? children : <Navigate to=\"/login\" />;\n}\n\nfunction Login() {\n  const { login } = useContext(AuthContext);\n  return (\n    <div className=\"p-12 text-center\">\n      <h1 className=\"text-4xl mb-8\">Login Required</h1>\n      <button onClick={login} className=\"px-8 py-4 bg-green-600 text-white rounded-lg text-xl\">Log In</button>\n    </div>\n  );\n}\n\nfunction Dashboard() {\n  const { user, logout } = useContext(AuthContext);\n  return (\n    <div className=\"p-12\">\n      <h1 className=\"text-4xl mb-4\">Welcome, {user.name}! 🎉</h1>\n      <button onClick={logout} className=\"px-6 py-3 bg-red-600 text-white rounded\">Logout</button>\n    </div>\n  );\n}\n\nfunction App() {\n  return (\n    <AuthProvider>\n      <BrowserRouter>\n        <nav className=\"p-4 bg-gray-800 text-white\">\n          <Link to=\"/\" className=\"mr-6\">Home</Link>\n          <Link to=\"/dashboard\">Dashboard</Link>\n        </nav>\n        <Routes>\n          <Route path=\"/\" element={<div className=\"p-12\"><h1>Home Page</h1></div>} />\n          <Route path=\"/login\" element={<Login />} />\n          <Route path=\"/dashboard\" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />\n        </Routes>\n      </BrowserRouter>\n    </AuthProvider>\n  );\n}\n\nexport default App;",
+        "showPreview": true,
+        "explanation": "Clean separation: auth logic + routing protection."
+      },
+      "negative": {
+        "type": "debug-quiz",
+        "title": "🐛 Common Mistake: Checking Auth in Component",
+        "description": "This approach checks auth inside Dashboard. Why is it bad?",
+        "code": "function BadDashboard() {\n  const { user } = useContext(AuthContext);\n  if (!user) return <Navigate to=\"/login\" />;\n\n  return <h1>Dashboard</h1>;\n}",
+        "question": "Why is checking auth inside the component less ideal?",
+        "options": [
+          { "id": "a", "text": "It works fine", "isCorrect": false },
+          { "id": "b", "text": "Brief flash of protected content before redirect", "isCorrect": true, "explanation": "✅ Correct! Component renders first → user sees flash → then redirects. Better to guard at route level." }
+        ],
+        "lesson": "**Use a ProtectedRoute wrapper for cleaner, flicker-free protection.**"
+      },
+      "task": {
+        "type": "coding-task",
+        "title": "🛠️ Your Turn: Require Login for Profile",
+        "description": "Protect /profile route and redirect to /login.",
+        "requirements": [
+          "Use ProtectedRoute component",
+          "Login sets fake user",
+          "Show username when logged in"
+        ],
+        "starterCode": "// Reuse AuthContext and ProtectedRoute from positive example\n\nfunction Profile() {\n  const { user } = useContext(AuthContext);\n  return <div>Welcome to your profile, {user.name}!</div>;\n}\n\n// Add route in App",
+        "solution": "// Full solution builds on positive example with added /profile route\n// using <ProtectedRoute><Profile /></ProtectedRoute>"
+      },
+      "challenge": {
+        "type": "coding-challenge",
+        "title": "🏆 Challenge: Full Auth Flow with Redirect After Login",
+        "description": "After login, redirect back to the page user originally wanted.",
+        "requirements": [
+          "Use useLocation and Navigate",
+          "Save intended location in state",
+          "Redirect after login",
+          "Show 'You must log in' message"
+        ],
+        "starterCode": "// Enhance the positive example to support redirect after login"
+      }
+    }
+  }

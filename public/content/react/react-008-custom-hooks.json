@@ -1,0 +1,63 @@
+{
+    "id": "react-008-custom-hooks",
+    "title": "Custom Hooks",
+    "description": "Extract and reuse stateful logic across components",
+    "duration": 14,
+    "difficulty": "intermediate",
+    "tags": ["hooks", "reusability", "abstraction"],
+    "prerequisites": ["react-007-usereducer"],
+    "unlocks": ["react-009-router"],
+    "xp": 110,
+    "steps": {
+      "refresher": {
+        "type": "markdown",
+        "title": "Why Custom Hooks?",
+        "content": "# Custom Hooks\n\n## Problem\n\nYou find yourself duplicating the same stateful logic (e.g., fetching data, tracking window size) in multiple components.\n\n## Solution\n\nCustom hooks let you extract that logic into reusable functions.\n\n## Rules\n\n- Must start with `use`\n- Can call other hooks\n- Pure JavaScript functions\n\n**Let's build useFetch! →**"
+      },
+      "positive": {
+        "type": "interactive-code",
+        "title": "✅ Positive Case: useFetch Hook",
+        "description": "Reusable data fetching logic.",
+        "code": "import { useState, useEffect } from 'react';\n\nfunction useFetch(url) {\n  const [data, setData] = useState(null);\n  const [loading, setLoading] = useState(true);\n  const [error, setError] = useState(null);\n\n  useEffect(() => {\n    fetch(url)\n      .then(res => res.json())\n      .then(setData)\n      .catch(setError)\n      .finally(() => setLoading(false));\n  }, [url]);\n\n  return { data, loading, error };\n}\n\nfunction UserProfile() {\n  const { data, loading } = useFetch('https://jsonplaceholder.typicode.com/users/1');\n\n  if (loading) return <p className=\"p-8\">Loading...</p>;\n\n  return (\n    <div className=\"p-8 max-w-sm mx-auto bg-white rounded-xl shadow\">\n      <h2 className=\"text-2xl font-bold\">{data.name}</h2>\n      <p>{data.email}</p>\n    </div>\n  );\n}\n\nexport default UserProfile;",
+        "showPreview": true,
+        "explanation": "Same fetching logic reusable in any component!"
+      },
+      "negative": {
+        "type": "debug-quiz",
+        "title": "🐛 Common Mistake: Hook Called Conditionally",
+        "description": "This custom hook is called inside an if statement. Why is this invalid?",
+        "code": "function BadComponent({ shouldFetch }) {\n  if (shouldFetch) {\n    const data = useFetch('/api/data'); // Invalid!\n  }\n\n  return <div>Content</div>;\n}",
+        "question": "Why can't you call hooks conditionally?",
+        "options": [
+          { "id": "a", "text": "Performance issue", "isCorrect": false },
+          { "id": "b", "text": "React relies on call order to match state — conditions break this", "isCorrect": true, "explanation": "✅ Correct! Hooks must be called in the same order every render." },
+          { "id": "c", "text": "useFetch not defined", "isCorrect": false },
+          { "id": "d", "text": "if statements not allowed", "isCorrect": false }
+        ],
+        "lesson": "**Never call hooks inside conditions, loops, or nested functions.**"
+      },
+      "task": {
+        "type": "coding-task",
+        "title": "🛠️ Your Turn: useLocalStorage Hook",
+        "description": "Create a hook that syncs state with localStorage.",
+        "requirements": [
+          "Save value to localStorage on change",
+          "Load initial value from storage",
+          "Return [value, setValue]"
+        ],
+        "starterCode": "import { useState, useEffect } from 'react';\n\nfunction useLocalStorage(key, initialValue) {\n  // TODO: Implement\n}\n\nfunction Counter() {\n  const [count, setCount] = useLocalStorage('count', 0);\n\n  return (\n    <div className=\"p-12 text-center\">\n      <h1 className=\"text-5xl mb-8\">{count}</h1>\n      <button onClick={() => setCount(count + 1)} className=\"px-8 py-4 bg-blue-600 text-white rounded-lg text-2xl\">+</button>\n    </div>\n  );\n}\n\nexport default Counter;",
+        "solution": "import { useState, useEffect } from 'react';\n\nfunction useLocalStorage(key, initialValue) {\n  const [value, setValue] = useState(() => {\n    const stored = localStorage.getItem(key);\n    return stored ? JSON.parse(stored) : initialValue;\n  });\n\n  useEffect(() => {\n    localStorage.setItem(key, JSON.stringify(value));\n  }, [key, value]);\n\n  return [value, setValue];\n}\n\nfunction Counter() {\n  const [count, setCount] = useLocalStorage('count', 0);\n\n  return (\n    <div className=\"p-12 text-center bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-xl\">\n      <h1 className=\"text-6xl font-bold mb-8\">{count}</h1>\n      <button\n        onClick={() => setCount(count + 1)}\n        className=\"px-10 py-5 bg-white text-blue-600 rounded-xl text-3xl font-bold hover:bg-gray-100\"\n      >\n        Increment\n      </button>\n      <p className=\"mt-6 text-lg\">Refresh — count persists!</p>\n    </div>\n  );\n}\n\nexport default Counter;"
+      },
+      "challenge": {
+        "type": "coding-challenge",
+        "title": "🏆 Challenge: useForm Hook",
+        "description": "Build a reusable form hook with handleChange and values.",
+        "requirements": [
+          "Accept initialValues",
+          "Return values, handleChange, reset",
+          "Support text and checkbox"
+        ],
+        "starterCode": "function useForm(initialValues) {\n  // TODO: Implement\n}\n\nfunction Registration() {\n  const { values, handleChange } = useForm({ name: '', newsletter: false });\n\n  return (\n    <form className=\"p-8 space-y-4\">\n      <input name=\"name\" value={values.name} onChange={handleChange} placeholder=\"Name\" />\n      <label>\n        <input name=\"newsletter\" type=\"checkbox\" checked={values.newsletter} onChange={handleChange} />\n        Newsletter\n      </label>\n    </form>\n  );\n}\n\nexport default Registration;"
+      }
+    }
+  }

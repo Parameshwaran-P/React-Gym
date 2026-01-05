@@ -1,0 +1,60 @@
+{
+    "id": "react-013-portals",
+    "title": "Portals & Advanced Patterns",
+    "description": "Render children outside the DOM hierarchy (modals, tooltips)",
+    "duration": 10,
+    "difficulty": "advanced",
+    "tags": ["portals", "modals", "overlay", "advanced"],
+    "prerequisites": ["react-012-testing"],
+    "unlocks": ["react-014-suspense"],
+    "xp": 95,
+    "steps": {
+      "refresher": {
+        "type": "markdown",
+        "title": "What are Portals?",
+        "content": "# React Portals\n\n## Problem\n\nModals, tooltips, or toasts need to render at the top level of DOM (outside parent) for proper stacking and styling.\n\n## Solution: ReactDOM.createPortal\n\n```jsx\ncreatePortal(child, domNode)\n```\n\nRenders child into any DOM node while staying in React tree.\n\n**Let's build a modal! →**"
+      },
+      "positive": {
+        "type": "interactive-code",
+        "title": "✅ Positive Case: Modal with Portal",
+        "description": "Modal renders at document.body level.",
+        "code": "import { useState } from 'react';\nimport { createPortal } from 'react-dom';\n\nfunction Modal({ children, onClose }) {\n  return createPortal(\n    <div className=\"fixed inset-0 bg-black/50 flex items-center justify-center z-50\" onClick={onClose}>\n      <div className=\"bg-white rounded-xl p-8 max-w-md w-full mx-4\" onClick={e => e.stopPropagation()}>\n        <button onClick={onClose} className=\"float-right text-2xl\">&times;</button>\n        {children}\n      </div>\n    </div>,\n    document.body\n  );\n}\n\nfunction App() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <div className=\"p-12 text-center\">\n      <button\n        onClick={() => setOpen(true)}\n        className=\"px-8 py-4 bg-indigo-600 text-white rounded-lg text-xl\"\n      >\n        Open Modal\n      </button>\n\n      {open && (\n        <Modal onClose={() => setOpen(false)}>\n          <h2 className=\"text-3xl font-bold mb-4\">Welcome to React Gym! 🏋️</h2>\n          <p className=\"text-lg\">You're doing amazing. Keep training!</p>\n        </Modal>\n      )}\n    </div>\n  );\n}\n\nexport default App;",
+        "showPreview": true,
+        "explanation": "Modal overlays everything correctly thanks to portal."
+      },
+      "negative": {
+        "type": "debug-quiz",
+        "title": "🐛 Common Mistake: No stopPropagation",
+        "description": "Clicking inside modal closes it. Why?",
+        "code": "<div className=\"overlay\" onClick={onClose}>\n  <div className=\"modal\">Content</div>\n</div>",
+        "question": "Why does clicking modal content close it?",
+        "options": [
+          { "id": "a", "text": "Portal bug", "isCorrect": false },
+          { "id": "b", "text": "Event bubbles up to overlay", "isCorrect": true, "explanation": "✅ Need e.stopPropagation() on inner div." }
+        ],
+        "lesson": "**Always stop event propagation on modal content.**"
+      },
+      "task": {
+        "type": "coding-task",
+        "title": "🛠️ Your Turn: Toast Notification",
+        "description": "Create a toast that appears at bottom-right using portal.",
+        "requirements": [
+          "Show toast for 3 seconds",
+          "Button triggers toast",
+          "Renders in portal"
+        ],
+        "starterCode": "// Build a toast system with portal",
+        "solution": "// Full toast with auto-dismiss and portal"
+      },
+      "challenge": {
+        "type": "coding-challenge",
+        "title": "🏆 Challenge: Accessible Modal with Focus Trap",
+        "description": "Build a fully accessible modal (Escape key, focus trap, ARIA).",
+        "requirements": [
+          "Close on Escape",
+          "Trap focus inside modal",
+          "Proper ARIA roles"
+        ]
+      }
+    }
+  }

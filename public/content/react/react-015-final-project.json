@@ -1,0 +1,42 @@
+{
+    "id": "react-015-final-project",
+    "title": "🏆 Final Project: Build a Full App",
+    "description": "Apply everything: Create a complete Todo App with auth, routing, state management, and testing",
+    "duration": 30,
+    "difficulty": "master",
+    "tags": ["project", "capstone", "full-app"],
+    "prerequisites": ["react-014-suspense"],
+    "unlocks": [],
+    "xp": 300,
+    "steps": {
+      "refresher": {
+        "type": "markdown",
+        "title": "Time to Build Something Real!",
+        "content": "# Final Project: React Gym Todo Pro\n\nYou've mastered all the tools. Now combine them into a production-quality app!\n\n## Requirements\n\nBuild a full-featured todo app with:\n\n- User authentication (login/register)\n- Protected routes\n- Persistent todos (localStorage)\n- Context + useReducer for state\n- Lazy loading for heavy pages\n- At least 5 tests\n- Dark mode toggle\n- Responsive design\n- Modals for edit/delete confirm\n\n**This is your portfolio piece. Make it shine! ✨**"
+      },
+      "positive": {
+        "type": "interactive-code",
+        "title": "✅ Example Feature: Auth + Protected Layout",
+        "description": "Starter structure for your final app.",
+        "code": "// Example of how your app structure might look\n// src/App.js with BrowserRouter, AuthProvider, lazy routes, etc.",
+        "showPreview": false
+      },
+      "challenge": {
+        "type": "coding-challenge",
+        "title": "🏆 Build Todo Pro",
+        "description": "Create the complete application combining all concepts learned.",
+        "requirements": [
+          "Authentication flow with context",
+          "Protected dashboard with lazy loading",
+          "Todo CRUD with useReducer + localStorage",
+          "Dark/light theme toggle",
+          "Responsive mobile-friendly design",
+          "Modals using portals",
+          "At least 5 RTL tests",
+          "Clean, organized code with custom hooks"
+        ],
+        "starterCode": "// Start from scratch or use previous units as foundation",
+        "solution": "// No single solution — many correct ways!\n// Students earn XP by completing and submitting their polished app"
+      }
+    }
+  }

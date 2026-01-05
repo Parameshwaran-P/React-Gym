@@ -1,5 +1,7 @@
 // src/features/learning/store/progressStore.ts
 
+import { logError } from '../../../shared/utils/errorLogger';
+
 export interface UnitProgress {
   unitId: string;
   contentId: string;
@@ -34,7 +36,11 @@ export function getProgress(): UserProgress {
       return JSON.parse(stored);
     }
   } catch (error) {
-    console.error('Error reading progress:', error);
+    logError(
+      error as Error,
+      'medium',
+      { context: 'getProgress', action: 'parse' }
+    );
   }
 
   // Default progress
@@ -54,7 +60,26 @@ export function saveProgress(progress: UserProgress): void {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
   } catch (error) {
-    console.error('Error saving progress:', error);
+    logError(
+      error as Error,
+      'high',
+      { context: 'saveProgress', action: 'save' }
+    );
+    
+    // Try to clear some space
+    if (error instanceof Error && error.name === 'QuotaExceededError') {
+      console.warn('localStorage quota exceeded, clearing old data...');
+      try {
+        localStorage.removeItem('error_logs');
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+      } catch (retryError) {
+        logError(
+          retryError as Error,
+          'critical',
+          { context: 'saveProgress', action: 'retry' }
+        );
+      }
+    }
   }
 }
 

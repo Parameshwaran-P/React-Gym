@@ -1,0 +1,64 @@
+ {
+    "id": "react-007-usereducer",
+    "title": "useReducer Hook",
+    "description": "Manage complex state logic with reducer pattern",
+    "duration": 13,
+    "difficulty": "intermediate",
+    "tags": ["state", "reducer", "complex-logic", "redux-pattern"],
+    "prerequisites": ["react-006-context"],
+    "unlocks": ["react-008-custom-hooks"],
+    "xp": 100,
+    "steps": {
+      "refresher": {
+        "type": "markdown",
+        "title": "When to use useReducer?",
+        "content": "# useReducer Hook\n\n## useState vs useReducer\n\n- `useState`: Simple state (string, number, boolean)\n- `useReducer`: Complex state transitions, multiple related values, or when next state depends on previous\n\n## Benefits\n\n- Predictable state updates\n- Centralized logic\n- Easier to test\n- Great with Context for global state\n\n## Syntax\n\n```js\nconst [state, dispatch] = useReducer(reducer, initialState);\n```\n\n**Let's build a todo app! →**"
+      },
+      "positive": {
+        "type": "interactive-code",
+        "title": "✅ Positive Case: Todo with useReducer",
+        "description": "Clean state management with actions.",
+        "code": "import { useReducer } from 'react';\n\nconst initialState = { todos: [], filter: 'all' };\n\nfunction reducer(state, action) {\n  switch (action.type) {\n    case 'ADD_TODO':\n      return { ...state, todos: [...state.todos, { id: Date.now(), text: action.payload, completed: false }] };\n    case 'TOGGLE_TODO':\n      return {\n        ...state,\n        todos: state.todos.map(todo =>\n          todo.id === action.payload ? { ...todo, completed: !todo.completed } : todo\n        )\n      };\n    default:\n      return state;\n  }\n}\n\nfunction TodoApp() {\n  const [state, dispatch] = useReducer(reducer, initialState);\n  const [input, setInput] = useState('');\n\n  return (\n    <div className=\"p-8 max-w-md mx-auto\">\n      <h2 className=\"text-2xl font-bold mb-6\">Todos</h2>\n      <div className=\"flex gap-2 mb-6\">\n        <input\n          value={input}\n          onChange={(e) => setInput(e.target.value)}\n          onKeyDown={(e) => e.key === 'Enter' && input && (dispatch({ type: 'ADD_TODO', payload: input }), setInput(''))}\n          placeholder=\"Add todo\"\n          className=\"flex-1 px-4 py-2 border rounded\"\n        />\n      </div>\n      <ul className=\"space-y-2\">\n        {state.todos.map(todo => (\n          <li\n            key={todo.id}\n            onClick={() => dispatch({ type: 'TOGGLE_TODO', payload: todo.id })}\n            className={`p-3 rounded cursor-pointer ${todo.completed ? 'bg-green-100 line-through' : 'bg-gray-100'}`}\n          >\n            {todo.text}\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n}\n\nexport default TodoApp;",
+        "showPreview": true,
+        "explanation": "All state changes go through dispatch → predictable and debuggable."
+      },
+      "negative": {
+        "type": "debug-quiz",
+        "title": "🐛 Common Mistake: Mutating State in Reducer",
+        "description": "This reducer mutates state directly. Why is this wrong?",
+        "code": "function badReducer(state, action) {\n  if (action.type === 'ADD') {\n    state.count++; // Direct mutation!\n    return state;\n  }\n  return state;\n}",
+        "question": "Why is mutating state in reducer bad?",
+        "options": [
+          { "id": "a", "text": "It's slower", "isCorrect": false },
+          { "id": "b", "text": "React relies on immutability to detect changes", "isCorrect": true, "explanation": "✅ Correct! Reducers must be pure and return new objects. Mutating breaks change detection." },
+          { "id": "c", "text": "Syntax error", "isCorrect": false },
+          { "id": "d", "text": "useReducer doesn't allow ++", "isCorrect": false }
+        ],
+        "lesson": "**Always return new state objects in reducers. Never mutate.**"
+      },
+      "task": {
+        "type": "coding-task",
+        "title": "🛠️ Your Turn: Counter with useReducer",
+        "description": "Build a counter with increment, decrement, and reset.",
+        "requirements": [
+          "Actions: INCREMENT, DECREMENT, RESET",
+          "Buttons for each action",
+          "Display current count"
+        ],
+        "starterCode": "import { useReducer } from 'react';\n\n// TODO: Define reducer and initialState\n\nfunction Counter() {\n  const [state, dispatch] = useReducer(reducer, initialState);\n\n  return (\n    <div className=\"p-12 text-center\">\n      <h1 className=\"text-6xl font-bold mb-8\">{state.count}</h1>\n      <div className=\"space-x-4\">\n        {/* Buttons with dispatch */}\n      </div>\n    </div>\n  );\n}\n\nexport default Counter;",
+        "solution": "import { useReducer } from 'react';\n\nconst initialState = { count: 0 };\n\nfunction reducer(state, action) {\n  switch (action.type) {\n    case 'INCREMENT': return { count: state.count + 1 };\n    case 'DECREMENT': return { count: state.count - 1 };\n    case 'RESET': return { count: 0 };\n    default: return state;\n  }\n}\n\nfunction Counter() {\n  const [state, dispatch] = useReducer(reducer, initialState);\n\n  return (\n    <div className=\"p-12 text-center bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl text-white\">\n      <h1 className=\"text-6xl font-bold mb-8\">{state.count}</h1>\n      <div className=\"space-x-6\">\n        <button onClick={() => dispatch({ type: 'DECREMENT' })} className=\"px-8 py-4 bg-red-600 rounded-lg hover:bg-red-700 text-2xl\">−</button>\n        <button onClick={() => dispatch({ type: 'RESET' })} className=\"px-8 py-4 bg-gray-700 rounded-lg hover:bg-gray-800 text-xl\">Reset</button>\n        <button onClick={() => dispatch({ type: 'INCREMENT' })} className=\"px-8 py-4 bg-green-600 rounded-lg hover:bg-green-700 text-2xl\">+</button>\n      </div>\n    </div>\n  );\n}\n\nexport default Counter;"
+      },
+      "challenge": {
+        "type": "coding-challenge",
+        "title": "🏆 Challenge: Banking App",
+        "description": "Build a simple bank account with deposit, withdraw, and transfer.",
+        "requirements": [
+          "Balance starts at 1000",
+          "Actions: DEPOSIT, WITHDRAW, TRANSFER",
+          "Input for amount",
+          "Prevent overdraft"
+        ],
+        "starterCode": "import { useReducer, useState } from 'react';\n\n// TODO: Implement reducer\n\nfunction BankApp() {\n  const [state, dispatch] = useReducer(reducer, { balance: 1000 });\n  const [amount, setAmount] = useState('');\n\n  return (\n    <div className=\"p-8 max-w-sm mx-auto\">\n      <h2 className=\"text-3xl font-bold text-center mb-6\">${state.balance}</h2>\n      {/* Form and buttons */}\n    </div>\n  );\n}\n\nexport default BankApp;"
+      }
+    }
+  }

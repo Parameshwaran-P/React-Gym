@@ -1,0 +1,61 @@
+{
+    "id": "react-012-testing",
+    "title": "Testing with Jest & React Testing Library",
+    "description": "Write reliable tests to catch bugs early",
+    "duration": 18,
+    "difficulty": "advanced",
+    "tags": ["testing", "rtl", "jest", "tdd"],
+    "prerequisites": ["react-011-performance"],
+    "unlocks": ["react-013-portals"],
+    "xp": 140,
+    "steps": {
+      "refresher": {
+        "type": "markdown",
+        "title": "Why Test Your React Code?",
+        "content": "# Testing in React\n\n## Benefits\n\n- Catch bugs before users do\n- Refactor confidently\n- Document behavior\n- Prevent regressions\n\n## Tools\n\n- **Jest**: Test runner\n- **React Testing Library (RTL)**: Test components like users do\n\n**Focus on user behavior, not implementation details.**"
+      },
+      "positive": {
+        "type": "interactive-code",
+        "title": "✅ Positive Case: Testing a Counter",
+        "description": "Proper RTL test for a counter component.",
+        "code": "import { useState } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <div className=\"p-8 text-center\">\n      <p data-testid=\"count\" className=\"text-4xl mb-6\">{count}</p>\n      <button onClick={() => setCount(c => c + 1)} className=\"px-6 py-3 bg-blue-600 text-white rounded\">\n        Increment\n      </button>\n    </div>\n  );\n}\n\nexport default Counter;\n\n// Test would be:\n// test('increments count', () => {\n//   render(<Counter />);\n//   const count = screen.getByTestId('count');\n//   const button = screen.getByRole('button', { name: /increment/i });\n//   expect(count).toHaveTextContent('0');\n//   fireEvent.click(button);\n//   expect(count).toHaveTextContent('1');\n// });",
+        "showPreview": true,
+        "explanation": "Tests user interaction and visible output — not internal state."
+      },
+      "negative": {
+        "type": "debug-quiz",
+        "title": "🐛 Common Mistake: Testing Implementation Details",
+        "description": "This test is fragile. Why?",
+        "code": "// BAD TEST\ntest('uses useState', () => {\n  const component = shallow(<Counter />);\n  expect(component.find('useState')).toExist(); // Testing internals!\n});",
+        "question": "Why is testing internal hooks bad?",
+        "options": [
+          { "id": "a", "text": "It's slower", "isCorrect": false },
+          { "id": "b", "text": "Breaks when refactoring — tests should verify behavior, not implementation", "isCorrect": true }
+        ],
+        "lesson": "**Test what the user sees and does. Avoid testing internal state or hooks.**"
+      },
+      "task": {
+        "type": "coding-task",
+        "title": "🛠️ Your Turn: Test a Toggle Component",
+        "description": "Write a test for a light/dark mode toggle.",
+        "requirements": [
+          "Button toggles text between 'Light' and 'Dark'",
+          "Initial state is Light",
+          "Use getByRole and fireEvent.click"
+        ],
+        "starterCode": "// Write the test in comments below the component\nfunction ThemeToggle() {\n  const [theme, setTheme] = useState('light');\n\n  return (\n    <button onClick={() => setTheme(t => t === 'light' ? 'dark' : 'light')}>\n      Current: {theme}\n    </button>\n  );\n}\n\n// Your test here (imagine writing it)",
+        "solution": "// Example test using RTL concepts\nfunction ThemeToggle() {\n  const [theme, setTheme] = useState('light');\n\n  return (\n    <div className=\"p-8 text-center\">\n      <p className=\"text-2xl mb-4\">Mode: <span data-testid=\"mode\">{theme}</span></p>\n      <button\n        onClick={() => setTheme(t => t === 'light' ? 'dark' : 'light')}\n        className=\"px-8 py-4 bg-purple-600 text-white rounded-lg text-xl\"\n      >\n        Toggle Theme\n      </button>\n    </div>\n  );\n}\n\n// Expected test:\n// test('toggles theme', () => {\n//   render(<ThemeToggle />);\n//   const mode = screen.getByTestId('mode');\n//   const button = screen.getByRole('button');\n//   expect(mode).toHaveTextContent('light');\n//   fireEvent.click(button);\n//   expect(mode).toHaveTextContent('dark');\n//   fireEvent.click(button);\n//   expect(mode).toHaveTextContent('light');\n// });"
+      },
+      "challenge": {
+        "type": "coding-challenge",
+        "title": "🏆 Challenge: Test a Form Submission",
+        "description": "Test a login form with validation and mock submit.",
+        "requirements": [
+          "Test empty submit shows error",
+          "Test valid input calls onSubmit",
+          "Use userEvent.type and mock function"
+        ],
+        "starterCode": "// Build and test a login form"
+      }
+    }
+  }
