@@ -5,6 +5,7 @@ import confetti from 'canvas-confetti';
 import { Button } from '../../../shared/components/Button';
 import { Card } from '../../../shared/components/Card';
 import { Trophy, Zap, ArrowRight } from 'lucide-react';
+import { updateUnitProgress } from '../../../features/learning/store/progressStore';
 
 interface CompletionModalProps {
   unitTitle: string;
@@ -21,8 +22,8 @@ export function CompletionModal({
 }: CompletionModalProps) {
   const navigate = useNavigate();
 
+  // Confetti animation
   useEffect(() => {
-    // Trigger confetti
     const duration = 3000;
     const end = Date.now() + duration;
 
@@ -51,10 +52,27 @@ export function CompletionModal({
     frame();
   }, []);
 
+  // Format seconds into "Xm Ys"
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}m ${secs}s`;
+  };
+
+  // Handle Next Unit click
+  const handleNextUnit = () => {
+    if (!nextUnitId) return;
+
+    // Reset progress for next unit
+    updateUnitProgress('react', nextUnitId, {
+      currentStep: 0,
+      stepsCompleted: [],
+      completed: false,
+      completedAt: undefined,
+    });
+
+    // Navigate to next unit
+    navigate(`/learn/react/${nextUnitId}`);
   };
 
   return (
@@ -92,7 +110,7 @@ export function CompletionModal({
             <Button 
               size="lg" 
               className="w-full"
-              onClick={() => navigate(`/learn/react/${nextUnitId}`)}
+              onClick={handleNextUnit} // ✅ Updated
             >
               Next Unit
               <ArrowRight className="w-5 h-5 ml-2" />

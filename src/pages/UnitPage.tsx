@@ -1,10 +1,20 @@
 // src/pages/UnitPage.tsx
+import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Button } from '../shared/components/Button';
 import { UnitPlayer } from '../features/learning/components/UnitPlayer';
+import { updateUnitProgress } from '../features/learning/store/progressStore';
 
 export default function UnitPage() {
   const { contentId, unitId } = useParams();
+
+    useEffect(() => {
+    if (contentId && unitId) {
+      updateUnitProgress(contentId, unitId, {
+        currentStep: 0,
+      });
+    }
+  }, [contentId, unitId]);
 
   if (!contentId || !unitId) {
     return (

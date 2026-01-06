@@ -109,8 +109,15 @@ export function updateUnitProgress(
   progress.units[key] = {
     unitId,
     contentId,
-    stepsCompleted: existing?.stepsCompleted || [],
-    currentStep: existing?.currentStep || 0,
+   currentStep:
+  update.currentStep !== undefined
+    ? update.currentStep
+    : existing?.currentStep ?? 0,
+
+stepsCompleted:
+  update.stepsCompleted !== undefined
+    ? update.stepsCompleted
+    : existing?.stepsCompleted ?? [],
     score: existing?.score || 0,
     timeSpent: existing?.timeSpent || 0,
     hintsUsed: existing?.hintsUsed || 0,
