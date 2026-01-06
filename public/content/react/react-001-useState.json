@@ -33,13 +33,13 @@
           "id": "a",
           "text": "useState doesn't support increment operators",
           "isCorrect": false,
-          "explanation": "The `++` operator works fine in JavaScript, that's not the issue."
+          "explanation": "The ++ operator works fine in JavaScript, that's not the issue."
         },
         {
           "id": "b",
           "text": "You must use setCount() to trigger a re-render",
           "isCorrect": true,
-          "explanation": "✅ Correct! Direct mutation (`count++`) changes the variable but doesn't tell React to re-render. You must use `setCount()` to update state properly."
+          "explanation": "✅ Correct! Direct mutation (count++) changes the variable but doesn't tell React to re-render. You must use setCount() to update state properly."
         },
         {
           "id": "c",
@@ -84,25 +84,24 @@
     "challenge": {
       "type": "coding-challenge",
       "title": "🏆 Challenge: Multi-State Form",
-      "description": "Build a form that manages multiple pieces of state. This tests your understanding of using multiple useState hooks.",
+      "description": "Build a form that manages multiple pieces of state.",
       "requirements": [
         "Create inputs for name (text) and age (number)",
         "Each input should have its own useState",
         "Display both values below the form",
         "Clear button to reset both fields"
       ],
-      "starterCode": "import { useState } from 'react';\n\nfunction UserForm() {\n  // TODO: Add state for name and age\n  \n  return (\n    <div className=\"p-6 max-w-md\">\n      <h2 className=\"text-2xl font-bold mb-4\">User Info</h2>\n      \n      {/* TODO: Add name input */}\n      {/* TODO: Add age input */}\n      {/* TODO: Add clear button */}\n      \n      <div className=\"mt-6 p-4 bg-gray-100 rounded\">\n        {/* TODO: Display name and age */}\n      </div>\n    </div>\n  );\n}\n\nexport default UserForm;",
-      "solution": "import { useState } from 'react';\n\nfunction UserForm() {\n  const [name, setName] = useState('');\n  const [age, setAge] = useState('');\n  \n  const handleClear = () => {\n    setName('');\n    setAge('');\n  };\n  \n  return (\n    <div className=\"p-6 max-w-md\">\n      <h2 className=\"text-2xl font-bold mb-4\">User Info</h2>\n      \n      <div className=\"mb-4\">\n        <label className=\"block text-sm font-medium mb-2\">Name</label>\n        <input\n          type=\"text\"\n          value={name}\n          onChange={(e) => setName(e.target.value)}\n          className=\"w-full px-4 py-2 border rounded-lg\"\n          placeholder=\"Enter your name\"\n        />\n      </div>\n      \n      <div className=\"mb-4\">\n        <label className=\"block text-sm font-medium mb-2\">Age</label>\n        <input\n          type=\"number\"\n          value={age}\n          onChange={(e) => setAge(e.target.value)}\n          className=\"w-full px-4 py-2 border rounded-lg\"\n          placeholder=\"Enter your age\"\n        />\n      </div>\n      \n      <button\n        onClick={handleClear}\n        className=\"bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700\"\n      >\n        Clear\n      </button>\n      \n      <div className=\"mt-6 p-4 bg-gray-100 rounded\">\n        <p className=\"font-medium\">Name: {name || 'Not set'}</p>\n        <p className=\"font-medium\">Age: {age || 'Not set'}</p>\n      </div>\n    </div>\n  );\n}\n\nexport default UserForm;",
+      "starterCode": "import { useState } from 'react';\n\nfunction UserForm() {\n  // TODO: Add state for name and age\n  \n  return (\n    <div className=\"p-6 max-w-md\">\n      <h2 className=\"text-2xl font-bold mb-4\">User Info</h2>\n      {/* TODO: Add inputs and display */}\n    </div>\n  );\n}\n\nexport default UserForm;",
+      "solution": "import { useState } from 'react';\n\nfunction UserForm() {\n  const [name, setName] = useState('');\n  const [age, setAge] = useState('');\n  \n  return (\n    <div className=\"p-6 max-w-md\">\n      <h2 className=\"text-2xl font-bold mb-4\">User Info</h2>\n      <input\n        type=\"text\"\n        value={name}\n        onChange={(e) => setName(e.target.value)}\n        placeholder=\"Name\"\n        className=\"w-full px-4 py-2 border rounded mb-2\"\n      />\n      <input\n        type=\"number\"\n        value={age}\n        onChange={(e) => setAge(e.target.value)}\n        placeholder=\"Age\"\n        className=\"w-full px-4 py-2 border rounded mb-4\"\n      />\n      <button\n        onClick={() => { setName(''); setAge(''); }}\n        className=\"bg-red-600 text-white px-4 py-2 rounded mb-4\"\n      >\n        Clear\n      </button>\n      <div className=\"p-4 bg-gray-100 rounded\">\n        <p>Name: {name || 'Not set'}</p>\n        <p>Age: {age || 'Not set'}</p>\n      </div>\n    </div>\n  );\n}\n\nexport default UserForm;",
       "hints": [
-        "You'll need two useState hooks: one for name, one for age",
-        "Use onChange={(e) => setName(e.target.value)} for inputs",
-        "For the clear button, call both setters: setName('') and setAge('')"
+        "You'll need two useState hooks",
+        "Use onChange={(e) => setName(e.target.value)}",
+        "Clear button calls both setters"
       ],
       "tests": [
-        "Both inputs update their respective state",
-        "Display shows current values",
-        "Clear button resets both fields",
-        "Form handles empty values gracefully"
+        "Both inputs update state",
+        "Display shows values",
+        "Clear button resets both"
       ]
     }
   }

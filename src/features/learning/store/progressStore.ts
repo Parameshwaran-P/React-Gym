@@ -161,9 +161,13 @@ export function getStats() {
 }
 
 /**
- * Check if a unit is unlocked
+ * Check if a unit is unlocked based on prerequisites
  */
-export function isUnitUnlocked(unitId: string, prerequisites: string[]): boolean {
+export function isUnitUnlocked(
+  contentId: string,
+  unitId: string, 
+  prerequisites: string[]
+): boolean {
   if (prerequisites.length === 0) {
     return true; // No prerequisites = always unlocked
   }
@@ -172,10 +176,32 @@ export function isUnitUnlocked(unitId: string, prerequisites: string[]): boolean
   
   // Check if all prerequisites are completed
   return prerequisites.every(prereqId => {
-    const key = `react-${prereqId}`; // Assuming react content
+    const key = `${contentId}-${prereqId}`;
     const unit = progress.units[key];
     return unit && unit.completed;
   });
+}
+
+/**
+ * Get next unlocked unit based on completion
+ */
+export function getNextUnlockedUnit(
+  contentId: string,
+  roadmapUnits: Array<{ id: string; prerequisites: string[] }>
+): string | null {
+  const progress = getProgress();
+  
+  for (const unit of roadmapUnits) {
+    const key = `${contentId}-${unit.id}`;
+    const unitProgress = progress.units[key];
+    
+    // If not completed and unlocked, this is the next unit
+    if (!unitProgress?.completed && isUnitUnlocked(contentId, unit.id, unit.prerequisites)) {
+      return unit.id;
+    }
+  }
+  
+  return null; // All units completed or nothing unlocked
 }
 
 /**

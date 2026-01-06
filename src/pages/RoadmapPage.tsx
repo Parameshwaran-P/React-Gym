@@ -1,65 +1,52 @@
 // src/pages/RoadmapPage.tsx
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Button } from '../shared/components/Button';
 import { Card } from '../shared/components/Card';
-import { Lock, CheckCircle, Circle } from 'lucide-react';
-import { getStats, isUnitUnlocked } from '../features/learning/store/progressStore';
+import { Lock, CheckCircle } from 'lucide-react';
+import { getStats, isUnitUnlocked, getUnitProgress } from '../features/learning/store/progressStore';
+import { useRoadmap } from '../features/content/hooks/useRoadmap';
+import { useUnitMetadata } from '../features/content/hooks/useUnitMetadata';
+import { LoadingPage } from '../shared/components/LoadingStates';
 
-const ROADMAP_DATA = [
-  {
-    category: 'React Fundamentals',
-    units: [
-      { 
-        id: 'react-001-usestate', 
-        num: 1,
-        title: 'useState Hook', 
-        prerequisites: [],
-        duration: 7,
-        xp: 50
-      },
-      { 
-        id: 'react-002-useeffect', 
-        num: 2,
-        title: 'useEffect Hook', 
-        prerequisites: ['react-001-usestate'],
-        duration: 8,
-        xp: 60
-      },
-      { 
-        id: 'react-003-props', 
-        num: 3,
-        title: 'Props & Components', 
-        prerequisites: ['react-001-usestate'],
-        duration: 6,
-        xp: 50
-      },
-    ],
-  },
-  {
-    category: 'Advanced Hooks',
-    units: [
-      { 
-        id: 'react-004-usecontext', 
-        num: 4,
-        title: 'useContext', 
-        prerequisites: ['react-003-props'],
-        duration: 7,
-        xp: 60
-      },
-      { 
-        id: 'react-005-usereducer', 
-        num: 5,
-        title: 'useReducer', 
-        prerequisites: ['react-001-usestate'],
-        duration: 9,
-        xp: 70
-      },
-    ],
-  },
-];
+// Group units by category based on naming convention
+function categorizeUnits(units: any[]): Array<{ category: string; units: any[] }> {
+  const categories: Record<string, any[]> = {};
+  
+  units.forEach(unit => {
+    // Extract category from unit ID or use a default
+    // Example: react-001-usestate -> "React Fundamentals"
+    // Example: react-010-performance -> "Advanced Topics"
+    
+    const unitNumber = parseInt(unit.id.match(/\d+/)?.[0] || '0');
+    let category = 'Other Topics';
+    
+    if (unitNumber <= 4) {
+      category = 'React Fundamentals';
+    } else if (unitNumber <= 9) {
+      category = 'Advanced Hooks';
+    } else if (unitNumber <= 12) {
+      category = 'Advanced Patterns';
+    } else {
+      category = 'Expert Topics';
+    }
+    
+    if (!categories[category]) {
+      categories[category] = [];
+    }
+    categories[category].push(unit);
+  });
+  
+  return Object.entries(categories).map(([category, units]) => ({
+    category,
+    units: units.sort((a, b) => a.id.localeCompare(b.id)),
+  }));
+}
 
 export default function RoadmapPage() {
+  const [searchParams] = useSearchParams();
+  const contentId = searchParams.get('content') || 'react';
+  
   const [stats, setStats] = useState({
     totalXP: 0,
     level: 1,
@@ -67,12 +54,53 @@ export default function RoadmapPage() {
     unitsCompleted: 0,
   });
 
+  const { roadmap, loading: roadmapLoading, error: roadmapError, retry } = useRoadmap(contentId);
+  const unitIds = roadmap?.map(unit => unit.id) || [];
+  const { units: unitMetadata, loading: unitsLoading } = useUnitMetadata(contentId, unitIds);
+
   useEffect(() => {
     setStats(getStats());
   }, []);
 
-  const totalUnits = ROADMAP_DATA.reduce((acc, cat) => acc + cat.units.length, 0);
-  const progressPercent = (stats.unitsCompleted / totalUnits) * 100;
+  // Merge roadmap with unit metadata
+  const enrichedUnits = roadmap?.map(roadmapUnit => ({
+    ...roadmapUnit,
+    ...(unitMetadata[roadmapUnit.id] || {}),
+  })) || [];
+
+  const categorizedUnits = categorizeUnits(enrichedUnits);
+  const totalUnits = enrichedUnits.length;
+  const progressPercent = totalUnits > 0 ? (stats.unitsCompleted / totalUnits) * 100 : 0;
+
+  // Loading state
+  if (roadmapLoading || unitsLoading) {
+    return <LoadingPage message="Loading roadmap..." />;
+  }
+
+  // Error state
+  if (roadmapError) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <Card className="text-center max-w-md">
+          <div className="text-6xl mb-4">😕</div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            Failed to Load Roadmap
+          </h2>
+          <p className="text-gray-600 mb-6">{roadmapError.message}</p>
+          <div className="space-y-3">
+            <Button onClick={retry} size="lg" className="w-full">
+              Try Again
+            </Button>
+            <Link to="/dashboard">
+              <Button variant="outline" size="lg" className="w-full">
+                Back to Dashboard
+              </Button>
+            </Link>
+          </div>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -126,7 +154,7 @@ export default function RoadmapPage() {
 
         {/* Roadmap Sections */}
         <div className="space-y-12">
-          {ROADMAP_DATA.map((section, idx) => (
+          {categorizedUnits.map((section, idx) => (
             <div key={idx}>
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-8 h-8 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center font-bold">
@@ -139,8 +167,9 @@ export default function RoadmapPage() {
               
               <div className="space-y-4">
                 {section.units.map((unit) => {
-                  const unlocked = isUnitUnlocked(unit.id, unit.prerequisites);
-                  const completed = stats.unitsCompleted >= unit.num;
+                  const unlocked = isUnitUnlocked(contentId, unit.id, unit.prerequisites || []);
+                  const progress = getUnitProgress(contentId, unit.id);
+                  const completed = progress?.completed || false;
 
                   return (
                     <Card
@@ -162,7 +191,7 @@ export default function RoadmapPage() {
                             {completed ? (
                               <CheckCircle className="w-7 h-7" />
                             ) : unlocked ? (
-                              unit.num
+                              '▶'
                             ) : (
                               <Lock className="w-6 h-6" />
                             )}
@@ -171,20 +200,29 @@ export default function RoadmapPage() {
                           {/* Info */}
                           <div className="flex-1 min-w-0">
                             <h3 className="font-bold text-gray-900 mb-1">
-                              {unit.title}
+                              {unit.title || unit.id}
                             </h3>
                             <div className="flex items-center gap-4 text-sm text-gray-600 flex-wrap">
                               {unlocked ? (
                                 <>
-                                  <span className="flex items-center gap-1">
-                                    ⏱️ {unit.duration} min
-                                  </span>
-                                  <span className="flex items-center gap-1">
-                                    ⭐ {unit.xp} XP
-                                  </span>
+                                  {unit.duration && (
+                                    <span className="flex items-center gap-1">
+                                      ⏱️ {unit.duration} min
+                                    </span>
+                                  )}
+                                  {unit.xp && (
+                                    <span className="flex items-center gap-1">
+                                      ⭐ {unit.xp} XP
+                                    </span>
+                                  )}
                                   {completed && (
                                     <span className="text-green-600 font-medium">
                                       ✓ Completed
+                                    </span>
+                                  )}
+                                  {progress && !completed && progress.currentStep > 0 && (
+                                    <span className="text-blue-600 font-medium">
+                                      📝 In Progress ({progress.currentStep}/5)
                                     </span>
                                   )}
                                 </>
@@ -200,15 +238,15 @@ export default function RoadmapPage() {
                         {/* Right Side - Action */}
                         <div className="flex-shrink-0">
                           {completed ? (
-                            <Link to={`/learn/react/${unit.id}`}>
+                            <Link to={`/learn/${contentId}/${unit.id}`}>
                               <Button size="sm" variant="outline">
                                 Review
                               </Button>
                             </Link>
                           ) : unlocked ? (
-                            <Link to={`/learn/react/${unit.id}`}>
+                            <Link to={`/learn/${contentId}/${unit.id}`}>
                               <Button size="sm">
-                                Start →
+                                {progress?.currentStep > 0 ? 'Continue' : 'Start'} →
                               </Button>
                             </Link>
                           ) : (
@@ -227,11 +265,31 @@ export default function RoadmapPage() {
           ))}
         </div>
 
+        {/* Empty State */}
+        {enrichedUnits.length === 0 && (
+          <Card className="text-center py-12">
+            <div className="text-6xl mb-4">📚</div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">
+              No Units Available
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Content is being prepared. Check back soon!
+            </p>
+            <Link to="/dashboard">
+              <Button>Back to Dashboard</Button>
+            </Link>
+          </Card>
+        )}
+
         {/* Coming Soon */}
-        <div className="text-center mt-16 py-12 border-t border-gray-200">
-          <p className="text-gray-600 mb-2">📚 More topics coming soon</p>
-          <p className="text-sm text-gray-500">Custom Hooks, Performance, Testing, and more...</p>
-        </div>
+        {enrichedUnits.length > 0 && (
+          <div className="text-center mt-16 py-12 border-t border-gray-200">
+            <p className="text-gray-600 mb-2">📚 More topics coming soon</p>
+            <p className="text-sm text-gray-500">
+              Custom Hooks, Performance, Testing, and more...
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
