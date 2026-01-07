@@ -19,7 +19,7 @@
 
 @layer components {
   .btn {
-    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200;
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 cursor-pointer;
   }
   
   .btn-primary {
@@ -33,4 +33,54 @@
   .card {
     @apply bg-white rounded-xl shadow-sm border border-gray-200 p-6;
   }
+}
+
+/* Cursor pointer for interactive elements */
+@layer utilities {
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  
+  button:not(:disabled),
+  a,
+  [role="button"] {
+    cursor: pointer;
+  }
+  
+  button:disabled,
+  [disabled] {
+    cursor: not-allowed;
+  }
+}
+
+/* Mobile improvements */
+@media (max-width: 768px) {
+  .prose {
+    font-size: 0.95rem;
+  }
+  
+  .prose pre {
+    font-size: 0.85rem;
+  }
+  
+  /* Fix sandpack on mobile */
+  .sp-wrapper {
+    height: auto !important;
+  }
+  
+  .sp-layout {
+    flex-direction: column !important;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Better focus states */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #0ea5e9;
+  outline-offset: 2px;
 }

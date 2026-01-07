@@ -1,7 +1,7 @@
 // src/pages/LandingPage.tsx
 import { Link } from 'react-router-dom';
-import { Button } from '@/shared/components/Button';
-import { Card } from '@/shared/components/Card';
+import { Button } from '../shared/components/Button';
+import { Card } from '../shared/components/Card';
 import { Code, Zap, Bug, Trophy, Blocks, Gamepad2 } from 'lucide-react';
 
 export default function LandingPage() {
@@ -16,7 +16,7 @@ export default function LandingPage() {
               <span className="text-xl font-bold text-gray-900">React Gym</span>
             </div>
             <div className="flex items-center gap-4">
-              <Link to="/roadmap" className="text-gray-600 hover:text-gray-900">
+              <Link to="/roadmap" className="text-gray-600 hover:text-gray-900 cursor-pointer">
                 Roadmap
               </Link>
               <Link to="/dashboard">

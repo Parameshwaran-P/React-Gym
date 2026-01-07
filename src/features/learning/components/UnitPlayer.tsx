@@ -198,6 +198,12 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
           xpEarned={unit.xp}
           timeSpent={Math.floor((Date.now() - startTime) / 1000)}
           nextUnitId={unit.unlocks[0]}
+          contentId={contentId}
+          isOpen={showCompletion}
+          onClose={() => {
+            setShowCompletion(false);
+            navigate('/dashboard');
+          }}
         />
       )}
 
@@ -212,7 +218,7 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
                 index === currentStep
                   ? 'bg-primary-600 text-white scale-110'
                   : completedSteps.includes(index)
-                  ? 'bg-green-100 text-green-600 hover:bg-green-200'
+                  ? 'bg-green-100 text-green-600 hover:bg-green-200 cursor-pointer'
                   : index < currentStep
                   ? 'bg-gray-200 text-gray-600 hover:bg-gray-300 cursor-pointer'
                   : 'bg-gray-100 text-gray-400 cursor-not-allowed'
@@ -392,8 +398,8 @@ function DebugQuizStep({ stepData }: { stepData: any }) {
                   ? 'border-green-500 bg-green-50'
                   : 'border-red-500 bg-red-50'
                 : showResult
-                ? 'border-gray-200 opacity-50'
-                : 'border-gray-200 hover:border-primary-300 hover:bg-gray-50'
+                ? 'border-gray-200 opacity-50 cursor-not-allowed'
+                : 'border-gray-200 hover:border-primary-300 hover:bg-gray-50 cursor-pointer'
             }`}
           >
             <div className="flex items-start gap-3">
@@ -485,6 +491,7 @@ function CodingTaskStep({ stepData }: { stepData: any }) {
           variant="outline"
           size="sm"
           onClick={() => setShowHints(!showHints)}
+          className="cursor-pointer"
         >
           <Lightbulb className="w-4 h-4 mr-2" />
           {showHints ? 'Hide' : 'Show'} Hints
@@ -494,6 +501,7 @@ function CodingTaskStep({ stepData }: { stepData: any }) {
           variant="outline"
           size="sm"
           onClick={() => setShowSolution(!showSolution)}
+          className="cursor-pointer"
         >
           {showSolution ? <EyeOff className="w-4 h-4 mr-2" /> : <Eye className="w-4 h-4 mr-2" />}
           {showSolution ? 'Hide' : 'Show'} Solution

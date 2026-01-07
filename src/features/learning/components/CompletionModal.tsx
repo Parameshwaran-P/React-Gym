@@ -12,18 +12,24 @@ interface CompletionModalProps {
   xpEarned: number;
   timeSpent: number;
   nextUnitId?: string;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-export function CompletionModal({ 
-  unitTitle, 
-  xpEarned, 
+export function CompletionModal({
+  unitTitle,
+  xpEarned,
   timeSpent,
-  nextUnitId 
+  nextUnitId,
+  isOpen,
+  onClose,
 }: CompletionModalProps) {
   const navigate = useNavigate();
 
-  // Confetti animation
+  // Only run confetti when modal opens
   useEffect(() => {
+    if (!isOpen) return;
+
     const duration = 3000;
     const end = Date.now() + duration;
 
@@ -35,7 +41,7 @@ export function CompletionModal({
         origin: { x: 0 },
         colors: ['#0ea5e9', '#10b981', '#f59e0b', '#ef4444'],
       });
-      
+
       confetti({
         particleCount: 2,
         angle: 120,
@@ -50,20 +56,38 @@ export function CompletionModal({
     };
 
     frame();
-  }, []);
+  }, [isOpen]);
 
-  // Format seconds into "Xm Ys"
+  // Close on Escape key
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isOpen, onClose]);
+
+  // Prevent closing when clicking inside the modal content
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}m ${secs}s`;
   };
 
-  // Handle Next Unit click
   const handleNextUnit = () => {
     if (!nextUnitId) return;
 
-    // Reset progress for next unit
     updateUnitProgress('react', nextUnitId, {
       currentStep: 0,
       stepsCompleted: [],
@@ -71,13 +95,32 @@ export function CompletionModal({
       completedAt: undefined,
     });
 
-    // Navigate to next unit
     navigate(`/learn/react/${nextUnitId}`);
+    onClose(); // Important: close the modal after navigating
   };
 
+  const handleDashboard = () => {
+    navigate('/dashboard');
+    onClose();
+  };
+
+  const handleRoadmap = () => {
+    navigate('/roadmap');
+    onClose();
+  };
+
+  // Don't render if not open
+  if (!isOpen) return null;
+
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <Card className="max-w-md w-full text-center animate-slide-up">
+    <div
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+      onClick={handleBackdropClick} // Close when clicking backdrop
+    >
+      <Card
+        className="max-w-md w-full text-center animate-slide-up"
+        onClick={(e: React.MouseEvent) => e.stopPropagation()} // Prevent closing when clicking inside
+      >
         <div className="mb-6">
           <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
             <Trophy className="w-10 h-10 text-white" />
@@ -90,7 +133,6 @@ export function CompletionModal({
           </p>
         </div>
 
-        {/* Stats */}
         <div className="grid grid-cols-2 gap-4 mb-6">
           <div className="bg-primary-50 rounded-lg p-4">
             <Zap className="w-6 h-6 text-primary-600 mx-auto mb-2" />
@@ -104,33 +146,19 @@ export function CompletionModal({
           </div>
         </div>
 
-        {/* Actions */}
         <div className="space-y-3">
           {nextUnitId ? (
-            <Button 
-              size="lg" 
-              className="w-full"
-              onClick={handleNextUnit} // ✅ Updated
-            >
+            <Button size="lg" className="w-full" onClick={handleNextUnit}>
               Next Unit
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           ) : (
-            <Button 
-              size="lg" 
-              className="w-full"
-              onClick={() => navigate('/dashboard')}
-            >
+            <Button size="lg" className="w-full" onClick={handleDashboard}>
               Back to Dashboard
             </Button>
           )}
-          
-          <Button 
-            variant="outline" 
-            size="lg"
-            className="w-full"
-            onClick={() => navigate('/roadmap')}
-          >
+
+          <Button variant="outline" size="lg" className="w-full" onClick={handleRoadmap}>
             View Roadmap
           </Button>
         </div>
