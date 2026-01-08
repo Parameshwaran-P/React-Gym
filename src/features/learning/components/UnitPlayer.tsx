@@ -263,7 +263,7 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
         </div>
 
         {/* Content */}
-        <div className="max-w-5xl mx-auto px-4 py-8">
+        <div className="max-w-[110rem] mx-auto px-4 py-8">
           <div className="animate-fade-in">
             {/* Step Content */}
             <Card className="mb-6">

@@ -1,61 +1,108 @@
 {
-    "id": "react-012-testing",
-    "title": "Testing with Jest & React Testing Library",
-    "description": "Write reliable tests to catch bugs early",
-    "duration": 18,
-    "difficulty": "advanced",
-    "tags": ["testing", "rtl", "jest", "tdd"],
-    "prerequisites": ["react-011-performance"],
-    "unlocks": ["react-013-portals"],
-    "xp": 140,
-    "steps": {
-      "refresher": {
-        "type": "markdown",
-        "title": "Why Test Your React Code?",
-        "content": "# Testing in React\n\n## Benefits\n\n- Catch bugs before users do\n- Refactor confidently\n- Document behavior\n- Prevent regressions\n\n## Tools\n\n- **Jest**: Test runner\n- **React Testing Library (RTL)**: Test components like users do\n\n**Focus on user behavior, not implementation details.**"
-      },
-      "positive": {
-        "type": "interactive-code",
-        "title": "✅ Positive Case: Testing a Counter",
-        "description": "Proper RTL test for a counter component.",
-        "code": "import { useState } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <div className=\"p-8 text-center\">\n      <p data-testid=\"count\" className=\"text-4xl mb-6\">{count}</p>\n      <button onClick={() => setCount(c => c + 1)} className=\"px-6 py-3 bg-blue-600 text-white rounded\">\n        Increment\n      </button>\n    </div>\n  );\n}\n\nexport default Counter;\n\n// Test would be:\n// test('increments count', () => {\n//   render(<Counter />);\n//   const count = screen.getByTestId('count');\n//   const button = screen.getByRole('button', { name: /increment/i });\n//   expect(count).toHaveTextContent('0');\n//   fireEvent.click(button);\n//   expect(count).toHaveTextContent('1');\n// });",
-        "showPreview": true,
-        "explanation": "Tests user interaction and visible output — not internal state."
-      },
-      "negative": {
-        "type": "debug-quiz",
-        "title": "🐛 Common Mistake: Testing Implementation Details",
-        "description": "This test is fragile. Why?",
-        "code": "// BAD TEST\ntest('uses useState', () => {\n  const component = shallow(<Counter />);\n  expect(component.find('useState')).toExist(); // Testing internals!\n});",
-        "question": "Why is testing internal hooks bad?",
-        "options": [
-          { "id": "a", "text": "It's slower", "isCorrect": false },
-          { "id": "b", "text": "Breaks when refactoring — tests should verify behavior, not implementation", "isCorrect": true }
-        ],
-        "lesson": "**Test what the user sees and does. Avoid testing internal state or hooks.**"
-      },
-      "task": {
-        "type": "coding-task",
-        "title": "🛠️ Your Turn: Test a Toggle Component",
-        "description": "Write a test for a light/dark mode toggle.",
-        "requirements": [
-          "Button toggles text between 'Light' and 'Dark'",
-          "Initial state is Light",
-          "Use getByRole and fireEvent.click"
-        ],
-        "starterCode": "// Write the test in comments below the component\nfunction ThemeToggle() {\n  const [theme, setTheme] = useState('light');\n\n  return (\n    <button onClick={() => setTheme(t => t === 'light' ? 'dark' : 'light')}>\n      Current: {theme}\n    </button>\n  );\n}\n\n// Your test here (imagine writing it)",
-        "solution": "// Example test using RTL concepts\nfunction ThemeToggle() {\n  const [theme, setTheme] = useState('light');\n\n  return (\n    <div className=\"p-8 text-center\">\n      <p className=\"text-2xl mb-4\">Mode: <span data-testid=\"mode\">{theme}</span></p>\n      <button\n        onClick={() => setTheme(t => t === 'light' ? 'dark' : 'light')}\n        className=\"px-8 py-4 bg-purple-600 text-white rounded-lg text-xl\"\n      >\n        Toggle Theme\n      </button>\n    </div>\n  );\n}\n\n// Expected test:\n// test('toggles theme', () => {\n//   render(<ThemeToggle />);\n//   const mode = screen.getByTestId('mode');\n//   const button = screen.getByRole('button');\n//   expect(mode).toHaveTextContent('light');\n//   fireEvent.click(button);\n//   expect(mode).toHaveTextContent('dark');\n//   fireEvent.click(button);\n//   expect(mode).toHaveTextContent('light');\n// });"
-      },
-      "challenge": {
-        "type": "coding-challenge",
-        "title": "🏆 Challenge: Test a Form Submission",
-        "description": "Test a login form with validation and mock submit.",
-        "requirements": [
-          "Test empty submit shows error",
-          "Test valid input calls onSubmit",
-          "Use userEvent.type and mock function"
-        ],
-        "starterCode": "// Build and test a login form"
-      }
+  "id": "react-012-testing",
+  "title": "Testing React Components",
+  "description": "Learn how to test React components with Jest and React Testing Library",
+  "duration": 12,
+  "difficulty": "advanced",
+  "tags": ["testing", "jest", "rtl", "unit-tests", "integration-tests"],
+  "prerequisites": ["react-011-performance"],
+  "unlocks": ["react-013-portals"],
+  "xp": 100,
+  "steps": {
+    "refresher": {
+      "type": "markdown",
+      "title": "🏥 Real-Life Story: Hospital Dashboard Bugs",
+      "content": "# ⚠️ Why Testing Matters\n\nImagine a hospital app with multiple wards and hundreds of patients:\n\n- A doctor updates a patient's status incorrectly\n- Nurses see wrong information\n- A bug prevents patient discharge\n\n❌ Problem: Without tests, these bugs can go unnoticed until production.\n\n---\n\n## 🧠 Why This Happens\n\n- React components are dynamic and interactive\n- State and props change frequently\n- Complex components can easily break\n\n---\n\n## ✅ React Solution: Jest + React Testing Library\n\n- **Jest**: test runner, assertions, mocks\n- **React Testing Library**: tests React components by interacting with them as a user would\n\nThink of it as a **hospital QA team**: make sure all workflows work correctly before doctors and nurses use the app."
+    },
+    "positive": {
+      "type": "interactive-code",
+      "title": "✅ Positive Case: Test Patient Component",
+      "description": "Write a simple unit test for a Patient component.",
+      "code": "// Patient.js\nexport default function Patient({ name, status }) {\n  return <div>{name} - {status}</div>;\n}\n\n// Patient.test.js\nimport { render, screen } from '@testing-library/react';\nimport Patient from './Patient';\n\ntest('renders patient name and status', () => {\n  render(<Patient name='Meena' status='Stable' />);\n  expect(screen.getByText('Meena - Stable')).toBeInTheDocument();\n});",
+      "showPreview": false,
+      "explanation": "**How it works:**\n\n1. `render()` mounts the component in a virtual DOM\n2. `screen.getByText()` queries for text like a user would see\n3. `expect(...).toBeInTheDocument()` asserts that element exists\n\n✅ **Key Rule:** Test what the user sees and interacts with, not implementation details."
+    },
+    "negative": {
+      "type": "debug-quiz",
+      "title": "🐛 Common Mistake: Testing Internal State",
+      "description": "Why is testing `component.state` or internal variables directly discouraged in React Testing Library?",
+      "code": "// Wrong approach\nexpect(patientComponent.state.patients.length).toBe(2);",
+      "question": "What's wrong with this approach?",
+      "options": [
+        {
+          "id": "a",
+          "text": "It's fine, React Testing Library allows it",
+          "isCorrect": false,
+          "explanation": "React Testing Library encourages testing behavior, not internal implementation."
+        },
+        {
+          "id": "b",
+          "text": "Tests become fragile and break with implementation changes",
+          "isCorrect": true,
+          "explanation": "✅ Correct! Test user-visible behavior, not internal state."
+        },
+        {
+          "id": "c",
+          "text": "Cannot access state in functional components",
+          "isCorrect": false,
+          "explanation": "You can’t easily access state in functional components without exposing it; that’s why behavior-based testing is preferred."
+        },
+        {
+          "id": "d",
+          "text": "screen.getByText() is faster",
+          "isCorrect": false,
+          "explanation": "Speed is secondary; main concern is maintainable tests."
+        }
+      ],
+      "correctCode": "Test rendered output or user interaction rather than internal state."
+    },
+    "task": {
+      "type": "coding-task",
+      "title": "🛠️ Your Turn: Test Hospital Components",
+      "description": "Write unit tests for PatientList and PatientDashboard components.",
+      "requirements": [
+        "PatientList renders all patients correctly",
+        "Clicking 'Critical' button updates the status",
+        "PatientDashboard shows patient info",
+        "Use React Testing Library queries (getByText, getByRole)"
+      ],
+      "starterCode": "import { render, screen } from '@testing-library/react';\nimport PatientList from './PatientList';\n\ndescribe('PatientList Tests', () => {\n  test('renders TODO', () => {\n    // TODO\n  });\n});",
+      "solution": "/* Render PatientList with test data, simulate clicks with fireEvent, check updates with screen.getByText */",
+      "hints": [
+        "Use fireEvent.click() to simulate button clicks",
+        "Use screen.getByText or getByRole to query elements",
+        "Wrap components in providers if using Context or Router"
+      ],
+      "tests": [
+        "All patients are displayed",
+        "Status updates correctly on button click",
+        "PatientDashboard displays correct patient info",
+        "Tests pass without errors"
+      ]
+    },
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "🏆 Challenge: Full Hospital Workflow Tests",
+      "description": "Test a multi-ward hospital app with navigation, protected routes, and patient management.",
+      "requirements": [
+        "Test navigation between wards and patients",
+        "Test protected routes block unauthorized users",
+        "Test admit, update, and discharge actions",
+        "Ensure tests are maintainable and behavior-focused"
+      ],
+      "starterCode": "/* Use render with Router and ProtectedRoute */",
+      "solution": "/* Combine Jest + RTL to test multi-page hospital app */",
+      "hints": [
+        "Use MemoryRouter for routing in tests",
+        "Mock user roles for ProtectedRoute",
+        "Use fireEvent and screen queries to simulate user actions"
+      ],
+      "tests": [
+        "Navigation works correctly in tests",
+        "Protected routes block unauthorized roles",
+        "Patient actions update UI correctly",
+        "No direct state testing, only behavior assertions"
+      ]
     }
   }
+}

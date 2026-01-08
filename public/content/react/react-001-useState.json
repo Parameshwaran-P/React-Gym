@@ -9,10 +9,10 @@
   "unlocks": ["react-002-useeffect"],
   "xp": 50,
   "steps": {
-    "refresher": {
-      "type": "markdown",
-      "title": "What is useState?",
-      "content": "# useState Hook\n\n## What problem does it solve?\n\nReact components need to remember values between renders. Without state, your component would reset every time it re-renders.\n\n**useState** lets you add state to functional components.\n\n## When do you use it?\n\n- Storing form input values\n- Toggling UI elements (open/closed, show/hide)\n- Counting clicks or tracking numbers\n- Managing any data that changes over time\n\n## Basic Syntax\n\n```javascript\nconst [value, setValue] = useState(initialValue);\n```\n\n- `value` - the current state\n- `setValue` - function to update the state\n- `initialValue` - starting value (can be any type)\n\n**Next: Let's see it in action! →**"
+   "refresher": {
+  "type": "markdown",
+  "title": "🏋️ What is useState?",
+  "content": "# 🏋️ Real-Life Story: React Gym Counter\n\nImagine you're running **React Gym** 🏋️‍♂️.\n\nAt the entrance, there’s a digital screen that shows:\n\n> **Members inside: 0**\n\nEach time a member enters, the number should increase.\n\nBut there's a problem 👇\n\n- A member enters → count becomes **1**\n- Screen refreshes\n- Count resets back to **0** ❌\n\nWhy?\n\nBecause the screen **does not remember** the previous value.\n\n---\n\n## 🧠 The Problem React Solves\n\nReact components re-render frequently.\n\nWithout memory, a component **forgets everything** on every render.\n\nThis is where **state** comes in.\n\n---\n\n## ✅ What is useState?\n\n`useState` allows a React component to **remember values between renders**.\n\nIt gives your UI **memory**.\n\n---\n\n## 🔧 Basic Syntax\n\n```javascript\nconst [value, setValue] = useState(initialValue);\n```\n\n- `value` → current memory\n- `setValue` → updates memory\n- `initialValue` → starting value\n\n👉 **Next: Let’s build the gym counter correctly.**"
     },
     "positive": {
       "type": "interactive-code",
@@ -20,7 +20,7 @@
       "description": "Here's useState working correctly. Click the button to see the count increase.",
       "code": "import { useState } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <div className=\"p-6 bg-white rounded-lg shadow-md\">\n      <h2 className=\"text-2xl font-bold mb-4\">Counter App</h2>\n      <p className=\"text-4xl font-bold text-blue-600 mb-4\">{count}</p>\n      <button \n        onClick={() => setCount(count + 1)}\n        className=\"bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700\"\n      >\n        Increment\n      </button>\n    </div>\n  );\n}\n\nexport default Counter;",
       "showPreview": true,
-      "explanation": "**How it works:**\n\n1. `useState(0)` creates state with initial value 0\n2. `count` holds the current value\n3. `setCount` is used to update the value\n4. Clicking the button calls `setCount(count + 1)`\n5. React re-renders with the new value\n\n✅ **Key Point:** Always use `setCount()` to update state, never mutate directly!"
+      "explanation": "**How it works (Gym Version):**\n\n1. `useState(0)` sets the initial number of members to 0\n2. `count` remembers how many members are inside\n3. `setCount()` updates the system (not just the screen)\n4. Clicking the button adds a new member\n5. React re-renders with the updated value\n\n✅ **Key Rule:** Always update state using `setCount()`. This is how React remembers."
     },
     "negative": {
       "type": "debug-quiz",
@@ -55,12 +55,13 @@
         }
       ],
       "correctCode": "import { useState } from 'react';\n\nfunction WorkingCounter() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <div className=\"p-6\">\n      <p className=\"text-4xl mb-4\">{count}</p>\n      <button \n        onClick={() => setCount(count + 1)}\n        className=\"bg-green-600 text-white px-4 py-2 rounded\"\n      >\n        Increment\n      </button>\n    </div>\n  );\n}\n\nexport default WorkingCounter;",
-      "lesson": "**Remember:** State is immutable. Always use the setter function (setCount) to update state. Direct mutations don't trigger re-renders."
+      "lesson": "**Real-Life Mistake:**\n\nThis is like manually changing the number on the gym screen without updating the system.\n\nReact doesn't detect `count++` because it bypasses the state system.\n\n❌ Direct mutation does not trigger re-renders.\n\n✅ Always use the setter function (`setCount`) so React knows something changed."
+
     },
     "task": {
       "type": "coding-task",
       "title": "🛠️ Your Turn: Build a Toggle",
-      "description": "Create a component that toggles between 'ON' and 'OFF' when clicked.",
+     "description": "Build a power switch for a gym machine. When ON, the machine runs. When OFF, it stops.",
       "requirements": [
         "Use useState with initial value false",
         "Display 'ON' when true, 'OFF' when false",

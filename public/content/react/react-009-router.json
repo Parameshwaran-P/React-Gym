@@ -1,62 +1,108 @@
 {
-    "id": "react-009-router",
-    "title": "React Router v6",
-    "description": "Navigation and dynamic routing in single-page apps",
-    "duration": 15,
-    "difficulty": "intermediate",
-    "tags": ["routing", "navigation", "spa", "react-router"],
-    "prerequisites": ["react-008-custom-hooks"],
-    "unlocks": ["react-010-protected"],
-    "xp": 120,
-    "steps": {
-      "refresher": {
-        "type": "markdown",
-        "title": "Why React Router?",
-        "content": "# React Router v6\n\n## Problem\n\nSingle Page Apps need client-side routing — changing URL without full page reload.\n\n## React Router v6 Features\n\n- `<BrowserRouter>`\n- `<Routes>` and `<Route>`\n- `<Link>` and `<NavLink>`\n- `useParams`, `useNavigate`\n- Nested routes\n\n**Let's build a multi-page dashboard! →**"
-      },
-      "positive": {
-        "type": "interactive-code",
-        "title": "✅ Positive Case: Multi-Page App",
-        "description": "Navigation between Home, Dashboard, and Profile.",
-        "code": "import { BrowserRouter, Routes, Route, Link, NavLink } from 'react-router-dom';\n\nfunction Home() { return <div className=\"p-8\"><h1 className=\"text-4xl\">Welcome Home 🏠</h1></div>; }\nfunction Dashboard() { return <div className=\"p-8\"><h1 className=\"text-4xl\">Dashboard 📊</h1></div>; }\nfunction Profile() { return <div className=\"p-8\"><h1 className=\"text-4xl\">Profile 👤</h1></div>; }\n\nfunction Navbar() {\n  return (\n    <nav className=\"bg-indigo-600 text-white p-4 shadow-lg\">\n      <ul className=\"flex gap-8 max-w-4xl mx-auto\">\n        <li><NavLink to=\"/\" end className={({ isActive }) => isActive ? 'font-bold underline' : ''}>Home</NavLink></li>\n        <li><NavLink to=\"/dashboard\" className={({ isActive }) => isActive ? 'font-bold underline' : ''}>Dashboard</NavLink></li>\n        <li><NavLink to=\"/profile\" className={({ isActive }) => isActive ? 'font-bold underline' : ''}>Profile</NavLink></li>\n      </ul>\n    </nav>\n  );\n}\n\nfunction App() {\n  return (\n    <BrowserRouter>\n      <Navbar />\n      <Routes>\n        <Route path=\"/\" element={<Home />} />\n        <Route path=\"/dashboard\" element={<Dashboard />} />\n        <Route path=\"/profile\" element={<Profile />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}\n\nexport default App;",
-        "showPreview": true,
-        "explanation": "Clean navigation with active styling using NavLink."
-      },
-      "negative": {
-        "type": "debug-quiz",
-        "title": "🐛 Common Mistake: Using <a> instead of <Link>",
-        "description": "This link causes full page reload. Why?",
-        "code": "<a href=\"/dashboard\">Go to Dashboard</a>",
-        "question": "Why does this cause a full reload?",
-        "options": [
-          { "id": "a", "text": "href is wrong", "isCorrect": false },
-          { "id": "b", "text": "<a> tag triggers full navigation — use <Link>", "isCorrect": true, "explanation": "✅ Correct! Regular <a> reloads the page. <Link> enables client-side routing." },
-          { "id": "c", "text": "React Router not installed", "isCorrect": false }
-        ],
-        "lesson": "**Always use <Link> or <NavLink> instead of <a> for internal navigation.**"
-      },
-      "task": {
-        "type": "coding-task",
-        "title": "🛠️ Your Turn: Add Dynamic Route",
-        "description": "Create a /users/:id route that shows user details.",
-        "requirements": [
-          "Use useParams",
-          "Link to /users/1, /users/2, etc.",
-          "Display user ID and fake name"
-        ],
-        "starterCode": "import { BrowserRouter, Routes, Route, Link, useParams } from 'react-router-dom';\n\nfunction UserDetail() {\n  const { id } = useParams();\n  return <div>User ID: {id}</div>;\n}\n\nfunction App() {\n  return (\n    <BrowserRouter>\n      <nav className=\"p-4 bg-gray-800 text-white\">\n        <Link to=\"/users/1\">User 1</Link>\n        {/* More links */}\n      </nav>\n      <Routes>\n        <Route path=\"/users/:id\" element={<UserDetail />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}\n\nexport default App;",
-        "solution": "import { BrowserRouter, Routes, Route, Link, useParams } from 'react-router-dom';\n\nfunction UserDetail() {\n  const { id } = useParams();\n  const names = { '1': 'Alex', '2': 'Jordan', '3': 'Taylor' };\n\n  return (\n    <div className=\"p-12 text-center\">\n      <h1 className=\"text-5xl font-bold mb-4\">User Profile</h1>\n      <p className=\"text-2xl\">ID: {id}</p>\n      <p className=\"text-3xl mt-4\">Name: {names[id] || 'Unknown'}</p>\n    </div>\n  );\n}\n\nfunction App() {\n  return (\n    <BrowserRouter>\n      <nav className=\"p-6 bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg\">\n        <div className=\"max-w-4xl mx-auto flex gap-8 justify-center\">\n          <Link to=\"/users/1\" className=\"px-6 py-3 bg-white/20 rounded hover:bg-white/30\">User 1 - Alex</Link>\n          <Link to=\"/users/2\" className=\"px-6 py-3 bg-white/20 rounded hover:bg-white/30\">User 2 - Jordan</Link>\n          <Link to=\"/users/3\" className=\"px-6 py-3 bg-white/20 rounded hover:bg-white/30\">User 3 - Taylor</Link>\n        </div>\n      </nav>\n      <Routes>\n        <Route path=\"/users/:id\" element={<UserDetail />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}\n\nexport default App;"
-      },
-      "challenge": {
-        "type": "coding-challenge",
-        "title": "🏆 Challenge: Nested Dashboard Layout",
-        "description": "Build a dashboard with sidebar and nested routes (Overview, Stats, Settings).",
-        "requirements": [
-          "Shared sidebar layout",
-          "Nested routes under /dashboard/*",
-          "Active link highlighting"
-        ],
-        "starterCode": "import { BrowserRouter, Routes, Route, Outlet, NavLink } from 'react-router-dom';\n\n// TODO: Create Layout and pages\n\nfunction App() {\n  return (\n    <BrowserRouter>\n      <Routes>\n        <Route path=\"/dashboard/*\" element={<DashboardLayout />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}\n\nexport default App;"
-      }
+  "id": "react-009-router",
+  "title": "React Router",
+  "description": "Navigate between pages/components in React using React Router",
+  "duration": 10,
+  "difficulty": "intermediate",
+  "tags": ["router", "navigation", "react-router-dom"],
+  "prerequisites": ["react-008-custom-hooks"],
+  "unlocks": ["react-010-protected"],
+  "xp": 70,
+  "steps": {
+    "refresher": {
+      "type": "markdown",
+      "title": "🏥 Real-Life Story: Hospital Dashboard Navigation",
+      "content": "# 🏥 Multi-Page Hospital App\n\nOur hospital has multiple panels:\n\n- **Home**: Overview of wards and patients\n- **Ward Details**: See patients in each ward\n- **Patient Profile**: Detailed patient info\n\n❌ Problem: Without routing, you would have to hide/show components manually, which is messy.\n\n---\n\n## 🧠 Why This Happens\n\n- React apps are **single-page by default**\n- Showing multiple views manually leads to lots of conditional rendering\n- Hard to manage browser back/forward behavior\n\n---\n\n## ✅ React Solution: React Router\n\n`react-router-dom` allows you to:\n- Map URLs to components\n- Navigate programmatically or via links\n- Keep URL in sync with app state\n\nThink of it as the **hospital’s corridor map**: each room has a route, staff can easily navigate."
+    },
+    "positive": {
+      "type": "interactive-code",
+      "title": "✅ Positive Case: Basic Routing",
+      "description": "Set up Home, Ward, and Patient pages with React Router.",
+      "code": "import { BrowserRouter as Router, Routes, Route, Link, useParams } from 'react-router-dom';\n\nfunction Home() {\n  return (\n    <div>\n      <h2>Hospital Home</h2>\n      <Link to='/ward/1' className='text-blue-600 underline'>Go to Ward 1</Link>\n    </div>\n  );\n}\n\nfunction Ward() {\n  const { wardId } = useParams();\n  return (\n    <div>\n      <h2>Ward {wardId}</h2>\n      <Link to='/patient/101' className='text-blue-600 underline'>View Patient 101</Link>\n    </div>\n  );\n}\n\nfunction Patient() {\n  const { patientId } = useParams();\n  return <h2>Patient Profile: {patientId}</h2>;\n}\n\nfunction HospitalApp() {\n  return (\n    <Router>\n      <nav className='p-4 bg-gray-100 space-x-4'>\n        <Link to='/'>Home</Link>\n        <Link to='/ward/1'>Ward 1</Link>\n      </nav>\n      <div className='p-6'>\n        <Routes>\n          <Route path='/' element={<Home />} />\n          <Route path='/ward/:wardId' element={<Ward />} />\n          <Route path='/patient/:patientId' element={<Patient />} />\n        </Routes>\n      </div>\n    </Router>\n  );\n}\n\nexport default HospitalApp;",
+      "showPreview": true,
+      "explanation": "**How it works:**\n\n1. `BrowserRouter` wraps the app\n2. `Routes` contains all `Route`s with paths and components\n3. `Link` navigates without reloading\n4. `useParams` reads dynamic segments (e.g., wardId, patientId)\n\n✅ **Key Rule:** Always wrap your app in `<BrowserRouter>` at the root."
+    },
+    "negative": {
+      "type": "debug-quiz",
+      "title": "🐛 Common Mistake: Using `<a>` Tags",
+      "description": "Why is using `<a href='/ward/1'>` a problem in React Router?",
+      "code": "<a href='/ward/1'>Go to Ward 1</a>",
+      "question": "What's wrong with this approach?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Nothing, it's fine",
+          "isCorrect": false,
+          "explanation": "Traditional `<a>` reloads the page, breaking SPA behavior."
+        },
+        {
+          "id": "b",
+          "text": "Reloads the page instead of SPA navigation",
+          "isCorrect": true,
+          "explanation": "✅ Correct! Use `<Link>` instead for smooth client-side routing."
+        },
+        {
+          "id": "c",
+          "text": "React Router cannot handle multiple pages",
+          "isCorrect": false,
+          "explanation": "React Router can handle multiple pages via routes."
+        },
+        {
+          "id": "d",
+          "text": "useParams does not work with <a>",
+          "isCorrect": false,
+          "explanation": "Partially true, but main issue is page reload."
+        }
+      ],
+      "correctCode": "<Link to='/ward/1'>Go to Ward 1</Link>"
+    },
+    "task": {
+      "type": "coding-task",
+      "title": "🛠️ Your Turn: Hospital Navigation",
+      "description": "Create Home, Ward, and Patient pages. Use Links to navigate and useParams to display dynamic content.",
+      "requirements": [
+        "Wrap app in `BrowserRouter`",
+        "Create 3 pages: Home, Ward, Patient",
+        "Use `<Link>` for navigation",
+        "Use `useParams` for dynamic IDs"
+      ],
+      "starterCode": "import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';\n\nfunction Home() { return <div>TODO</div>; }\nfunction Ward() { return <div>TODO</div>; }\nfunction Patient() { return <div>TODO</div>; }\n\nfunction HospitalApp() {\n  return (\n    <Router>\n      <div>TODO</div>\n    </Router>\n  );\n}\n\nexport default HospitalApp;",
+      "solution": "/* Same as Positive Case Code Above */",
+      "hints": [
+        "Use <Link to='...'> instead of <a href='...'>",
+        "Wrap the app in <BrowserRouter>",
+        "Dynamic paths use /ward/:wardId and /patient/:patientId"
+      ],
+      "tests": [
+        "Home page renders",
+        "Ward page shows correct wardId",
+        "Patient page shows correct patientId",
+        "Navigation works without page reload"
+      ]
+    },
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "🏆 Challenge: Multi-Ward Hospital App",
+      "description": "Build a hospital app with multiple wards and patients. Clicking a ward shows its patients; clicking a patient shows their profile.",
+      "requirements": [
+        "Dynamic routes for wards and patients",
+        "Navigation links for wards and patients",
+        "Patient data is passed using Context or Custom Hooks",
+        "Back and forward navigation works correctly"
+      ],
+      "starterCode": "/* Use Router + Context + Custom Hook for patient data */",
+      "solution": "/* Combine previous lessons: Router + usePatientManager + Context */",
+      "hints": [
+        "Map over wards and patients to create <Link>s",
+        "Dynamic segments with useParams",
+        "Use Context or custom hook to provide patient data globally"
+      ],
+      "tests": [
+        "Ward list shows correctly",
+        "Patient list shows per ward",
+        "Patient profile displays correct info",
+        "Navigation works smoothly without reload"
+      ]
     }
   }
+}

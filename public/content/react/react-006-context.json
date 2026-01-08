@@ -1,67 +1,107 @@
 {
-    "id": "react-006-context",
-    "title": "Context API",
-    "description": "Share state globally without prop drilling",
-    "duration": 11,
-    "difficulty": "intermediate",
-    "tags": ["state", "context", "prop-drilling", "global-state"],
-    "prerequisites": ["react-005-forms"],
-    "unlocks": ["react-007-usereducer"],
-    "xp": 85,
-    "steps": {
-      "refresher": {
-        "type": "markdown",
-        "title": "What is Context?",
-        "content": "# Context API\n\n## The Problem: Prop Drilling\n\nPassing props through many layers of components — even when intermediate components don't use them — makes code hard to maintain.\n\n## Solution: Context\n\nContext provides a way to pass data through the component tree without having to pass props down manually at every level.\n\n## Common Uses\n\n- Theme (light/dark)\n- User authentication\n- Language/i18n\n- Global app settings\n\n## Steps\n\n1. Create context\n2. Provide value at top level\n3. Consume value anywhere below\n\n**Let's build a theme toggle! →**"
-      },
-      "positive": {
-        "type": "interactive-code",
-        "title": "✅ Positive Case: Theme Context",
-        "description": "Toggle dark/light mode across the entire app.",
-        "code": "import { createContext, useContext, useState } from 'react';\n\nconst ThemeContext = createContext();\n\nfunction ThemeProvider({ children }) {\n  const [theme, setTheme] = useState('light');\n\n  const toggleTheme = () => {\n    setTheme(prev => prev === 'light' ? 'dark' : 'light');\n  };\n\n  return (\n    <ThemeContext.Provider value={{ theme, toggleTheme }}>\n      {children}\n    </ThemeContext.Provider>\n  );\n}\n\nfunction Header() {\n  const { theme, toggleTheme } = useContext(ThemeContext);\n\n  return (\n    <header className={`p-6 ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} shadow`}>\n      <div className=\"max-w-4xl mx-auto flex justify-between items-center\">\n        <h1 className=\"text-2xl font-bold\">React Gym</h1>\n        <button\n          onClick={toggleTheme}\n          className=\"px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700\"\n        >\n          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}\n        </button>\n      </div>\n    </header>\n  );\n}\n\nfunction App() {\n  return (\n    <ThemeProvider>\n      <div className=\"min-h-screen transition-colors duration-300\" style={{ backgroundColor: useContext(ThemeContext)?.theme === 'dark' ? '#1f2937' : '#f3f4f6' }}>\n        <Header />\n        <main className=\"p-8 text-center\">\n          <p className=\"text-2xl\">Toggle the theme above!</p>\n        </main>\n      </div>\n    </ThemeProvider>\n  );\n}\n\nexport default App;",
-        "showPreview": true,
-        "explanation": "No prop drilling! Any component can access theme via useContext."
-      },
-      "negative": {
-        "type": "debug-quiz",
-        "title": "🐛 Common Mistake: Forgetting Provider",
-        "description": "This component tries to use context but crashes. Why?",
-        "code": "import { useContext } from 'react';\n\nconst BadComponent = () => {\n  const { user } = useContext(UserContext); // Error!\n\n  return <p>Hello {user.name}</p>;\n};\n\nexport default BadComponent;",
-        "question": "Why does this throw an error?",
-        "options": [
-          { "id": "a", "text": "useContext is not imported", "isCorrect": false },
-          { "id": "b", "text": "Component is not wrapped in Provider", "isCorrect": true, "explanation": "✅ Correct! useContext will return undefined or throw if no Provider exists above in the tree." },
-          { "id": "c", "text": "UserContext not created", "isCorrect": false },
-          { "id": "d", "text": "Destructuring wrong", "isCorrect": false }
-        ],
-        "lesson": "**Always wrap your app (or part of it) with <Context.Provider>** before consuming."
-      },
-      "task": {
-        "type": "coding-task",
-        "title": "🛠️ Your Turn: Auth Context",
-        "description": "Create an AuthContext with login/logout functionality.",
-        "requirements": [
-          "AuthProvider with user and login/logout functions",
-          "Display user name or 'Guest'",
-          "Login button sets fake user",
-          "Logout resets to null"
-        ],
-        "starterCode": "import { createContext, useContext, useState } from 'react';\n\n// TODO: Create AuthContext and Provider\n\nfunction Header() {\n  // TODO: Consume context\n\n  return (\n    <header className=\"p-6 bg-indigo-600 text-white\">\n      <div className=\"max-w-4xl mx-auto flex justify-between\">\n        <h1 className=\"text-2xl font-bold\">My App</h1>\n        {/* Show user and buttons */}\n      </div>\n    </header>\n  );\n}\n\nfunction App() {\n  return (\n    <div>\n      <Header />\n    </div>\n  );\n}\n\nexport default App;",
-        "solution": "import { createContext, useContext, useState } from 'react';\n\nconst AuthContext = createContext();\n\nfunction AuthProvider({ children }) {\n  const [user, setUser] = useState(null);\n\n  const login = () => setUser({ name: 'Alex Rivera' });\n  const logout = () => setUser(null);\n\n  return (\n    <AuthContext.Provider value={{ user, login, logout }}>\n      {children}\n    </AuthContext.Provider>\n  );\n}\n\nfunction Header() {\n  const { user, login, logout } = useContext(AuthContext);\n\n  return (\n    <header className=\"p-6 bg-indigo-600 text-white shadow-lg\">\n      <div className=\"max-w-4xl mx-auto flex justify-between items-center\">\n        <h1 className=\"text-2xl font-bold\">My App</h1>\n        <div className=\"flex items-center gap-4\">\n          <p>Welcome, <strong>{user ? user.name : 'Guest'}</strong></p>\n          {user ? (\n            <button onClick={logout} className=\"px-4 py-2 bg-red-600 rounded hover:bg-red-700\">Logout</button>\n          ) : (\n            <button onClick={login} className=\"px-4 py-2 bg-green-600 rounded hover:bg-green-700\">Login</button>\n          )}\n        </div>\n      </div>\n    </header>\n  );\n}\n\nfunction App() {\n  return (\n    <AuthProvider>\n      <div className=\"min-h-screen bg-gray-100\">\n        <Header />\n        <main className=\"p-12 text-center\">\n          <p className=\"text-xl\">Try logging in/out!</p>\n        </main>\n      </div>\n    </AuthProvider>\n  );\n}\n\nexport default App;"
-      },
-      "challenge": {
-        "type": "coding-challenge",
-        "title": "🏆 Challenge: Shopping Cart Context",
-        "description": "Build a cart context with add/remove items and count.",
-        "requirements": [
-          "CartProvider with items array and functions",
-          "Show cart count in header",
-          "Add/Remove buttons",
-          "Display cart items"
-        ],
-        "starterCode": "import { createContext, useContext, useState } from 'react';\n\n// TODO: Implement CartContext\n\nfunction Header() { /* Show cart count */ }\nfunction ProductList() { /* Add to cart buttons */ }\nfunction Cart() { /* List items with remove */ }\n\nfunction App() {\n  return (\n    <div className=\"p-8\">\n      <Header />\n      <ProductList />\n      <Cart />\n    </div>\n  );\n}\n\nexport default App;"
-      }
+  "id": "react-006-context",
+  "title": "Context API",
+  "description": "Share data across multiple components without prop-drilling",
+  "duration": 10,
+  "difficulty": "intermediate",
+  "tags": ["context", "state-sharing", "global-state"],
+  "prerequisites": ["react-005-forms"],
+  "unlocks": ["react-008-usereducer"],
+  "xp": 70,
+  "steps": {
+    "refresher": {
+      "type": "markdown",
+      "title": "🏥 Real-Life Story: Hospital Dashboard",
+      "content": "# 🏥 Hospital Dashboard\n\nIn a hospital, multiple staff members need access to **patient data**:\n\n- Doctor's panel shows patient vitals\n- Nurse panel shows medication schedule\n- Reception shows patient admission info\n\n❌ Problem: Passing patient data as props through every component becomes messy.\n\n---\n\n## 🧠 Why This Happens\n\n- React props flow one-way (parent → child)\n- Deep component trees require **prop-drilling**\n- Maintaining consistency becomes hard\n\n---\n\n## ✅ React Solution: Context API\n\n**Context API** allows you to:\n- Create a global state\n- Provide it to multiple components\n- Access it anywhere without passing props manually\n\nThink of it like a **hospital database** that any authorized staff can read from or write to.\n\n---\n\n## 🔧 Basic Syntax\n\n```js\nimport { createContext, useContext } from 'react';\n\nconst PatientContext = createContext();\n\nfunction App() {\n  const patient = { name: 'Arjun', age: 32 };\n  return (\n    <PatientContext.Provider value={patient}>\n      <DoctorPanel />\n      <NursePanel />\n    </PatientContext.Provider>\n  );\n}\n\nfunction DoctorPanel() {\n  const patient = useContext(PatientContext);\n  return <p>Patient Name: {patient.name}</p>;\n}\n```\n\n👉 **Next: Let’s implement a real hospital dashboard with context.**"
+    },
+    "positive": {
+      "type": "interactive-code",
+      "title": "✅ Positive Case: Sharing Patient Data",
+      "description": "Multiple components read patient data from a single Context.",
+      "code": "import { createContext, useContext } from 'react';\n\nconst PatientContext = createContext();\n\nfunction DoctorPanel() {\n  const patient = useContext(PatientContext);\n  return <p>Doctor sees: {patient.name}, Age: {patient.age}</p>;\n}\n\nfunction NursePanel() {\n  const patient = useContext(PatientContext);\n  return <p>Nurse sees: {patient.name}, Age: {patient.age}</p>;\n}\n\nfunction HospitalDashboard() {\n  const patient = { name: 'Meena', age: 28 };\n\n  return (\n    <PatientContext.Provider value={patient}>\n      <div className=\"p-6 space-y-3\">\n        <DoctorPanel />\n        <NursePanel />\n      </div>\n    </PatientContext.Provider>\n  );\n}\n\nexport default HospitalDashboard;",
+      "showPreview": true,
+      "explanation": "**How it works:**\n\n1. Patient data lives in **Context Provider**\n2. Components call `useContext(PatientContext)` to read it\n3. No props needed, even for deeply nested components\n\n✅ **Key Rule:** Context is for **shared state**, not local component state."
+    },
+    "negative": {
+      "type": "debug-quiz",
+      "title": "🐛 Common Mistake: Creating Multiple Providers",
+      "description": "Why is this approach problematic?",
+      "code": "function App() {\n  return (\n    <PatientContext.Provider value={{name: 'Arjun'}}>\n      <DoctorPanel />\n      <PatientContext.Provider value={{name: 'Meena'}}>\n        <NursePanel />\n      </PatientContext.Provider>\n    </PatientContext.Provider>\n  );\n}",
+      "question": "What is the main problem here?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Components cannot read Context",
+          "isCorrect": false,
+          "explanation": "They can read, but from the nearest Provider."
+        },
+        {
+          "id": "b",
+          "text": "Multiple Providers create confusing data flow",
+          "isCorrect": true,
+          "explanation": "✅ Correct! The Nurse sees 'Meena', Doctor sees 'Arjun'. This can confuse state management."
+        },
+        {
+          "id": "c",
+          "text": "Context cannot store objects",
+          "isCorrect": false,
+          "explanation": "Context can store any type."
+        },
+        {
+          "id": "d",
+          "text": "useContext hook cannot be used inside components",
+          "isCorrect": false,
+          "explanation": "useContext works inside functional components."
+        }
+      ],
+      "correctCode": "Use a single Provider for all components:\n<PatientContext.Provider value={patient}>\n  <DoctorPanel />\n  <NursePanel />\n</PatientContext.Provider>",
+      "lesson": "**Real-Life Mistake:**\n\nThis is like maintaining **two separate patient databases** in a hospital.\n\n❌ Confusing and inconsistent\n\n✅ Keep a single source of truth using Context."
+    },
+    "task": {
+      "type": "coding-task",
+      "title": "🛠️ Your Turn: Hospital Dashboard",
+      "description": "Share patient admission status across components using Context.",
+      "requirements": [
+        "Create a Context for patient data",
+        "Provider in parent component",
+        "DoctorPanel, NursePanel read data from Context",
+        "Display patient name and age"
+      ],
+      "starterCode": "import { createContext } from 'react';\n\nconst PatientContext = createContext();\n\nfunction DoctorPanel() {\n  // TODO: Read context\n}\n\nfunction NursePanel() {\n  // TODO: Read context\n}\n\nfunction HospitalDashboard() {\n  const patient = { name: 'Arjun', age: 32 };\n  // TODO: Provide context\n}\n\nexport default HospitalDashboard;",
+      "solution": "import { createContext, useContext } from 'react';\n\nconst PatientContext = createContext();\n\nfunction DoctorPanel() {\n  const patient = useContext(PatientContext);\n  return <p>Doctor sees: {patient.name}, Age: {patient.age}</p>;\n}\n\nfunction NursePanel() {\n  const patient = useContext(PatientContext);\n  return <p>Nurse sees: {patient.name}, Age: {patient.age}</p>;\n}\n\nfunction HospitalDashboard() {\n  const patient = { name: 'Arjun', age: 32 };\n\n  return (\n    <PatientContext.Provider value={patient}>\n      <div className=\"p-6 space-y-3\">\n        <DoctorPanel />\n        <NursePanel />\n      </div>\n    </PatientContext.Provider>\n  );\n}\n\nexport default HospitalDashboard;",
+      "hints": [
+        "Use createContext()",
+        "Wrap parent with Provider",
+        "useContext() in child"
+      ],
+      "tests": [
+        "DoctorPanel shows correct data",
+        "NursePanel shows correct data",
+        "No prop drilling used"
+      ]
+    },
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "🏆 Challenge: Multi-Staff Access",
+      "description": "Create a hospital staff dashboard with Context for multiple patients.",
+      "requirements": [
+        "Context holds an array of patients",
+        "Components can read any patient",
+        "No props should be passed manually",
+        "Add conditional UI for critical patients"
+      ],
+      "starterCode": "import { createContext } from 'react';\n\nconst PatientContext = createContext();\n\nfunction StaffPanel() {\n  // TODO: Use context to display patients\n}\n\nfunction HospitalApp() {\n  const patients = [\n    { name: 'Arjun', status: 'Stable' },\n    { name: 'Meena', status: 'Critical' }\n  ];\n\n  // TODO: Provide context\n}\n\nexport default HospitalApp;",
+      "solution": "import { createContext, useContext } from 'react';\n\nconst PatientContext = createContext();\n\nfunction StaffPanel() {\n  const patients = useContext(PatientContext);\n\n  return (\n    <div>\n      {patients.map((p) => (\n        <p key={p.name} className={p.status === 'Critical' ? 'text-red-600' : ''}>\n          {p.name} - {p.status}\n        </p>\n      ))}\n    </div>\n  );\n}\n\nfunction HospitalApp() {\n  const patients = [\n    { name: 'Arjun', status: 'Stable' },\n    { name: 'Meena', status: 'Critical' }\n  ];\n\n  return (\n    <PatientContext.Provider value={patients}>\n      <StaffPanel />\n    </PatientContext.Provider>\n  );\n}\n\nexport default HospitalApp;",
+      "hints": [
+        "Store array in context",
+        "use map() to render",
+        "Add className conditionally"
+      ],
+      "tests": [
+        "Displays all patients",
+        "Critical patients highlighted",
+        "No prop drilling used"
+      ]
     }
   }
-
- 
+}

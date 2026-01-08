@@ -1,62 +1,107 @@
 {
-    "id": "react-010-protected",
-    "title": "Protected Routes & Auth Flow",
-    "description": "Guard routes based on authentication state",
-    "duration": 12,
-    "difficulty": "intermediate",
-    "tags": ["auth", "routing", "security", "protected-routes"],
-    "prerequisites": ["react-009-router"],
-    "unlocks": ["react-011-performance"],
-    "xp": 105,
-    "steps": {
-      "refresher": {
-        "type": "markdown",
-        "title": "Protected Routes",
-        "content": "# Protected Routes\n\n## Goal\n\nPrevent unauthorized access to certain pages (e.g., dashboard).\n\n## Common Pattern\n\n- Auth context holds login state\n- ProtectedRoute component checks auth\n- Redirect to login if not authenticated\n\n**Let's secure the dashboard! →**"
-      },
-      "positive": {
-        "type": "interactive-code",
-        "title": "✅ Positive Case: Protected Dashboard",
-        "description": "Only logged-in users can access dashboard.",
-        "code": "import { createContext, useContext, useState } from 'react';\nimport { BrowserRouter, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';\n\nconst AuthContext = createContext();\n\nfunction AuthProvider({ children }) {\n  const [user, setUser] = useState(null);\n  return <AuthContext.Provider value={{ user, login: () => setUser({ name: 'Alex' }), logout: () => setUser(null) }}>{children}</AuthContext.Provider>;\n}\n\nfunction ProtectedRoute({ children }) {\n  const { user } = useContext(AuthContext);\n  return user ? children : <Navigate to=\"/login\" />;\n}\n\nfunction Login() {\n  const { login } = useContext(AuthContext);\n  return (\n    <div className=\"p-12 text-center\">\n      <h1 className=\"text-4xl mb-8\">Login Required</h1>\n      <button onClick={login} className=\"px-8 py-4 bg-green-600 text-white rounded-lg text-xl\">Log In</button>\n    </div>\n  );\n}\n\nfunction Dashboard() {\n  const { user, logout } = useContext(AuthContext);\n  return (\n    <div className=\"p-12\">\n      <h1 className=\"text-4xl mb-4\">Welcome, {user.name}! 🎉</h1>\n      <button onClick={logout} className=\"px-6 py-3 bg-red-600 text-white rounded\">Logout</button>\n    </div>\n  );\n}\n\nfunction App() {\n  return (\n    <AuthProvider>\n      <BrowserRouter>\n        <nav className=\"p-4 bg-gray-800 text-white\">\n          <Link to=\"/\" className=\"mr-6\">Home</Link>\n          <Link to=\"/dashboard\">Dashboard</Link>\n        </nav>\n        <Routes>\n          <Route path=\"/\" element={<div className=\"p-12\"><h1>Home Page</h1></div>} />\n          <Route path=\"/login\" element={<Login />} />\n          <Route path=\"/dashboard\" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />\n        </Routes>\n      </BrowserRouter>\n    </AuthProvider>\n  );\n}\n\nexport default App;",
-        "showPreview": true,
-        "explanation": "Clean separation: auth logic + routing protection."
-      },
-      "negative": {
-        "type": "debug-quiz",
-        "title": "🐛 Common Mistake: Checking Auth in Component",
-        "description": "This approach checks auth inside Dashboard. Why is it bad?",
-        "code": "function BadDashboard() {\n  const { user } = useContext(AuthContext);\n  if (!user) return <Navigate to=\"/login\" />;\n\n  return <h1>Dashboard</h1>;\n}",
-        "question": "Why is checking auth inside the component less ideal?",
-        "options": [
-          { "id": "a", "text": "It works fine", "isCorrect": false },
-          { "id": "b", "text": "Brief flash of protected content before redirect", "isCorrect": true, "explanation": "✅ Correct! Component renders first → user sees flash → then redirects. Better to guard at route level." }
-        ],
-        "lesson": "**Use a ProtectedRoute wrapper for cleaner, flicker-free protection.**"
-      },
-      "task": {
-        "type": "coding-task",
-        "title": "🛠️ Your Turn: Require Login for Profile",
-        "description": "Protect /profile route and redirect to /login.",
-        "requirements": [
-          "Use ProtectedRoute component",
-          "Login sets fake user",
-          "Show username when logged in"
-        ],
-        "starterCode": "// Reuse AuthContext and ProtectedRoute from positive example\n\nfunction Profile() {\n  const { user } = useContext(AuthContext);\n  return <div>Welcome to your profile, {user.name}!</div>;\n}\n\n// Add route in App",
-        "solution": "// Full solution builds on positive example with added /profile route\n// using <ProtectedRoute><Profile /></ProtectedRoute>"
-      },
-      "challenge": {
-        "type": "coding-challenge",
-        "title": "🏆 Challenge: Full Auth Flow with Redirect After Login",
-        "description": "After login, redirect back to the page user originally wanted.",
-        "requirements": [
-          "Use useLocation and Navigate",
-          "Save intended location in state",
-          "Redirect after login",
-          "Show 'You must log in' message"
-        ],
-        "starterCode": "// Enhance the positive example to support redirect after login"
-      }
+  "id": "react-010-protected",
+  "title": "Protected Routes",
+  "description": "Restrict access to certain routes/pages in React based on user roles or authentication",
+  "duration": 10,
+  "difficulty": "intermediate",
+  "tags": ["router", "protected-routes", "authentication"],
+  "prerequisites": ["react-009-router"],
+  "unlocks": ["react-011-performance"],
+  "xp": 80,
+  "steps": {
+    "refresher": {
+      "type": "markdown",
+      "title": "🏥 Real-Life Story: Doctor vs Nurse Access",
+      "content": "# 🏥 Access Control in Hospital App\n\nIn our hospital app, different roles have different permissions:\n\n- **Doctors**: Can view all patients and update statuses\n- **Nurses**: Can view patients but cannot discharge\n- **Guests**: Cannot access patient details\n\n❌ Problem: Without protected routes, anyone can access sensitive pages by typing the URL.\n\n---\n\n## 🧠 Why This Happens\n\n- React is client-side only\n- Pages/components render if included in Routes\n- We need a **guard layer** to prevent unauthorized access\n\n---\n\n## ✅ React Solution: Protected Routes\n\n- Create a **wrapper component** (`ProtectedRoute`) that checks permissions\n- Only render the child component if allowed\n- Otherwise, redirect to login or error page\n\nThink of it as a **hospital security checkpoint**: only authorized staff can enter certain rooms."
+    },
+    "positive": {
+      "type": "interactive-code",
+      "title": "✅ Positive Case: Protect Patient Dashboard",
+      "description": "Create a ProtectedRoute component to restrict access based on role.",
+      "code": "import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';\n\nfunction ProtectedRoute({ children, role, allowedRoles }) {\n  if (!allowedRoles.includes(role)) {\n    return <Navigate to='/' replace />; // Redirect to Home if not allowed\n  }\n  return children;\n}\n\nfunction Home() {\n  return <h2>Hospital Home</h2>;\n}\n\nfunction PatientDashboard() {\n  return <h2>Patient Dashboard (Sensitive Data)</h2>;\n}\n\nfunction HospitalApp() {\n  const userRole = 'nurse'; // Example role: doctor / nurse / guest\n\n  return (\n    <Router>\n      <Routes>\n        <Route path='/' element={<Home />} />\n        <Route\n          path='/dashboard'\n          element={\n            <ProtectedRoute role={userRole} allowedRoles={['doctor']}>\n              <PatientDashboard />\n            </ProtectedRoute>\n          }\n        />\n      </Routes>\n    </Router>\n  );\n}\n\nexport default HospitalApp;",
+      "showPreview": true,
+      "explanation": "**How it works:**\n\n1. `ProtectedRoute` checks if `role` is in `allowedRoles`\n2. If allowed, renders the children component\n3. Otherwise, redirects to home\n4. Components stay clean and permission logic is centralized\n\n✅ **Key Rule:** Always centralize access control to avoid mistakes."
+    },
+    "negative": {
+      "type": "debug-quiz",
+      "title": "🐛 Common Mistake: Conditional Rendering in Each Page",
+      "description": "Why is adding `if (role !== 'doctor') return <Home />` inside every sensitive page a bad idea?",
+      "code": "function PatientDashboard({ role }) {\n  if (role !== 'doctor') return <Home />;\n  return <h2>Patient Dashboard</h2>;\n}",
+      "question": "What's wrong with this approach?",
+      "options": [
+        {
+          "id": "a",
+          "text": "It works fine, nothing wrong",
+          "isCorrect": false,
+          "explanation": "It works but spreads logic across multiple pages."
+        },
+        {
+          "id": "b",
+          "text": "Logic is repeated in every component, hard to maintain",
+          "isCorrect": true,
+          "explanation": "✅ Correct! ProtectedRoute centralizes permission checks."
+        },
+        {
+          "id": "c",
+          "text": "React Router cannot handle conditional rendering",
+          "isCorrect": false,
+          "explanation": "React Router supports conditional rendering but centralization is best."
+        },
+        {
+          "id": "d",
+          "text": "Redirects will break SPA behavior",
+          "isCorrect": false,
+          "explanation": "Redirect works fine with Navigate component."
+        }
+      ],
+      "correctCode": "Use a ProtectedRoute wrapper to handle permissions instead of sprinkling if-checks in every page."
+    },
+    "task": {
+      "type": "coding-task",
+      "title": "🛠️ Your Turn: Protect Patient Dashboard",
+      "description": "Implement a ProtectedRoute component and use it to restrict access to PatientDashboard for doctors only.",
+      "requirements": [
+        "Create ProtectedRoute component",
+        "Accept props: role and allowedRoles",
+        "Use Navigate for redirect",
+        "Wrap PatientDashboard route with ProtectedRoute"
+      ],
+      "starterCode": "import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';\n\nfunction Home() { return <div>TODO</div>; }\nfunction PatientDashboard() { return <div>TODO</div>; }\nfunction ProtectedRoute({ children, role, allowedRoles }) { return null; }\n\nfunction HospitalApp() {\n  const userRole = 'nurse';\n  return <Router>{/* TODO */}</Router>;\n}\n\nexport default HospitalApp;",
+      "solution": "/* Same as Positive Case Code Above */",
+      "hints": [
+        "Use Navigate for redirect",
+        "Check if role exists in allowedRoles",
+        "ProtectedRoute should wrap the route element"
+      ],
+      "tests": [
+        "Doctor can access PatientDashboard",
+        "Nurse or guest is redirected to Home",
+        "Unauthorized access blocked even if URL typed manually"
+      ]
+    },
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "🏆 Challenge: Multi-Role Hospital App",
+      "description": "Create a hospital app with multiple protected routes: Doctors, Nurses, and Admins. Each role sees different dashboards.",
+      "requirements": [
+        "ProtectedRoute handles multiple roles",
+        "Doctors see full patient data",
+        "Nurses see limited data",
+        "Admins can manage users",
+        "Unauthorized roles are redirected to Home or Login"
+      ],
+      "starterCode": "/* Use Router + ProtectedRoute + role variable */",
+      "solution": "/* Wrap routes in ProtectedRoute and define allowedRoles per route */",
+      "hints": [
+        "Use array of allowedRoles for each route",
+        "Centralize permission logic in ProtectedRoute",
+        "Use Navigate for redirects"
+      ],
+      "tests": [
+        "Each role sees only allowed routes",
+        "Unauthorized access redirects correctly",
+        "Navigation links reflect role permissions"
+      ]
     }
   }
+}

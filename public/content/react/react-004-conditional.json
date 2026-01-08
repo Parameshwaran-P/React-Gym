@@ -1,68 +1,105 @@
 {
-    "id": "react-004-conditional",
-    "title": "Conditional Rendering & Lists",
-    "description": "Show/hide content and render dynamic lists with keys",
-    "duration": 9,
-    "difficulty": "beginner",
-    "tags": ["jsx", "lists", "keys", "conditional"],
-    "prerequisites": ["react-003-props"],
-    "unlocks": ["react-005-forms"],
-    "xp": 70,
-    "steps": {
-      "refresher": {
-        "type": "markdown",
-        "title": "Conditional Rendering in React",
-        "content": "# Conditional Rendering\n\nReact lets you conditionally render JSX using JavaScript logic.\n\n## Techniques\n\n- `if` statements (outside return)\n- Ternary operator `condition ? A : B`\n- Logical && `condition && <Component />`\n- Null for nothing\n\n## Rendering Lists\n\nUse `.map()` to render arrays:\n\n```jsx\n{items.map(item => (\n  <Item key={item.id} {...item} />\n))}\n```\n\n**Keys help React identify which items changed!**\n\nLet's build a todo list →"
-      },
-      "positive": {
-        "type": "interactive-code",
-        "title": "✅ Positive Case: Todo List with Keys",
-        "description": "Properly renders a list with unique keys.",
-        "code": "const todos = [\n  { id: 1, text: 'Learn useState', completed: true },\n  { id: 2, text: 'Master useEffect', completed: true },\n  { id: 3, text: 'Build components', completed: false }\n];\n\nfunction TodoList() {\n  return (\n    <div className=\"p-8 max-w-md mx-auto\">\n      <h2 className=\"text-2xl font-bold mb-6\">My Todos</h2>\n      <ul className=\"space-y-3\">\n        {todos.map(todo => (\n          <li\n            key={todo.id}\n            className={`p-4 rounded-lg ${todo.completed ? 'bg-green-100 line-through' : 'bg-gray-100'}`}\n          >\n            {todo.text}\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n}\n\nexport default TodoList;",
-        "showPreview": true,
-        "explanation": "Each item has a stable `key` → React efficiently updates the list."
-      },
-      "negative": {
-        "type": "debug-quiz",
-        "title": "🐛 Common Mistake: Missing or Bad Keys",
-        "description": "This list uses array index as key. Why is this problematic?",
-        "code": "const items = ['Apple', 'Banana', 'Orange'];\n\nfunction BadList() {\n  return (\n    <ul>\n      {items.map((item, index) => (\n        <li key={index}>{item}</li>\n      ))}\n    </ul>\n  );\n}\n\nexport default BadList;",
-        "question": "Why is using index as key bad practice?",
-        "options": [
-          { "id": "a", "text": "It's slower", "isCorrect": false },
-          { "id": "b", "text": "When items reorder or insert, React may update wrong elements", "isCorrect": true, "explanation": "✅ Correct! Index changes when list order changes → React thinks items are different → bugs in stateful lists." },
-          { "id": "c", "text": "Keys must be strings", "isCorrect": false },
-          { "id": "d", "text": "map doesn't allow index", "isCorrect": false }
-        ],
-        "lesson": "**Always use stable, unique IDs as keys** — never array index for dynamic lists."
-      },
-      "task": {
-        "type": "coding-task",
-        "title": "🛠️ Your Turn: Filtered Product List",
-        "description": "Render products and show 'Out of stock' message conditionally.",
-        "requirements": [
-          "Map over products",
-          "Show stock status with color",
-          "If no products, show message",
-          "Use proper keys"
-        ],
-        "starterCode": "const products = [\n  { id: 1, name: 'React Course', inStock: true },\n  { id: 2, name: 'TypeScript Pro', inStock: false },\n  { id: 3, name: 'Next.js Master', inStock: true }\n];\n\nfunction ProductList() {\n  // TODO: Add conditional rendering\n\n  return (\n    <div className=\"p-8\">\n      <h2 className=\"text-2xl font-bold mb-6\">Available Courses</h2>\n      {/* TODO: Render list or empty message */}\n    </div>\n  );\n}\n\nexport default ProductList;",
-        "solution": "const products = [\n  { id: 1, name: 'React Course', inStock: true },\n  { id: 2, name: 'TypeScript Pro', inStock: false },\n  { id: 3, name: 'Next.js Master', inStock: true }\n];\n\nfunction ProductList() {\n  return (\n    <div className=\"p-8 max-w-md mx-auto\">\n      <h2 className=\"text-2xl font-bold mb-6\">Available Courses</h2>\n      {products.length === 0 ? (\n        <p className=\"text-gray-500 text-center py-8\">No courses available yet</p>\n      ) : (\n        <ul className=\"space-y-4\">\n          {products.map(product => (\n            <li key={product.id} className=\"p-4 bg-white rounded-lg shadow flex justify-between items-center\">\n              <span className=\"font-medium\">{product.name}</span>\n              <span className={`px-3 py-1 rounded-full text-sm ${product.inStock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>\n                {product.inStock ? 'In Stock' : 'Out of Stock'}\n              </span>\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nexport default ProductList;"
-      },
-      "challenge": {
-        "type": "coding-challenge",
-        "title": "🏆 Challenge: Searchable User List",
-        "description": "Filter users by name as user types.",
-        "requirements": [
-          "Input to search",
-          "Filter list in real time",
-          "Show 'No results' if empty",
-          "Case-insensitive search"
-        ],
-        "starterCode": "import { useState } from 'react';\n\nconst users = [\n  { id: 1, name: 'Emma Wilson' },\n  { id: 2, name: 'Liam Park' },\n  { id: 3, name: 'Sophia Chen' },\n  { id: 4, name: 'Noah Kim' }\n];\n\nfunction SearchableList() {\n  const [search, setSearch] = useState('');\n\n  // TODO: Filter users\n\n  return (\n    <div className=\"p-8 max-w-md mx-auto\">\n      <input\n        type=\"text\"\n        value={search}\n        onChange={(e) => setSearch(e.target.value)}\n        placeholder=\"Search users...\"\n        className=\"w-full px-4 py-2 border rounded-lg mb-6\"\n      />\n      {/* TODO: Render filtered list */}\n    </div>\n  );\n}\n\nexport default SearchableList;",
-        "solution": "import { useState } from 'react';\n\nconst users = [\n  { id: 1, name: 'Emma Wilson' },\n  { id: 2, name: 'Liam Park' },\n  { id: 3, name: 'Sophia Chen' },\n  { id: 4, name: 'Noah Kim' }\n];\n\nfunction SearchableList() {\n  const [search, setSearch] = useState('');\n\n  const filtered = users.filter(user =>\n    user.name.toLowerCase().includes(search.toLowerCase())\n  );\n\n  return (\n    <div className=\"p-8 max-w-md mx-auto\">\n      <input\n        type=\"text\"\n        value={search}\n        onChange={(e) => setSearch(e.target.value)}\n        placeholder=\"Search users...\"\n        className=\"w-full px-4 py-2 border rounded-lg mb-6 focus:ring-2 focus:ring-blue-500\"\n      />\n      {filtered.length === 0 ? (\n        <p className=\"text-center text-gray-500 py-8\">No users found</p>\n      ) : (\n        <ul className=\"space-y-3\">\n          {filtered.map(user => (\n            <li key={user.id} className=\"p-4 bg-white rounded-lg shadow\">\n              {user.name}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nexport default SearchableList;"
-      }
+  "id": "react-004-conditional",
+  "title": "Conditional Rendering",
+  "description": "Show or hide UI elements based on conditions",
+  "duration": 8,
+  "difficulty": "beginner",
+  "tags": ["conditional", "rendering", "ui-logic"],
+  "prerequisites": ["react-003-props", "react-005-forms"],
+  "unlocks": ["react-005-forms"],
+  "xp": 45,
+  "steps": {
+    "refresher": {
+      "type": "markdown",
+      "title": "🚦 Real-Life Story: Hospital Triage System",
+      "content": "# 🚦 Hospital Triage System\n\nIn a hospital emergency room, **not every patient is treated the same**.\n\nDoctors first check the patient's condition:\n\n- 🟢 Stable\n- 🟡 Needs Attention\n- 🔴 Critical\n\nBased on this status, the system shows **different actions and alerts**.\n\n---\n\n## ❌ The Problem\n\nIf the system shows **everything to everyone**:\n\n- Stable patients see emergency alerts 😕\n- Doctors get confused\n- UI becomes cluttered\n\n---\n\n## 🧠 Why This Happens\n\nUI should react to **conditions**, not show everything all the time.\n\nWithout conditions, the UI cannot make decisions.\n\n---\n\n## ✅ React Solution: Conditional Rendering\n\nReact allows you to **render UI conditionally** based on state, props, or logic.\n\n---\n\n## 🔧 Common Patterns\n\n```js\n// if condition\n{isCritical && <Alert />}\n\n// ternary\n{status === 'Critical' ? <RedAlert /> : <NormalView />}\n```\n\n👉 **Next: Let’s handle patient status correctly.**"
+    },
+    "positive": {
+      "type": "interactive-code",
+      "title": "✅ Positive Case: Patient Status Display",
+      "description": "The UI changes based on the patient’s condition.",
+      "code": "import { useState } from 'react';\n\nfunction PatientStatus() {\n  const [status, setStatus] = useState('Stable');\n\n  return (\n    <div className=\"p-6 bg-white rounded shadow\">\n      <h2 className=\"text-xl font-bold mb-4\">Patient Status</h2>\n\n      <p className=\"mb-4\">Current: {status}</p>\n\n      {status === 'Critical' && (\n        <p className=\"text-red-600 font-bold\">🚨 Immediate Attention Required</p>\n      )}\n\n      {status !== 'Critical' && (\n        <p className=\"text-green-600\">✅ No emergency</p>\n      )}\n\n      <div className=\"mt-4 space-x-2\">\n        <button onClick={() => setStatus('Stable')}>Stable</button>\n        <button onClick={() => setStatus('Critical')}>Critical</button>\n      </div>\n    </div>\n  );\n}\n\nexport default PatientStatus;",
+      "showPreview": true,
+      "explanation": "**How it works (Triage Mapping):**\n\n1. Patient status is stored in state\n2. UI checks the condition\n3. React renders only what matches\n\n✅ **Key Rule:** UI should reflect state, not assumptions."
+    },
+    "negative": {
+      "type": "debug-quiz",
+      "title": "🐛 Common Mistake: Overusing if Statements",
+      "description": "This code works, but why is it a bad idea?",
+      "code": "function Status({ status }) {\n  if (status === 'Critical') {\n    return <p>🚨 Emergency</p>;\n  }\n  if (status === 'Stable') {\n    return <p>✅ OK</p>;\n  }\n  return <p>Unknown</p>;\n}",
+      "question": "What is the main problem with this approach?",
+      "options": [
+        {
+          "id": "a",
+          "text": "It does not render JSX",
+          "isCorrect": false,
+          "explanation": "It does render JSX correctly."
+        },
+        {
+          "id": "b",
+          "text": "It becomes hard to scale and maintain",
+          "isCorrect": true,
+          "explanation": "✅ Correct! Multiple if statements become messy as conditions grow."
+        },
+        {
+          "id": "c",
+          "text": "React does not allow if statements",
+          "isCorrect": false,
+          "explanation": "React allows if statements."
+        },
+        {
+          "id": "d",
+          "text": "It causes re-render loops",
+          "isCorrect": false,
+          "explanation": "It does not cause loops."
+        }
+      ],
+      "correctCode": "{status === 'Critical' ? <Emergency /> : <Normal />}",
+      "lesson": "**Real-Life Mistake:**\n\nThis is like writing separate hospital rules for every small case.\n\n❌ Hard to manage\n\n✅ Prefer clear conditional patterns."
+    },
+    "task": {
+      "type": "coding-task",
+      "title": "🛠️ Your Turn: Bed Availability",
+      "description": "Show different messages based on available beds.",
+      "requirements": [
+        "Use a number state",
+        "If beds > 0, show available message",
+        "If beds === 0, show full message"
+      ],
+      "starterCode": "import { useState } from 'react';\n\nfunction BedStatus() {\n  const [beds, setBeds] = useState(1);\n\n  return (\n    <div className=\"p-6\">\n      {/* TODO: Conditional UI */}\n    </div>\n  );\n}\n\nexport default BedStatus;",
+      "solution": "import { useState } from 'react';\n\nfunction BedStatus() {\n  const [beds, setBeds] = useState(1);\n\n  return (\n    <div className=\"p-6\">\n      {beds > 0 ? (\n        <p className=\"text-green-600\">Beds Available</p>\n      ) : (\n        <p className=\"text-red-600\">Hospital Full</p>\n      )}\n\n      <button onClick={() => setBeds(beds - 1)}>Admit Patient</button>\n    </div>\n  );\n}\n\nexport default BedStatus;",
+      "hints": [
+        "Use ternary operator",
+        "State controls UI",
+        "Avoid duplicate JSX"
+      ],
+      "tests": [
+        "Shows available message",
+        "Shows full message when zero",
+        "UI updates correctly"
+      ]
+    },
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "🏆 Challenge: Doctor Availability",
+      "description": "Display doctor availability based on working hours.",
+      "requirements": [
+        "Use props for availability",
+        "Show different UI for available / unavailable",
+        "Use clean conditional patterns"
+      ],
+      "starterCode": "function DoctorStatus({ isAvailable }) {\n  // TODO\n}\n\nexport default DoctorStatus;",
+      "solution": "function DoctorStatus({ isAvailable }) {\n  return (\n    <p>\n      {isAvailable ? '🟢 Doctor Available' : '🔴 Doctor Unavailable'}\n    </p>\n  );\n}\n\nexport default DoctorStatus;",
+      "hints": [
+        "Boolean props",
+        "Ternary operator",
+        "Simple conditions"
+      ],
+      "tests": [
+        "Renders correct message",
+        "No unnecessary logic",
+        "Readable UI"
+      ]
     }
   }
-
-  
+}

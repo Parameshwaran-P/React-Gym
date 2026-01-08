@@ -28,7 +28,7 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+      <section className="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
         <div className="text-center animate-fade-in">
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
             Master React Through
@@ -57,39 +57,54 @@ export default function LandingPage() {
 
       {/* Problem Section */}
       <section className="bg-gray-50 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
             Why Traditional Tutorials Fail
           </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="text-center">
-              <div className="text-4xl mb-4">📚</div>
-              <h3 className="text-xl font-bold mb-2">Scattered Resources</h3>
-              <p className="text-gray-600">
-                YouTube, docs, courses everywhere. You waste hours searching instead of learning.
-              </p>
-            </Card>
-            <Card className="text-center">
-              <div className="text-4xl mb-4">✅</div>
-              <h3 className="text-xl font-bold mb-2">Only Happy Paths</h3>
-              <p className="text-gray-600">
-                Tutorials show perfect code. But real projects break. You never learn debugging.
-              </p>
-            </Card>
-            <Card className="text-center">
-              <div className="text-4xl mb-4">🧠</div>
-              <h3 className="text-xl font-bold mb-2">No Revision System</h3>
-              <p className="text-gray-600">
-                You forget everything after 2 months. Start from scratch every time.
-              </p>
-            </Card>
-          </div>
+         <div className="grid md:grid-cols-3 gap-8">
+  <Card className="text-center">
+    <img
+      src="/public/scattered_learn.png"
+      alt="Scattered Resources"
+      className="w-50 h-50 mx-auto mb-4"
+    />
+    <h3 className="text-xl font-bold mb-2">Scattered Resources</h3>
+    <p className="text-gray-600">
+      YouTube, docs, courses everywhere. You waste hours searching instead of learning.
+    </p>
+  </Card>
+
+  <Card className="text-center">
+    <img
+      src="/public/happy_paths.png"
+      alt="Only Happy Paths"
+      className="w-50 h-50 mx-auto mb-4"
+    />
+    <h3 className="text-xl font-bold mb-2">Only Happy Paths</h3>
+    <p className="text-gray-600">
+      Tutorials show perfect code. But real projects break. You never learn debugging.
+    </p>
+  </Card>
+
+  <Card className="text-center">
+    <img
+      src="/public/revision_sys.png"
+      alt="No Revision System"
+      className="w-50 h-50 mx-auto mb-4"
+    />
+    <h3 className="text-xl font-bold mb-2">No Revision System</h3>
+    <p className="text-gray-600">
+      You forget everything after 2 months. Start from scratch every time.
+    </p>
+  </Card>
+</div>
+
         </div>
       </section>
 
       {/* Solution Section */}
       <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-4">
             How React Gym Works
           </h2>
@@ -169,7 +184,7 @@ export default function LandingPage() {
 
       {/* Features Section */}
       <section className="bg-gray-50 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
             Built for Real Developers
           </h2>

@@ -1,63 +1,108 @@
 {
-    "id": "react-008-custom-hooks",
-    "title": "Custom Hooks",
-    "description": "Extract and reuse stateful logic across components",
-    "duration": 14,
-    "difficulty": "intermediate",
-    "tags": ["hooks", "reusability", "abstraction"],
-    "prerequisites": ["react-007-usereducer"],
-    "unlocks": ["react-009-router"],
-    "xp": 110,
-    "steps": {
-      "refresher": {
-        "type": "markdown",
-        "title": "Why Custom Hooks?",
-        "content": "# Custom Hooks\n\n## Problem\n\nYou find yourself duplicating the same stateful logic (e.g., fetching data, tracking window size) in multiple components.\n\n## Solution\n\nCustom hooks let you extract that logic into reusable functions.\n\n## Rules\n\n- Must start with `use`\n- Can call other hooks\n- Pure JavaScript functions\n\n**Let's build useFetch! →**"
-      },
-      "positive": {
-        "type": "interactive-code",
-        "title": "✅ Positive Case: useFetch Hook",
-        "description": "Reusable data fetching logic.",
-        "code": "import { useState, useEffect } from 'react';\n\nfunction useFetch(url) {\n  const [data, setData] = useState(null);\n  const [loading, setLoading] = useState(true);\n  const [error, setError] = useState(null);\n\n  useEffect(() => {\n    fetch(url)\n      .then(res => res.json())\n      .then(setData)\n      .catch(setError)\n      .finally(() => setLoading(false));\n  }, [url]);\n\n  return { data, loading, error };\n}\n\nfunction UserProfile() {\n  const { data, loading } = useFetch('https://jsonplaceholder.typicode.com/users/1');\n\n  if (loading) return <p className=\"p-8\">Loading...</p>;\n\n  return (\n    <div className=\"p-8 max-w-sm mx-auto bg-white rounded-xl shadow\">\n      <h2 className=\"text-2xl font-bold\">{data.name}</h2>\n      <p>{data.email}</p>\n    </div>\n  );\n}\n\nexport default UserProfile;",
-        "showPreview": true,
-        "explanation": "Same fetching logic reusable in any component!"
-      },
-      "negative": {
-        "type": "debug-quiz",
-        "title": "🐛 Common Mistake: Hook Called Conditionally",
-        "description": "This custom hook is called inside an if statement. Why is this invalid?",
-        "code": "function BadComponent({ shouldFetch }) {\n  if (shouldFetch) {\n    const data = useFetch('/api/data'); // Invalid!\n  }\n\n  return <div>Content</div>;\n}",
-        "question": "Why can't you call hooks conditionally?",
-        "options": [
-          { "id": "a", "text": "Performance issue", "isCorrect": false },
-          { "id": "b", "text": "React relies on call order to match state — conditions break this", "isCorrect": true, "explanation": "✅ Correct! Hooks must be called in the same order every render." },
-          { "id": "c", "text": "useFetch not defined", "isCorrect": false },
-          { "id": "d", "text": "if statements not allowed", "isCorrect": false }
-        ],
-        "lesson": "**Never call hooks inside conditions, loops, or nested functions.**"
-      },
-      "task": {
-        "type": "coding-task",
-        "title": "🛠️ Your Turn: useLocalStorage Hook",
-        "description": "Create a hook that syncs state with localStorage.",
-        "requirements": [
-          "Save value to localStorage on change",
-          "Load initial value from storage",
-          "Return [value, setValue]"
-        ],
-        "starterCode": "import { useState, useEffect } from 'react';\n\nfunction useLocalStorage(key, initialValue) {\n  // TODO: Implement\n}\n\nfunction Counter() {\n  const [count, setCount] = useLocalStorage('count', 0);\n\n  return (\n    <div className=\"p-12 text-center\">\n      <h1 className=\"text-5xl mb-8\">{count}</h1>\n      <button onClick={() => setCount(count + 1)} className=\"px-8 py-4 bg-blue-600 text-white rounded-lg text-2xl\">+</button>\n    </div>\n  );\n}\n\nexport default Counter;",
-        "solution": "import { useState, useEffect } from 'react';\n\nfunction useLocalStorage(key, initialValue) {\n  const [value, setValue] = useState(() => {\n    const stored = localStorage.getItem(key);\n    return stored ? JSON.parse(stored) : initialValue;\n  });\n\n  useEffect(() => {\n    localStorage.setItem(key, JSON.stringify(value));\n  }, [key, value]);\n\n  return [value, setValue];\n}\n\nfunction Counter() {\n  const [count, setCount] = useLocalStorage('count', 0);\n\n  return (\n    <div className=\"p-12 text-center bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-xl\">\n      <h1 className=\"text-6xl font-bold mb-8\">{count}</h1>\n      <button\n        onClick={() => setCount(count + 1)}\n        className=\"px-10 py-5 bg-white text-blue-600 rounded-xl text-3xl font-bold hover:bg-gray-100\"\n      >\n        Increment\n      </button>\n      <p className=\"mt-6 text-lg\">Refresh — count persists!</p>\n    </div>\n  );\n}\n\nexport default Counter;"
-      },
-      "challenge": {
-        "type": "coding-challenge",
-        "title": "🏆 Challenge: useForm Hook",
-        "description": "Build a reusable form hook with handleChange and values.",
-        "requirements": [
-          "Accept initialValues",
-          "Return values, handleChange, reset",
-          "Support text and checkbox"
-        ],
-        "starterCode": "function useForm(initialValues) {\n  // TODO: Implement\n}\n\nfunction Registration() {\n  const { values, handleChange } = useForm({ name: '', newsletter: false });\n\n  return (\n    <form className=\"p-8 space-y-4\">\n      <input name=\"name\" value={values.name} onChange={handleChange} placeholder=\"Name\" />\n      <label>\n        <input name=\"newsletter\" type=\"checkbox\" checked={values.newsletter} onChange={handleChange} />\n        Newsletter\n      </label>\n    </form>\n  );\n}\n\nexport default Registration;"
-      }
+  "id": "react-008-custom-hooks",
+  "title": "Custom Hooks",
+  "description": "Create reusable logic in React with custom hooks",
+  "duration": 12,
+  "difficulty": "intermediate",
+  "tags": ["hooks", "custom-hooks", "reusability"],
+  "prerequisites": ["react-007-usereducer"],
+  "unlocks": ["react-009-router"],
+  "xp": 90,
+  "steps": {
+    "refresher": {
+      "type": "markdown",
+      "title": "🏥 Real-Life Story: Reusable Patient Management Logic",
+      "content": "# 🏥 Custom Hooks for Hospital\n\nIn our hospital app, multiple components need to manage **patient data**:\n\n- Admit patients\n- Update patient status\n- Discharge patients\n\n❌ Problem: If we copy the same `useReducer` + dispatch logic in every component, the code is messy and hard to maintain.\n\n---\n\n## 🧠 Why This Happens\n\n- React logic is **reusable**, but only if we abstract it\n- Writing the same reducer/dispatch code repeatedly is **not DRY** (Don't Repeat Yourself)\n\n---\n\n## ✅ React Solution: Custom Hooks\n\nA **custom hook** lets you:\n- Extract stateful logic into a reusable function\n- Use it in any component easily\n- Keep your code clean and maintainable\n\nThink of it as a **hospital rulebook module**: every department can use the same logic without rewriting it.\n\n---\n\n## 🔧 Basic Pattern\n\n```js\nimport { useState, useEffect } from 'react';\n\nfunction useWindowWidth() {\n  const [width, setWidth] = useState(window.innerWidth);\n\n  useEffect(() => {\n    const handleResize = () => setWidth(window.innerWidth);\n    window.addEventListener('resize', handleResize);\n    return () => window.removeEventListener('resize', handleResize);\n  }, []);\n\n  return width;\n}\n\n// Usage\nfunction App() {\n  const width = useWindowWidth();\n  return <p>Window width: {width}</p>;\n}\n```"
+    },
+    "positive": {
+      "type": "interactive-code",
+      "title": "✅ Positive Case: usePatientManager Hook",
+      "description": "Abstract patient management logic into a reusable hook.",
+      "code": "import { useReducer } from 'react';\n\nconst initialState = [];\nfunction reducer(state, action) {\n  switch(action.type) {\n    case 'ADMIT': return [...state, action.payload];\n    case 'UPDATE_STATUS': return state.map(p => p.id === action.payload.id ? {...p, status: action.payload.status} : p);\n    case 'DISCHARGE': return state.filter(p => p.id !== action.payload.id);\n    default: return state;\n  }\n}\n\nexport function usePatientManager() {\n  const [patients, dispatch] = useReducer(reducer, initialState);\n\n  const admitPatient = (name, status='Stable') => {\n    const id = Date.now();\n    dispatch({ type: 'ADMIT', payload: { id, name, status } });\n  };\n\n  const updateStatus = (id, status) => {\n    dispatch({ type: 'UPDATE_STATUS', payload: { id, status } });\n  };\n\n  const dischargePatient = (id) => {\n    dispatch({ type: 'DISCHARGE', payload: { id } });\n  };\n\n  return { patients, admitPatient, updateStatus, dischargePatient };\n}\n\n// Usage Example\nfunction HospitalDashboard() {\n  const { patients, admitPatient, updateStatus, dischargePatient } = usePatientManager();\n\n  return (\n    <div className=\"p-6 space-y-3\">\n      <button onClick={() => admitPatient('Meena')} className=\"bg-green-600 text-white px-4 py-2 rounded\">Admit Meena</button>\n      {patients.map(p => (\n        <div key={p.id} className=\"border p-3 rounded space-x-2\">\n          <span>{p.name} - {p.status}</span>\n          <button onClick={() => updateStatus(p.id, 'Critical')} className=\"bg-red-500 text-white px-2 rounded\">Critical</button>\n          <button onClick={() => dischargePatient(p.id)} className=\"bg-gray-600 text-white px-2 rounded\">Discharge</button>\n        </div>\n      ))}\n    </div>\n  );\n}\n\nexport default HospitalDashboard;",
+      "showPreview": true,
+      "explanation": "**How it works:**\n\n1. `usePatientManager` contains all state logic\n2. Components call the hook and get state + functions\n3. No repetitive reducer logic in each component\n4. Components remain clean and readable\n\n✅ **Key Rule:** Custom hooks must start with `use` and encapsulate reusable logic."
+    },
+    "negative": {
+      "type": "debug-quiz",
+      "title": "🐛 Common Mistake: Copying Logic",
+      "description": "Why is copying reducer + dispatch logic in multiple components a bad idea?",
+      "code": "// Multiple components with same useReducer logic\nfunction DoctorPanel() { /* reducer logic copied */ }\nfunction NursePanel() { /* reducer logic copied */ }",
+      "question": "What's the problem here?",
+      "options": [
+        {
+          "id": "a",
+          "text": "React does not allow multiple useReducer hooks",
+          "isCorrect": false,
+          "explanation": "React allows multiple hooks, but code duplication is messy."
+        },
+        {
+          "id": "b",
+          "text": "Logic is repeated, hard to maintain, hard to update",
+          "isCorrect": true,
+          "explanation": "✅ Correct! Any change requires updates in multiple places."
+        },
+        {
+          "id": "c",
+          "text": "Custom hooks are mandatory",
+          "isCorrect": false,
+          "explanation": "Not mandatory, but recommended for reusable logic."
+        },
+        {
+          "id": "d",
+          "text": "Cannot dispatch actions in multiple components",
+          "isCorrect": false,
+          "explanation": "You can dispatch in multiple components if the hook is used properly."
+        }
+      ],
+      "correctCode": "Extract reducer + dispatch logic into a single custom hook, then use it in multiple components."
+    },
+    "task": {
+      "type": "coding-task",
+      "title": "🛠️ Your Turn: Reusable Patient Manager",
+      "description": "Create a custom hook to manage patient actions, then use it in two different components: DoctorPanel and NursePanel.",
+      "requirements": [
+        "Create `usePatientManager` hook",
+        "Hook handles admit, updateStatus, discharge",
+        "Use hook in multiple components",
+        "State updates correctly everywhere"
+      ],
+      "starterCode": "import { useReducer } from 'react';\n\nconst initialState = [];\nfunction reducer(state, action) {\n  // TODO\n}\n\nexport function usePatientManager() {\n  // TODO\n}\n\nfunction DoctorPanel() {\n  // TODO: use hook\n}\n\nfunction NursePanel() {\n  // TODO: use hook\n}",
+      "solution": "/* Same as Positive Case Code Above */",
+      "hints": [
+        "Encapsulate state logic inside hook",
+        "Return state + functions from hook",
+        "Call hook in any functional component"
+      ],
+      "tests": [
+        "Hook returns state and functions",
+        "DoctorPanel updates state correctly",
+        "NursePanel updates state correctly",
+        "No code duplication"
+      ]
+    },
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "🏆 Challenge: Hospital System with Multiple Hooks",
+      "description": "Combine custom hooks and Context to manage multiple wards with separate patient lists.",
+      "requirements": [
+        "Each ward uses `usePatientManager` hook",
+        "Global hospital dashboard shows all wards",
+        "Ward components can dispatch admit, update, discharge",
+        "Highlight critical patients across wards"
+      ],
+      "starterCode": "import { createContext } from 'react';\nimport { usePatientManager } from './usePatientManager';\n\nfunction Ward() { /* TODO */ }\nfunction HospitalDashboard() { /* TODO */ }",
+      "solution": "/* Use usePatientManager in each Ward component, wrap in context if needed */",
+      "hints": [
+        "Custom hooks + Context = scalable global state",
+        "Each component calls the hook independently",
+        "Use array.map() for patient lists"
+      ],
+      "tests": [
+        "Each ward manages its own patients",
+        "Actions work independently",
+        "Critical patients highlighted",
+        "State is isolated per ward"
+      ]
     }
   }
+}

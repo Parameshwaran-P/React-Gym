@@ -1,65 +1,106 @@
 {
-    "id": "react-005-forms",
-    "title": "Controlled Forms",
-    "description": "Manage form inputs with React state for full control",
-    "duration": 12,
-    "difficulty": "intermediate",
-    "tags": ["forms", "controlled-components", "inputs"],
-    "prerequisites": ["react-004-conditional"],
-    "unlocks": ["react-006-context"],
-    "xp": 90,
-    "steps": {
-      "refresher": {
-        "type": "markdown",
-        "title": "Controlled vs Uncontrolled",
-        "content": "# Controlled Components\n\nIn HTML, form elements maintain their own state. In React, we prefer **controlled components** — form data is handled by React state.\n\n## Benefits\n\n- Single source of truth\n- Instant validation\n- Easy to reset or pre-fill\n- Conditional fields\n\n## Pattern\n\n```jsx\n<input\n  value={state}\n  onChange={(e) => setState(e.target.value)}\n/>\n```\n\nLet's build a full registration form →"
-      },
-      "positive": {
-        "type": "interactive-code",
-        "title": "✅ Positive Case: Registration Form",
-        "description": "All inputs controlled by state.",
-        "code": "import { useState } from 'react';\n\nfunction RegistrationForm() {\n  const [form, setForm] = useState({\n    name: '',\n    email: '',\n    password: '',\n    newsletter: false\n  });\n\n  const handleChange = (e) => {\n    const { name, value, type, checked } = e.target;\n    setForm(prev => ({\n      ...prev,\n      [name]: type === 'checkbox' ? checked : value\n    }));\n  };\n\n  const handleSubmit = (e) => {\n    e.preventDefault();\n    alert(`Welcome, ${form.name}!`);\n  };\n\n  return (\n    <form onSubmit={handleSubmit} className=\"p-8 max-w-md mx-auto space-y-6\">\n      <input name=\"name\" value={form.name} onChange={handleChange} placeholder=\"Name\" className=\"w-full px-4 py-2 border rounded\" required />\n      <input name=\"email\" type=\"email\" value={form.email} onChange={handleChange} placeholder=\"Email\" className=\"w-full px-4 py-2 border rounded\" required />\n      <input name=\"password\" type=\"password\" value={form.password} onChange={handleChange} placeholder=\"Password\" className=\"w-full px-4 py-2 border rounded\" required />\n      <label className=\"flex items-center gap-2\">\n        <input name=\"newsletter\" type=\"checkbox\" checked={form.newsletter} onChange={handleChange} />\n        <span>Subscribe to newsletter</span>\n      </label>\n      <button type=\"submit\" className=\"w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700\">Sign Up</button>\n    </form>\n  );\n}\n\nexport default RegistrationForm;",
-        "showPreview": true,
-        "explanation": "All form data lives in React state → full control!"
-      },
-      "negative": {
-        "type": "debug-quiz",
-        "title": "🐛 Common Mistake: Uncontrolled Input",
-        "description": "This input has value but no onChange. Why doesn't it work?",
-        "code": "function BadForm() {\n  const [name, setName] = useState('');\n\n  return (\n    <input\n      value={name}\n      // missing onChange!\n      placeholder=\"Type here\"\n    />\n  );\n}",
-        "question": "Why can't the user type in this input?",
-        "options": [
-          { "id": "a", "text": "value prop is not allowed", "isCorrect": false },
-          { "id": "b", "text": "Missing onChange — React blocks input changes", "isCorrect": true, "explanation": "✅ Correct! When you set value, you must also handle onChange, otherwise React makes the input read-only." },
-          { "id": "c", "text": "Need defaultValue", "isCorrect": false },
-          { "id": "d", "text": "useState wrong syntax", "isCorrect": false }
-        ],
-        "lesson": "**Controlled inputs require both value and onChange.**"
-      },
-      "task": {
-        "type": "coding-task",
-        "title": "🛠️ Your Turn: Login Form with Validation",
-        "description": "Build a login form with live validation feedback.",
-        "requirements": [
-          "Email and password fields",
-          "Show error if fields empty on submit",
-          "Show success message on valid submit",
-          "Reset after submit"
-        ],
-        "starterCode": "import { useState } from 'react';\n\nfunction LoginForm() {\n  const [email, setEmail] = useState('');\n  const [password, setPassword] = useState('');\n  const [error, setError] = useState('');\n\n  const handleSubmit = (e) => {\n    e.preventDefault();\n    // TODO: Validate and show message\n  };\n\n  return (\n    <form onSubmit={handleSubmit} className=\"p-8 max-w-sm mx-auto\">\n      {/* Inputs and feedback */}\n    </form>\n  );\n}\n\nexport default LoginForm;",
-        "solution": "import { useState } from 'react';\n\nfunction LoginForm() {\n  const [email, setEmail] = useState('');\n  const [password, setPassword] = useState('');\n  const [message, setMessage] = useState('');\n\n  const handleSubmit = (e) => {\n    e.preventDefault();\n    if (!email || !password) {\n      setMessage('Please fill in all fields');\n      return;\n    }\n    setMessage(`Logged in as ${email} ✅`);\n    setEmail('');\n    setPassword('');\n  };\n\n  return (\n    <form onSubmit={handleSubmit} className=\"p-8 max-w-sm mx-auto bg-white rounded-xl shadow-lg space-y-6\">\n      <h2 className=\"text-2xl font-bold text-center\">Login</h2>\n      <input\n        type=\"email\"\n        value={email}\n        onChange={(e) => setEmail(e.target.value)}\n        placeholder=\"Email\"\n        className=\"w-full px-4 py-2 border rounded-lg\"\n        required\n      />\n      <input\n        type=\"password\"\n        value={password}\n        onChange={(e) => setPassword(e.target.value)}\n        placeholder=\"Password\"\n        className=\"w-full px-4 py-2 border rounded-lg\"\n        required\n      />\n      {message && (\n        <p className={`text-center ${message.includes('✅') ? 'text-green-600' : 'text-red-600'}`}>\n          {message}\n        </p>\n      )}\n      <button type=\"submit\" className=\"w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700\">\n        Log In\n      </button>\n    </form>\n  );\n}\n\nexport default LoginForm;"
-      },
-      "challenge": {
-        "type": "coding-challenge",
-        "title": "🏆 Challenge: Multi-Step Wizard",
-        "description": "Create a 3-step form (Personal → Account → Review).",
-        "requirements": [
-          "Next/Back buttons",
-          "Collect name, email, username, password",
-          "Show summary on final step",
-          "Submit only on last step"
-        ],
-        "starterCode": "import { useState } from 'react';\n\nfunction Wizard() {\n  const [step, setStep] = useState(1);\n  const [data, setData] = useState({ name: '', email: '', username: '', password: '' });\n\n  // TODO: Implement steps and navigation\n\n  return (\n    <div className=\"p-8 max-w-lg mx-auto\">\n      <div className=\"mb-8 flex justify-between\">\n        {[1,2,3].map(n => (\n          <div key={n} className={`w-10 h-10 rounded-full ${step >= n ? 'bg-blue-600' : 'bg-gray-300'} text-white flex items-center justify-center`}>\n            {n}\n          </div>\n        ))}\n      </div>\n      {/* Steps content */}\n    </div>\n  );\n}\n\nexport default Wizard;"
-      }
+  "id": "react-006-forms",
+  "title": "Forms & Controlled Inputs",
+  "description": "Handle user input and form submission in React using controlled components",
+  "duration": 10,
+  "difficulty": "beginner",
+  "tags": ["forms", "inputs", "controlled-components"],
+  "prerequisites": ["react-004-conditional"],
+  "unlocks": ["react-006-context"],
+  "xp": 60,
+  "steps": {
+    "refresher": {
+      "type": "markdown",
+      "title": "🏥 Real-Life Story: Patient Admission Form",
+      "content": "# 📝 Patient Admission System\n\nImagine a hospital front desk.\n\nEvery new patient must fill out a form:\n\n- Name\n- Age\n- Reason for visit\n\nThe system must:\n- Capture data correctly\n- Show what the user typed\n- Submit accurate information\n\n---\n\n## ❌ The Problem\n\nIf the system **does not track input values**:\n\n- Typed data is lost\n- UI and data go out of sync\n- Submission fails\n\n---\n\n## 🧠 Why This Happens\n\nHTML inputs manage their own state by default.\n\nReact **cannot control or trust** the data unless it manages it.\n\n---\n\n## ✅ React Solution: Controlled Components\n\nIn React:\n\n- Input value is controlled by **state**\n- Every change updates state\n- State becomes the **single source of truth**\n\n---\n\n## 🔧 Basic Pattern\n\n```js\nconst [value, setValue] = useState('');\n\n<input value={value} onChange={(e) => setValue(e.target.value)} />\n```\n\n👉 **Next: Let’s build a proper admission form.**"
+    },
+    "positive": {
+      "type": "interactive-code",
+      "title": "✅ Positive Case: Controlled Admission Form",
+      "description": "The hospital correctly captures and displays patient details.",
+      "code": "import { useState } from 'react';\n\nfunction AdmissionForm() {\n  const [name, setName] = useState('');\n  const [age, setAge] = useState('');\n  const [reason, setReason] = useState('');\n\n  function handleSubmit(e) {\n    e.preventDefault();\n    alert(`Admitted: ${name}, Age ${age}, Reason: ${reason}`);\n  }\n\n  return (\n    <form onSubmit={handleSubmit} className=\"p-6 bg-white rounded shadow space-y-3\">\n      <h2 className=\"text-xl font-bold\">Patient Admission</h2>\n\n      <input\n        type=\"text\"\n        placeholder=\"Patient Name\"\n        value={name}\n        onChange={(e) => setName(e.target.value)}\n        className=\"w-full border p-2 rounded\"\n      />\n\n      <input\n        type=\"number\"\n        placeholder=\"Age\"\n        value={age}\n        onChange={(e) => setAge(e.target.value)}\n        className=\"w-full border p-2 rounded\"\n      />\n\n      <input\n        type=\"text\"\n        placeholder=\"Reason for Visit\"\n        value={reason}\n        onChange={(e) => setReason(e.target.value)}\n        className=\"w-full border p-2 rounded\"\n      />\n\n      <button className=\"bg-blue-600 text-white px-4 py-2 rounded\">\n        Admit Patient\n      </button>\n    </form>\n  );\n}\n\nexport default AdmissionForm;",
+      "showPreview": true,
+      "explanation": "**How it works (Hospital Mapping):**\n\n1. Each input has its own state\n2. Typing updates state instantly\n3. React controls the input value\n4. Form submission reads from state\n\n✅ **Key Rule:** Inputs should reflect React state, not internal browser state."
+    },
+    "negative": {
+      "type": "debug-quiz",
+      "title": "🐛 Common Mistake: Uncontrolled Input",
+      "description": "The form looks fine, but React doesn’t know the input value. Why?",
+      "code": "function BadForm() {\n  let name = '';\n\n  return (\n    <input\n      type=\"text\"\n      onChange={(e) => (name = e.target.value)}\n    />\n  );\n}",
+      "question": "What is the main problem here?",
+      "options": [
+        {
+          "id": "a",
+          "text": "State is not used",
+          "isCorrect": true,
+          "explanation": "✅ Correct! Without state, React cannot track or re-render correctly."
+        },
+        {
+          "id": "b",
+          "text": "onChange is invalid",
+          "isCorrect": false,
+          "explanation": "onChange is valid."
+        },
+        {
+          "id": "c",
+          "text": "Inputs must use useEffect",
+          "isCorrect": false,
+          "explanation": "useEffect is not required."
+        },
+        {
+          "id": "d",
+          "text": "HTML inputs cannot store values",
+          "isCorrect": false,
+          "explanation": "HTML inputs store values, but React doesn’t control them here."
+        }
+      ],
+      "correctCode": "const [name, setName] = useState('');\n\n<input value={name} onChange={(e) => setName(e.target.value)} />",
+      "lesson": "**Real-Life Mistake:**\n\nThis is like writing patient details on paper but never saving them to the hospital system.\n\n❌ Data is lost\n\n✅ Always store input values in React state."
+    },
+    "task": {
+      "type": "coding-task",
+      "title": "🛠️ Your Turn: Doctor Feedback Form",
+      "description": "Create a form to collect doctor feedback.",
+      "requirements": [
+        "Input for doctor name",
+        "Textarea for feedback",
+        "Controlled inputs",
+        "Alert on submit"
+      ],
+      "starterCode": "import { useState } from 'react';\n\nfunction FeedbackForm() {\n  // TODO: Add state\n\n  function handleSubmit(e) {\n    e.preventDefault();\n  }\n\n  return (\n    <form onSubmit={handleSubmit} className=\"p-6\">\n      {/* TODO */}\n    </form>\n  );\n}\n\nexport default FeedbackForm;",
+      "solution": "import { useState } from 'react';\n\nfunction FeedbackForm() {\n  const [doctor, setDoctor] = useState('');\n  const [feedback, setFeedback] = useState('');\n\n  function handleSubmit(e) {\n    e.preventDefault();\n    alert(`Doctor: ${doctor}\\nFeedback: ${feedback}`);\n  }\n\n  return (\n    <form onSubmit={handleSubmit} className=\"p-6 space-y-3\">\n      <input\n        value={doctor}\n        onChange={(e) => setDoctor(e.target.value)}\n        placeholder=\"Doctor Name\"\n        className=\"border p-2 w-full\"\n      />\n\n      <textarea\n        value={feedback}\n        onChange={(e) => setFeedback(e.target.value)}\n        placeholder=\"Feedback\"\n        className=\"border p-2 w-full\"\n      />\n\n      <button className=\"bg-green-600 text-white px-4 py-2 rounded\">\n        Submit\n      </button>\n    </form>\n  );\n}\n\nexport default FeedbackForm;",
+      "hints": [
+        "Every input needs state",
+        "Use onChange",
+        "Prevent default submit"
+      ],
+      "tests": [
+        "Inputs update state",
+        "Form submits correctly",
+        "No uncontrolled inputs"
+      ]
+    },
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "🏆 Challenge: Patient Registration",
+      "description": "Build a full registration form with validation.",
+      "requirements": [
+        "Name and age inputs",
+        "Prevent submission if empty",
+        "Show error message conditionally"
+      ],
+      "starterCode": "import { useState } from 'react';\n\nfunction RegistrationForm() {\n  // TODO\n}\n\nexport default RegistrationForm;",
+      "solution": "import { useState } from 'react';\n\nfunction RegistrationForm() {\n  const [name, setName] = useState('');\n  const [age, setAge] = useState('');\n  const [error, setError] = useState('');\n\n  function handleSubmit(e) {\n    e.preventDefault();\n\n    if (!name || !age) {\n      setError('All fields are required');\n      return;\n    }\n\n    setError('');\n    alert('Patient Registered');\n  }\n\n  return (\n    <form onSubmit={handleSubmit} className=\"p-6 space-y-3\">\n      <input value={name} onChange={(e) => setName(e.target.value)} placeholder=\"Name\" />\n      <input value={age} onChange={(e) => setAge(e.target.value)} placeholder=\"Age\" />\n\n      {error && <p className=\"text-red-600\">{error}</p>}\n\n      <button className=\"bg-blue-600 text-white px-4 py-2 rounded\">Register</button>\n    </form>\n  );\n}\n\nexport default RegistrationForm;",
+      "hints": [
+        "Validation before submit",
+        "Conditional rendering for errors",
+        "State-driven UI"
+      ],
+      "tests": [
+        "Blocks empty submit",
+        "Shows error message",
+        "Registers when valid"
+      ]
     }
   }
+}

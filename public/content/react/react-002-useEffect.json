@@ -1,77 +1,106 @@
 {
-    "id": "react-002-useeffect",
-    "title": "useEffect Hook",
-    "description": "Handle side effects: data fetching, subscriptions, and DOM updates",
-    "duration": 10,
-    "difficulty": "beginner",
-    "tags": ["hooks", "side-effects", "lifecycle"],
-    "prerequisites": ["react-001-usestate"],
-    "unlocks": ["react-003-props"],
-    "xp": 75,
-    "steps": {
-      "refresher": {
-        "type": "markdown",
-        "title": "What is useEffect?",
-        "content": "# useEffect Hook\n\n## What problem does it solve?\n\nFunctional components don't have lifecycle methods like class components. **useEffect** lets you perform side effects after render.\n\n## Common Use Cases\n\n- Fetching data from an API\n- Setting up subscriptions\n- Manually changing the DOM\n- Starting timers\n\n## Syntax\n\n```javascript\nuseEffect(() => {\n  // effect code\n  return () => {\n    // cleanup (optional)\n  };\n}, [dependencies]);\n```\n\n- Runs after every render by default\n- Skip runs with empty `[]` (only once on mount)\n- Cleanup runs before next effect or unmount\n\n**Let's see it in action! →**"
-      },
-      "positive": {
-        "type": "interactive-code",
-        "title": "✅ Positive Case: Fetch Users",
-        "description": "Fetches and displays a list of users from an API on mount.",
-        "code": "import { useState, useEffect } from 'react';\n\nfunction UserList() {\n  const [users, setUsers] = useState([]);\n  const [loading, setLoading] = useState(true);\n\n  useEffect(() => {\n    fetch('https://jsonplaceholder.typicode.com/users')\n      .then(res => res.json())\n      .then(data => {\n        setUsers(data);\n        setLoading(false);\n      });\n  }, []);\n\n  if (loading) return <p className=\"p-6 text-center\">Loading users...</p>;\n\n  return (\n    <div className=\"p-6\">\n      <h2 className=\"text-2xl font-bold mb-4\">Users</h2>\n      <ul className=\"space-y-2\">\n        {users.slice(0, 5).map(user => (\n          <li key={user.id} className=\"p-3 bg-gray-100 rounded\">\n            {user.name} ({user.email})\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n}\n\nexport default UserList;",
-        "showPreview": true,
-        "explanation": "**Key Points:**\n- Empty dependency array `[]` → runs only once on mount\n- Fetch happens after first render\n- Cleanup not needed here (no subscription)\n- Loading state improves UX"
-      },
-      "negative": {
-        "type": "debug-quiz",
-        "title": "🐛 Common Mistake: Infinite Loop",
-        "description": "This component causes infinite re-renders. Can you spot why?",
-        "code": "import { useState, useEffect } from 'react';\n\nfunction BadTimer() {\n  const [seconds, setSeconds] = useState(0);\n\n  useEffect(() => {\n    setTimeout(() => {\n      setSeconds(seconds + 1);\n    }, 1000);\n  });\n\n  return <div className=\"p-6\">Seconds: {seconds}</div>;\n}\n\nexport default BadTimer;",
-        "question": "Why does this cause an infinite loop?",
-        "options": [
-          { "id": "a", "text": "setTimeout is not allowed in React", "isCorrect": false },
-          { "id": "b", "text": "Missing dependency array causes effect to run every render", "isCorrect": true, "explanation": "✅ Correct! Without dependencies, useEffect runs after EVERY render. setSeconds triggers a re-render → effect runs again → infinite loop." },
-          { "id": "c", "text": "seconds should be in dependency array", "isCorrect": false },
-          { "id": "d", "text": "useEffect can't use setTimeout", "isCorrect": false }
-        ],
-        "correctCode": "import { useState, useEffect } from 'react';\n\nfunction GoodTimer() {\n  const [seconds, setSeconds] = useState(0);\n\n  useEffect(() => {\n    const interval = setInterval(() => {\n      setSeconds(s => s + 1);\n    }, 1000);\n    return () => clearInterval(interval);\n  }, []);\n\n  return <div className=\"p-6 text-2xl\">Seconds: {seconds}</div>;\n}\n\nexport default GoodTimer;",
-        "lesson": "**Always provide a dependency array.** Use `[]` for mount-only effects. Use functional updates `setSeconds(s => s + 1)` when depending on previous state."
-      },
-      "task": {
-        "type": "coding-task",
-        "title": "🛠️ Your Turn: Live Clock",
-        "description": "Build a digital clock that updates every second.",
-        "requirements": [
-          "Display current time in HH:MM:SS format",
-          "Update every second",
-          "Clean up on unmount",
-          "Use useEffect properly"
-        ],
-        "starterCode": "import { useState, useEffect } from 'react';\n\nfunction Clock() {\n  const [time, setTime] = useState(new Date());\n\n  // TODO: Add useEffect\n\n  return (\n    <div className=\"p-10 text-center\">\n      <h1 className=\"text-5xl font-bold\">{time.toLocaleTimeString()}</h1>\n    </div>\n  );\n}\n\nexport default Clock;",
-        "solution": "import { useState, useEffect } from 'react';\n\nfunction Clock() {\n  const [time, setTime] = useState(new Date());\n\n  useEffect(() => {\n    const interval = setInterval(() => {\n      setTime(new Date());\n    }, 1000);\n\n    return () => clearInterval(interval);\n  }, []);\n\n  return (\n    <div className=\"p-10 text-center\">\n      <h1 className=\"text-5xl font-bold text-blue-600\">{time.toLocaleTimeString()}</h1>\n    </div>\n  );\n}\n\nexport default Clock;",
-        "hints": [
-          "Use setInterval instead of setTimeout",
-          "Remember to clearInterval in cleanup",
-          "Empty dependency array []"
-        ]
-      },
-      "challenge": {
-        "type": "coding-challenge",
-        "title": "🏆 Challenge: Window Size Tracker",
-        "description": "Track and display the current window width and height in real time.",
-        "requirements": [
-          "Show current width × height",
-          "Update on window resize",
-          "Clean up event listener",
-          "Debounce updates if possible (bonus)"
-        ],
-        "starterCode": "import { useState, useEffect } from 'react';\n\nfunction WindowSize() {\n  const [size, setSize] = useState({ width: 0, height: 0 });\n\n  // TODO: Add resize listener\n\n  return (\n    <div className=\"p-8 text-center\">\n      <p className=\"text-3xl\">{size.width} × {size.height}</p>\n    </div>\n  );\n}\n\nexport default WindowSize;",
-        "solution": "import { useState, useEffect } from 'react';\n\nfunction WindowSize() {\n  const [size, setSize] = useState({\n    width: window.innerWidth,\n    height: window.innerHeight\n  });\n\n  useEffect(() => {\n    const handleResize = () => {\n      setSize({ width: window.innerWidth, height: window.innerHeight });\n    };\n\n    window.addEventListener('resize', handleResize);\n    return () => window.removeEventListener('resize', handleResize);\n  }, []);\n\n  return (\n    <div className=\"p-8 text-center bg-gray-100 rounded-lg\">\n      <p className=\"text-4xl font-bold text-purple-600\">\n        {size.width} × {size.height}\n      </p>\n      <p className=\"mt-4 text-gray-600\">Resize the window to see updates!</p>\n    </div>\n  );\n}\n\nexport default WindowSize;",
-        "hints": [
-          "Use window.addEventListener('resize', ...)",
-          "Don't forget to remove the listener in cleanup",
-          "Initialize state with window.innerWidth/Height"
-        ]
-      }
+  "id": "react-002-useeffect",
+  "title": "useEffect Hook",
+  "description": "Manage side effects and lifecycle behavior in React components",
+  "duration": 10,
+  "difficulty": "beginner",
+  "tags": ["hooks", "effects", "lifecycle"],
+  "prerequisites": ["react-001-usestate"],
+  "unlocks": ["react-003-usecontext"],
+  "xp": 70,
+  "steps": {
+    "refresher": {
+      "type": "markdown",
+      "title": "🏥 Real-Life Story: Hospital Heart Monitor",
+      "content": "# 🏥 Hospital Heart Monitor\n\nImagine you're building a **heart monitoring system** in a hospital.\n\nA patient is connected to a monitor that:\n\n- Reads heart rate every few seconds\n- Displays live updates on screen\n\nEverything works fine... until this happens 👇\n\n---\n\n## ❌ The Problem\n\n- Patient leaves the room\n- Monitor **continues running** in the background\n- System wastes resources\n- Multiple monitors start stacking up 😨\n\n---\n\n## 🧠 Why This Happens\n\nSome actions:\n- Fetching data\n- Setting timers\n- Listening to events\n\nThese are called **side effects**.\n\nIf you don’t control **when they start** and **when they stop**, problems occur.\n\n---\n\n## ✅ React Solution: useEffect\n\n`useEffect` lets you:\n\n- Run code **after render**\n- Control **when it runs**\n- Clean up when the component unmounts\n\n---\n\n## 🔧 Basic Syntax\n\n```js\nuseEffect(() => {\n  // side effect logic\n\n  return () => {\n    // cleanup logic\n  };\n}, [dependencies]);\n```\n\n👉 **Next: Let’s start the heart monitor correctly.**"
+    },
+    "positive": {
+      "type": "interactive-code",
+      "title": "✅ Positive Case: Heart Rate Monitor",
+      "description": "The monitor starts when the patient arrives and stops when they leave.",
+      "code": "import { useEffect, useState } from 'react';\n\nfunction HeartMonitor() {\n  const [heartRate, setHeartRate] = useState(72);\n\n  useEffect(() => {\n    const intervalId = setInterval(() => {\n      setHeartRate((prev) => prev + Math.floor(Math.random() * 3 - 1));\n    }, 2000);\n\n    return () => {\n      clearInterval(intervalId);\n    };\n  }, []);\n\n  return (\n    <div className=\"p-6 bg-white rounded-lg shadow\">\n      <h2 className=\"text-2xl font-bold mb-4\">❤️ Heart Monitor</h2>\n      <p className=\"text-4xl text-red-600\">{heartRate} BPM</p>\n    </div>\n  );\n}\n\nexport default HeartMonitor;",
+      "showPreview": true,
+      "explanation": "**How it works (Hospital Mapping):**\n\n1. Patient arrives → component mounts\n2. `useEffect` starts the heart monitor\n3. Heart rate updates every 2 seconds\n4. Patient leaves → component unmounts\n5. Cleanup stops the monitor\n\n✅ **Key Rule:** Always clean up effects that run continuously."
+    },
+    "negative": {
+      "type": "debug-quiz",
+      "title": "🐛 Common Mistake: No Cleanup",
+      "description": "The heart monitor keeps running even after the patient leaves. Why?",
+      "code": "import { useEffect, useState } from 'react';\n\nfunction BrokenMonitor() {\n  const [heartRate, setHeartRate] = useState(72);\n\n  useEffect(() => {\n    setInterval(() => {\n      setHeartRate((prev) => prev + 1);\n    }, 2000);\n  }, []);\n\n  return <p>{heartRate} BPM</p>;\n}\n\nexport default BrokenMonitor;",
+      "question": "Why is this code dangerous?",
+      "options": [
+        {
+          "id": "a",
+          "text": "useEffect should not be used with setInterval",
+          "isCorrect": false,
+          "explanation": "setInterval is fine, but it must be cleaned up."
+        },
+        {
+          "id": "b",
+          "text": "Missing cleanup causes memory leaks",
+          "isCorrect": true,
+          "explanation": "✅ Correct! Without cleanup, the interval continues running even after the component unmounts."
+        },
+        {
+          "id": "c",
+          "text": "State updates are not allowed inside useEffect",
+          "isCorrect": false,
+          "explanation": "State updates are allowed inside effects."
+        },
+        {
+          "id": "d",
+          "text": "The dependency array is wrong",
+          "isCorrect": false,
+          "explanation": "The dependency array is correct, but cleanup is missing."
+        }
+      ],
+      "correctCode": "useEffect(() => {\n  const intervalId = setInterval(() => {\n    setHeartRate((prev) => prev + 1);\n  }, 2000);\n\n  return () => clearInterval(intervalId);\n}, []);",
+      "lesson": "**Real-Life Mistake:**\n\nThis is like leaving hospital machines running after the patient leaves.\n\n❌ Wastes resources\n❌ Causes performance issues\n\n✅ Always stop effects when they’re no longer needed."
+    },
+    "task": {
+      "type": "coding-task",
+      "title": "🛠️ Your Turn: Room Temperature Monitor",
+      "description": "Build a temperature monitor that updates every 3 seconds and stops when the component unmounts.",
+      "requirements": [
+        "Use useEffect",
+        "Use setInterval",
+        "Update temperature state",
+        "Clean up the interval"
+      ],
+      "starterCode": "import { useEffect, useState } from 'react';\n\nfunction TemperatureMonitor() {\n  const [temp, setTemp] = useState(24);\n\n  // TODO: Add useEffect here\n\n  return (\n    <div className=\"p-6\">\n      <h2>🌡️ Room Temperature</h2>\n      <p className=\"text-3xl\">{temp}°C</p>\n    </div>\n  );\n}\n\nexport default TemperatureMonitor;",
+      "solution": "import { useEffect, useState } from 'react';\n\nfunction TemperatureMonitor() {\n  const [temp, setTemp] = useState(24);\n\n  useEffect(() => {\n    const id = setInterval(() => {\n      setTemp((prev) => prev + 1);\n    }, 3000);\n\n    return () => clearInterval(id);\n  }, []);\n\n  return (\n    <div className=\"p-6\">\n      <h2>🌡️ Room Temperature</h2>\n      <p className=\"text-3xl\">{temp}°C</p>\n    </div>\n  );\n}\n\nexport default TemperatureMonitor;",
+      "hints": [
+        "useEffect runs after render",
+        "Store interval ID",
+        "Return cleanup function"
+      ],
+      "tests": [
+        "Temperature updates every 3 seconds",
+        "No memory leaks",
+        "Cleanup runs on unmount"
+      ]
+    },
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "🏆 Challenge: Patient Status Tracker",
+      "description": "Track patient status changes and log them whenever the status updates.",
+      "requirements": [
+        "Use useState for patient status",
+        "Use useEffect to log status changes",
+        "Dependency array should track status only"
+      ],
+      "starterCode": "import { useEffect, useState } from 'react';\n\nfunction PatientStatus() {\n  const [status, setStatus] = useState('Stable');\n\n  // TODO: Log status changes\n\n  return (\n    <div className=\"p-6\">\n      <p>Status: {status}</p>\n      <button onClick={() => setStatus('Critical')}>Critical</button>\n      <button onClick={() => setStatus('Stable')}>Stable</button>\n    </div>\n  );\n}\n\nexport default PatientStatus;",
+      "solution": "import { useEffect, useState } from 'react';\n\nfunction PatientStatus() {\n  const [status, setStatus] = useState('Stable');\n\n  useEffect(() => {\n    console.log('Patient status changed:', status);\n  }, [status]);\n\n  return (\n    <div className=\"p-6\">\n      <p>Status: {status}</p>\n      <button onClick={() => setStatus('Critical')}>Critical</button>\n      <button onClick={() => setStatus('Stable')}>Stable</button>\n    </div>\n  );\n}\n\nexport default PatientStatus;",
+      "hints": [
+        "Effects can depend on state",
+        "Dependency array controls execution",
+        "No cleanup needed for console.log"
+      ],
+      "tests": [
+        "Effect runs on status change",
+        "Does not run unnecessarily",
+        "Logs correct value"
+      ]
     }
   }
+}

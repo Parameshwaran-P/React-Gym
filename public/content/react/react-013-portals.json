@@ -1,60 +1,108 @@
 {
-    "id": "react-013-portals",
-    "title": "Portals & Advanced Patterns",
-    "description": "Render children outside the DOM hierarchy (modals, tooltips)",
-    "duration": 10,
-    "difficulty": "advanced",
-    "tags": ["portals", "modals", "overlay", "advanced"],
-    "prerequisites": ["react-012-testing"],
-    "unlocks": ["react-014-suspense"],
-    "xp": 95,
-    "steps": {
-      "refresher": {
-        "type": "markdown",
-        "title": "What are Portals?",
-        "content": "# React Portals\n\n## Problem\n\nModals, tooltips, or toasts need to render at the top level of DOM (outside parent) for proper stacking and styling.\n\n## Solution: ReactDOM.createPortal\n\n```jsx\ncreatePortal(child, domNode)\n```\n\nRenders child into any DOM node while staying in React tree.\n\n**Let's build a modal! →**"
-      },
-      "positive": {
-        "type": "interactive-code",
-        "title": "✅ Positive Case: Modal with Portal",
-        "description": "Modal renders at document.body level.",
-        "code": "import { useState } from 'react';\nimport { createPortal } from 'react-dom';\n\nfunction Modal({ children, onClose }) {\n  return createPortal(\n    <div className=\"fixed inset-0 bg-black/50 flex items-center justify-center z-50\" onClick={onClose}>\n      <div className=\"bg-white rounded-xl p-8 max-w-md w-full mx-4\" onClick={e => e.stopPropagation()}>\n        <button onClick={onClose} className=\"float-right text-2xl\">&times;</button>\n        {children}\n      </div>\n    </div>,\n    document.body\n  );\n}\n\nfunction App() {\n  const [open, setOpen] = useState(false);\n\n  return (\n    <div className=\"p-12 text-center\">\n      <button\n        onClick={() => setOpen(true)}\n        className=\"px-8 py-4 bg-indigo-600 text-white rounded-lg text-xl\"\n      >\n        Open Modal\n      </button>\n\n      {open && (\n        <Modal onClose={() => setOpen(false)}>\n          <h2 className=\"text-3xl font-bold mb-4\">Welcome to React Gym! 🏋️</h2>\n          <p className=\"text-lg\">You're doing amazing. Keep training!</p>\n        </Modal>\n      )}\n    </div>\n  );\n}\n\nexport default App;",
-        "showPreview": true,
-        "explanation": "Modal overlays everything correctly thanks to portal."
-      },
-      "negative": {
-        "type": "debug-quiz",
-        "title": "🐛 Common Mistake: No stopPropagation",
-        "description": "Clicking inside modal closes it. Why?",
-        "code": "<div className=\"overlay\" onClick={onClose}>\n  <div className=\"modal\">Content</div>\n</div>",
-        "question": "Why does clicking modal content close it?",
-        "options": [
-          { "id": "a", "text": "Portal bug", "isCorrect": false },
-          { "id": "b", "text": "Event bubbles up to overlay", "isCorrect": true, "explanation": "✅ Need e.stopPropagation() on inner div." }
-        ],
-        "lesson": "**Always stop event propagation on modal content.**"
-      },
-      "task": {
-        "type": "coding-task",
-        "title": "🛠️ Your Turn: Toast Notification",
-        "description": "Create a toast that appears at bottom-right using portal.",
-        "requirements": [
-          "Show toast for 3 seconds",
-          "Button triggers toast",
-          "Renders in portal"
-        ],
-        "starterCode": "// Build a toast system with portal",
-        "solution": "// Full toast with auto-dismiss and portal"
-      },
-      "challenge": {
-        "type": "coding-challenge",
-        "title": "🏆 Challenge: Accessible Modal with Focus Trap",
-        "description": "Build a fully accessible modal (Escape key, focus trap, ARIA).",
-        "requirements": [
-          "Close on Escape",
-          "Trap focus inside modal",
-          "Proper ARIA roles"
-        ]
-      }
+  "id": "react-013-portals",
+  "title": "React Portals",
+  "description": "Render components outside the main DOM hierarchy using React Portals",
+  "duration": 10,
+  "difficulty": "advanced",
+  "tags": ["portals", "modals", "tooltips", "react"],
+  "prerequisites": ["react-012-testing"],
+  "unlocks": ["react-014-suspense"],
+  "xp": 90,
+  "steps": {
+    "refresher": {
+      "type": "markdown",
+      "title": "🏥 Real-Life Story: Hospital Modals",
+      "content": "# 🏥 Why Portals Are Needed\n\nIn our hospital app:\n- We have a **patient details modal** that shows on top of the dashboard\n- We want it **centered** and not affected by parent component CSS\n\n❌ Problem: Rendering a modal as a child of a deeply nested component may cause **overflow or z-index issues**.\n\n---\n\n## 🧠 Why This Happens\n\n- React normally renders children **inside the parent DOM node**\n- CSS of parent may restrict positioning, scrolling, or overflow\n- We need a way to render UI elements **at the top-level of DOM**\n\n---\n\n## ✅ React Solution: Portals\n\n- `ReactDOM.createPortal(child, container)` lets you render `child` into **any DOM node**\n- Perfect for modals, tooltips, dropdowns, notifications\n\nThink of it as **teleporting a patient info modal** to a top-level DOM room, so it’s always visible."
+    },
+    "positive": {
+      "type": "interactive-code",
+      "title": "✅ Positive Case: Patient Modal Using Portal",
+      "description": "Render a PatientDetailModal outside the main DOM hierarchy.",
+      "code": "import { useState } from 'react';\nimport { createPortal } from 'react-dom';\n\nfunction PatientModal({ patient, onClose }) {\n  return createPortal(\n    <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'>\n      <div className='bg-white p-6 rounded shadow-lg'>\n        <h2 className='text-xl font-bold'>{patient.name}</h2>\n        <p>Status: {patient.status}</p>\n        <button onClick={onClose} className='mt-4 px-4 py-2 bg-red-600 text-white rounded'>Close</button>\n      </div>\n    </div>,\n    document.getElementById('modal-root') // This div exists in index.html\n  );\n}\n\nfunction HospitalApp() {\n  const [selectedPatient, setSelectedPatient] = useState(null);\n  const patients = [\n    { id: 1, name: 'Meena', status: 'Stable' },\n    { id: 2, name: 'Ravi', status: 'Critical' }\n  ];\n\n  return (\n    <div className='p-6'>\n      <h1 className='text-2xl font-bold mb-4'>Hospital Dashboard</h1>\n      {patients.map(p => (\n        <div key={p.id} className='mb-2'>\n          {p.name} - {p.status} \n          <button onClick={() => setSelectedPatient(p)} className='ml-2 px-2 py-1 bg-blue-600 text-white rounded'>View</button>\n        </div>\n      ))}\n      {selectedPatient && <PatientModal patient={selectedPatient} onClose={() => setSelectedPatient(null)} />}\n    </div>\n  );\n}\n\nexport default HospitalApp;",
+      "showPreview": true,
+      "explanation": "**How it works:**\n\n1. `PatientModal` is rendered with `createPortal` into `#modal-root`\n2. Modal appears **on top of everything**, unaffected by parent CSS\n3. Clicking 'Close' sets `selectedPatient` to null, hiding modal\n\n✅ **Key Rule:** Use Portals for any UI element that needs to escape parent stacking or overflow."
+    },
+    "negative": {
+      "type": "debug-quiz",
+      "title": "🐛 Common Mistake: Nested Modals Without Portal",
+      "description": "Why would a modal inside a deeply nested div cause issues?",
+      "code": "<div className='overflow-hidden'><Modal /></div>",
+      "question": "What's the problem?",
+      "options": [
+        {
+          "id": "a",
+          "text": "React cannot render components inside divs",
+          "isCorrect": false,
+          "explanation": "React can render inside divs; the issue is CSS constraints."
+        },
+        {
+          "id": "b",
+          "text": "Parent CSS (overflow, z-index) may hide modal content",
+          "isCorrect": true,
+          "explanation": "✅ Correct! Portals avoid parent CSS restrictions."
+        },
+        {
+          "id": "c",
+          "text": "createPortal is not needed for small apps",
+          "isCorrect": false,
+          "explanation": "Small apps may work, but portal ensures consistent UI."
+        },
+        {
+          "id": "d",
+          "text": "Modals cannot have state inside parent",
+          "isCorrect": false,
+          "explanation": "State can exist in parent; the problem is styling and positioning."
+        }
+      ],
+      "correctCode": "Use ReactDOM.createPortal to render modals outside parent DOM."
+    },
+    "task": {
+      "type": "coding-task",
+      "title": "🛠️ Your Turn: Create a Portal Modal",
+      "description": "Create a notification or patient detail modal using React Portal. It should appear on top of other components.",
+      "requirements": [
+        "Create a top-level div with id='modal-root' in index.html",
+        "Use createPortal to render the modal",
+        "Modal should close on clicking 'Close'",
+        "Style modal to appear centered and overlay background"
+      ],
+      "starterCode": "import { useState } from 'react';\nimport { createPortal } from 'react-dom';\n\nfunction Modal({ children, onClose }) {\n  // TODO: Implement portal\n  return null;\n}\n\nfunction HospitalApp() {\n  const [open, setOpen] = useState(false);\n  return <div>TODO</div>;\n}\n\nexport default HospitalApp;",
+      "solution": "/* Same as Positive Case Code Above */",
+      "hints": [
+        "Use createPortal(child, document.getElementById('modal-root'))",
+        "Ensure modal div is outside main app div in index.html",
+        "Close modal by updating state in parent"
+      ],
+      "tests": [
+        "Modal appears on top of app",
+        "Modal closes when 'Close' clicked",
+        "Modal content matches patient data",
+        "Modal is unaffected by parent CSS"
+      ]
+    },
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "🏆 Challenge: Hospital Notifications System",
+      "description": "Create a portal-based notifications system: multiple alerts can appear on top of dashboard, auto-dismiss after 5 seconds.",
+      "requirements": [
+        "Render notifications in a portal container",
+        "Allow multiple notifications simultaneously",
+        "Auto-dismiss notifications after 5 seconds",
+        "Clicking a close button removes notification immediately"
+      ],
+      "starterCode": "/* Use createPortal and state to manage notifications */",
+      "solution": "/* Map notifications array to portal-rendered Notification components */",
+      "hints": [
+        "Use setTimeout for auto-dismiss",
+        "Use createPortal to render notifications outside app DOM",
+        "Maintain notifications array in parent component"
+      ],
+      "tests": [
+        "Notification appears in portal",
+        "Multiple notifications stack correctly",
+        "Auto-dismiss works",
+        "Clicking close removes notification immediately"
+      ]
     }
   }
+}

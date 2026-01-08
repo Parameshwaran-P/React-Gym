@@ -60,7 +60,7 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-gray-50">
       {/* Navbar */}
       <nav className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link to="/" className="flex items-center gap-3">
               <span className="text-3xl">🏋️</span>
@@ -80,7 +80,7 @@ export default function DashboardPage() {
 
       {/* Track Selector Tabs */}
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex gap-8 overflow-x-auto py-4">
             {tracks.map((track) => (
               <button
@@ -101,7 +101,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+      <div className="max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
             Welcome back! 👋
@@ -264,7 +264,7 @@ export default function DashboardPage() {
                     You've completed <strong>{stats.unitsCompleted}</strong> unit{stats.unitsCompleted !== 1 ? 's' : ''} and earned{' '}
                     <strong>{stats.totalXP} XP</strong>. Your streak is <strong>{stats.streak} day{stats.streak !== 1 ? 's' : ''}</strong>.
                     <br />
-                    <span className="block mt-4 font-medium">Keep training — you're becoming unstoppable! 💪</span>
+                    <span className="block mt-4 font-medium">Keep training - you're becoming unstoppable! 💪</span>
                   </p>
                 </div>
               </Card>
