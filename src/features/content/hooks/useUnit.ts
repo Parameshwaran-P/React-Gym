@@ -14,6 +14,7 @@ export function useUnit(contentId: string, unitId: string): UseUnitResult {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<ContentLoadError | null>(null);
   const [retryCount, setRetryCount] = useState(0);
+   const [retryCount2, setRetryCount2] = useState(0);
 
   const fetchUnit = async () => {
     try {
