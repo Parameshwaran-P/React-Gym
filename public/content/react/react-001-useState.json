@@ -104,6 +104,76 @@
         "Display shows values",
         "Clear button resets both"
       ]
+    },
+    "intro": {
+      "type": "game-intro",
+      "title": "⚔️ Welcome to the useState Arena!",
+      "story": "The State Kingdom is under attack! Only you can save it by mastering the useState hook. Complete challenges to defeat enemies and restore peace!",
+      "preview": "You'll battle 5 enemies, each teaching you a different aspect of useState."
+    },
+    "battle1": {
+      "type": "code-battle",
+      "title": "Battle 1: The Counter Monster",
+      "description": "Defeat the Counter Monster by creating a working counter!",
+      "enemy": {
+        "name": "Counter Monster",
+        "avatar": "👾",
+        "health": 100,
+        "attack": 15
+      },
+      "starterCode": "import { useState } from 'react';\n\nfunction Counter() {\n  // TODO: Add state here\n  \n  return (\n    <div>\n      <p>Count: ???</p>\n      <button>Click me</button>\n    </div>\n  );\n}",
+      "hints": [
+        "Use useState(0) to create state",
+        "Use setCount in onClick handler",
+        "Display count variable in JSX"
+      ],
+      "tests": [
+        { "description": "State initializes to 0", "input": null, "expected": 0 },
+        { "description": "Button increases count", "input": "click", "expected": 1 },
+        { "description": "Count displays correctly", "input": null, "expected": "rendered" }
+      ]
+    },
+    "puzzle1": {
+      "type": "code-puzzle",
+      "concept": "useState Syntax",
+      "description": "Arrange the code blocks in the correct order!",
+      "availableBlocks": [
+        { "id": "1", "code": "import { useState } from 'react';", "type": "correct" },
+        { "id": "2", "code": "const [count, setCount] = useState(0);", "type": "correct" },
+        { "id": "3", "code": "return <button onClick={() => setCount(count + 1)}>{count}</button>;", "type": "correct" },
+        { "id": "4", "code": "const count = 0;", "type": "wrong" },
+        { "id": "5", "code": "count++;", "type": "wrong" }
+      ],
+      "correctSequence": ["1", "2", "3"]
+    },
+    "memory1": {
+      "type": "memory-game",
+      "title": "useState Memory Match",
+      "pairs": [
+        { "concept": "useState(0)", "code": "Initialize state to 0" },
+        { "concept": "setCount(5)", "code": "Update state to 5" },
+        { "concept": "[count, setCount]", "code": "Destructure state array" },
+        { "concept": "useState hook", "code": "Add state to function component" }
+      ]
+    },
+    "boss": {
+      "type": "code-battle",
+      "title": "🏆 Boss Battle: The State Dragon",
+      "description": "Face the final challenge! Build a complete todo app!",
+      "enemy": {
+        "name": "State Dragon",
+        "avatar": "🐉",
+        "health": 200,
+        "attack": 25
+      },
+      "starterCode": "// Build a todo list with add/remove functionality",
+      "hints": [
+        "Use useState with an array",
+        "Use spread operator to add items",
+        "Filter array to remove items"
+      ]
     }
+
+
   }
 }
