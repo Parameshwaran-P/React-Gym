@@ -105,73 +105,117 @@
         "Clear button resets both"
       ]
     },
-    "intro": {
+     "intro": {
       "type": "game-intro",
       "title": "⚔️ Welcome to the useState Arena!",
-      "story": "The State Kingdom is under attack! Only you can save it by mastering the useState hook. Complete challenges to defeat enemies and restore peace!",
-      "preview": "You'll battle 5 enemies, each teaching you a different aspect of useState."
+      "story": "The State Kingdom is under attack by the forces of chaos! Bugs, errors, and crashes are invading. Only YOU can save the kingdom by mastering the useState hook. Complete 5 epic challenges to restore peace and become a React Hero!",
+      "preview": "You'll face: Code Battles, Typing Races, Bug Hunts, Memory Challenges, and a final Tower Defense!"
     },
     "battle1": {
       "type": "code-battle",
       "title": "Battle 1: The Counter Monster",
-      "description": "Defeat the Counter Monster by creating a working counter!",
+      "description": "Create a working counter to defeat the Counter Monster!",
       "enemy": {
         "name": "Counter Monster",
         "avatar": "👾",
         "health": 100,
         "attack": 15
       },
-      "starterCode": "import { useState } from 'react';\n\nfunction Counter() {\n  // TODO: Add state here\n  \n  return (\n    <div>\n      <p>Count: ???</p>\n      <button>Click me</button>\n    </div>\n  );\n}",
+      "starterCode": "import { useState } from 'react';\n\nfunction Counter() {\n  // TODO: Add state here\n  \n  return (\n    <div className=\"p-6 text-center\">\n      <p className=\"text-4xl mb-4\">Count: ???</p>\n      <button className=\"bg-blue-600 text-white px-6 py-2 rounded\">\n        Click me\n      </button>\n    </div>\n  );\n}\n\nexport default Counter;",
+      "solution": "import { useState } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  \n  return (\n    <div className=\"p-6 text-center\">\n      <p className=\"text-4xl mb-4\">Count: {count}</p>\n      <button \n        onClick={() => setCount(count + 1)}\n        className=\"bg-blue-600 text-white px-6 py-2 rounded\"\n      >\n        Click me\n      </button>\n    </div>\n  );\n}",
       "hints": [
-        "Use useState(0) to create state",
-        "Use setCount in onClick handler",
-        "Display count variable in JSX"
+        "Use useState(0) to initialize state with 0",
+        "Destructure: const [count, setCount] = useState(0)",
+        "Update state in onClick: () => setCount(count + 1)",
+        "Display count in JSX: {count}"
       ],
       "tests": [
-        { "description": "State initializes to 0", "input": null, "expected": 0 },
+        { "description": "Counter initializes to 0", "input": null, "expected": 0 },
         { "description": "Button increases count", "input": "click", "expected": 1 },
-        { "description": "Count displays correctly", "input": null, "expected": "rendered" }
+        { "description": "Count displays in UI", "input": null, "expected": "rendered" }
       ]
     },
-    "puzzle1": {
-      "type": "code-puzzle",
-      "concept": "useState Syntax",
-      "description": "Arrange the code blocks in the correct order!",
-      "availableBlocks": [
-        { "id": "1", "code": "import { useState } from 'react';", "type": "correct" },
-        { "id": "2", "code": "const [count, setCount] = useState(0);", "type": "correct" },
-        { "id": "3", "code": "return <button onClick={() => setCount(count + 1)}>{count}</button>;", "type": "correct" },
-        { "id": "4", "code": "const count = 0;", "type": "wrong" },
-        { "id": "5", "code": "count++;", "type": "wrong" }
-      ],
-      "correctSequence": ["1", "2", "3"]
+    "race": {
+      "type": "speed-typing-race",
+      "targetCode": "const [count, setCount] = useState(0);\nsetCount(count + 1);",
+      "language": "javascript",
+      "rivals": [
+        { "name": "Speedy Dev", "avatar": "🏃", "speed": 0.8 },
+        { "name": "Code Ninja", "avatar": "🥷", "speed": 1.0 },
+        { "name": "Bug Bot", "avatar": "🤖", "speed": 0.6 }
+      ]
     },
-    "memory1": {
+    "bughunt": {
+      "type": "bug-hunt-shooter",
+      "code": "import { useState } from 'react';\n\nfunction App() {\n  const [count setCount] = useState(0);\n  \n  return (\n    <div>\n      <p>Count: {count}</p>\n      <button onClick={() => count++}>\n        Click\n      </button>\n    </div>\n  );\n}",
+      "bugs": [
+        {
+          "id": "bug1",
+          "line": 4,
+          "type": "syntax",
+          "description": "Missing comma in destructuring",
+          "fix": "const [count, setCount]"
+        },
+        {
+          "id": "bug2",
+          "line": 9,
+          "type": "logic",
+          "description": "Direct mutation instead of setState",
+          "fix": "onClick={() => setCount(count + 1)}"
+        }
+      ],
+      "timeLimit": 60
+    },
+    "memory": {
       "type": "memory-game",
-      "title": "useState Memory Match",
+      "title": "useState Memory Master",
       "pairs": [
         { "concept": "useState(0)", "code": "Initialize state to 0" },
         { "concept": "setCount(5)", "code": "Update state to 5" },
-        { "concept": "[count, setCount]", "code": "Destructure state array" },
-        { "concept": "useState hook", "code": "Add state to function component" }
+        { "concept": "[count, setCount]", "code": "Array destructuring" },
+        { "concept": "useState hook", "code": "Add state to function" },
+        { "concept": "count++", "code": "❌ Wrong! Mutates directly" },
+        { "concept": "setCount(count+1)", "code": "✅ Correct! Updates state" }
       ]
     },
-    "boss": {
-      "type": "code-battle",
-      "title": "🏆 Boss Battle: The State Dragon",
-      "description": "Face the final challenge! Build a complete todo app!",
-      "enemy": {
-        "name": "State Dragon",
-        "avatar": "🐉",
-        "health": 200,
-        "attack": 25
-      },
-      "starterCode": "// Build a todo list with add/remove functionality",
-      "hints": [
-        "Use useState with an array",
-        "Use spread operator to add items",
-        "Filter array to remove items"
-      ]
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "What does useState return?",
+          "code": "const result = useState(0);",
+          "options": [
+            "A number",
+            "An array with [value, setter]",
+            "A function",
+            "An object"
+          ],
+          "correct": 1
+        },
+        {
+          "question": "How do you update state?",
+          "code": "const [count, setCount] = useState(0);",
+          "options": [
+            "count = 5",
+            "count++",
+            "setCount(5)",
+            "useState(5)"
+          ],
+          "correct": 2
+        },
+        {
+          "question": "What's the initial state here?",
+          "code": "const [name, setName] = useState('Alice');",
+          "options": [
+            "undefined",
+            "null",
+            "'Alice'",
+            "setName"
+          ],
+          "correct": 2
+        }
+      ],
+      "waves": 3
     }
 
 

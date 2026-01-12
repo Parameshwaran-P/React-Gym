@@ -5,7 +5,15 @@ export type StepType =
   | 'interactive-code' 
   | 'debug-quiz' 
   | 'coding-task' 
-  | 'coding-challenge';
+  | 'coding-challenge'
+  // NEW: Game types
+  | 'game-intro'
+  | 'code-battle'
+  | 'code-puzzle'
+  | 'memory-game'
+  | 'speed-typing-race'
+  | 'bug-hunt-shooter'
+  | 'tower-defense';
 
 export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced';
 

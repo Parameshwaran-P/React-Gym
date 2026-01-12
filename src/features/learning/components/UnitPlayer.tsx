@@ -20,6 +20,7 @@ import {
   Eye, 
   EyeOff 
 } from 'lucide-react';
+import { GameRouter } from './games/GameRouter';
 
 interface UnitPlayerProps {
   contentId: string;
@@ -301,6 +302,29 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
               {/* Coding Challenge */}
               {stepData.type === 'coding-challenge' && (
                 <CodingChallengeStep stepData={stepData} />
+              )}
+
+               {/* GAME TYPES */}
+              {(stepData.type === 'game-intro' || 
+                stepData.type === 'code-battle' ||
+                stepData.type === 'code-puzzle' ||
+                stepData.type === 'memory-game' ||
+                stepData.type === 'speed-typing-race' ||
+                stepData.type === 'bug-hunt-shooter' ||
+                stepData.type === 'tower-defense') && (
+                <GameRouter 
+                  stepData={stepData} 
+                  onComplete={(score) => {
+                    // Award bonus XP for game completion
+                    if (score) {
+                      updateUnitProgress(contentId, unitId, {
+                        score: (getUnitProgress(contentId, unitId)?.score || 0) + score,
+                      });
+                    }
+                    // Auto-advance after game completion
+                    setTimeout(() => handleNext(), 1500);
+                  }}
+                />
               )}
             </Card>
 
