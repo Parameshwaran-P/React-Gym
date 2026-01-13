@@ -13,23 +13,30 @@ import ReactMarkdown from 'react-markdown';
 import { InteractiveCodeEditor } from './InteractiveCodeEditor';
 import { CodeDisplay } from './CodeDisplay';
 import { CompletionModal } from './CompletionModal';
+import { GameRouter } from './games/GameRouter';
 import { 
   CheckCircle2, 
   Circle, 
   Lightbulb, 
   Eye, 
-  EyeOff 
+  EyeOff,
+  Gamepad2
 } from 'lucide-react';
-import { GameRouter } from './games/GameRouter';
 
 interface UnitPlayerProps {
   contentId: string;
   unitId: string;
 }
 
-const STEP_NAMES = ['refresher', 'positive', 'negative', 'task', 'challenge'];
-const STEP_ICONS = ['📚', '✅', '🐛', '🛠️', '🏆'];
-const STEP_TITLES = ['Refresher', 'See It Work', 'Debug It', 'Build It', 'Master It'];
+// Dynamic step detection
+const isGameStep = (type: string) => {
+  return ['game-intro', 'code-battle', 'code-puzzle', 'memory-game', 
+          'speed-typing-race', 'bug-hunt-shooter', 'tower-defense'].includes(type);
+};
+
+const isTraditionalStep = (type: string) => {
+  return ['markdown', 'interactive-code', 'debug-quiz', 'coding-task', 'coding-challenge'].includes(type);
+};
 
 export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
   const { unit, loading, error, retry } = useUnit(contentId, unitId);
@@ -38,12 +45,49 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
   const [showCompletion, setShowCompletion] = useState(false);
   const navigate = useNavigate();
 
+  // Get all step keys dynamically from unit.steps
+  const stepKeys = unit ? Object.keys(unit.steps) : [];
+  const totalSteps = stepKeys.length;
+
+  // Get step icons and titles dynamically
+  const getStepIcon = (stepData: any) => {
+    if (isGameStep(stepData.type)) {
+      switch (stepData.type) {
+        case 'game-intro': return '🎮';
+        case 'code-battle': return '⚔️';
+        case 'code-puzzle': return '🧩';
+        case 'memory-game': return '🧠';
+        case 'speed-typing-race': return '🏁';
+        case 'bug-hunt-shooter': return '🐛';
+        case 'tower-defense': return '🏰';
+        default: return '🎯';
+      }
+    }
+    // Traditional steps
+    return ['📚', '✅', '🐛', '🛠️', '🏆'][currentStep] || '📖';
+  };
+
+  const getStepTitle = (stepKey: string, stepData: any) => {
+    if (isGameStep(stepData.type)) {
+      return stepData.title || stepKey;
+    }
+    // Traditional steps
+    const titles: Record<string, string> = {
+      'refresher': 'Refresher',
+      'positive': 'See It Work',
+      'negative': 'Debug It',
+      'task': 'Build It',
+      'challenge': 'Master It',
+    };
+    return titles[stepKey] || stepKey;
+  };
+
   // Load progress on mount
   useEffect(() => {
     if (unit) {
       const progress = getUnitProgress(contentId, unitId);
       if (progress) {
-        setCurrentStep(progress.currentStep);
+        setCurrentStep(Math.min(progress.currentStep, totalSteps - 1));
       } else {
         updateUnitProgress(contentId, unitId, {
           currentStep: 0,
@@ -51,7 +95,7 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
         });
       }
     }
-  }, [unit, contentId, unitId]);
+  }, [unit, contentId, unitId, totalSteps]);
 
   // Save progress when step changes
   useEffect(() => {
@@ -65,7 +109,7 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
   }, [currentStep, unit, contentId, unitId, startTime]);
 
   const handleNext = () => {
-    if (currentStep < 4) {
+    if (currentStep < totalSteps - 1) {
       // Mark step as completed
       const progress = getUnitProgress(contentId, unitId);
       const completed = progress?.stepsCompleted || [];
@@ -100,11 +144,24 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
     const progress = getUnitProgress(contentId, unitId);
     const completed = progress?.stepsCompleted || [];
     
-    // Can only go to completed steps or current step + 1
+    // Can go to completed steps or current step + 1
     if (stepIndex <= currentStep || completed.includes(stepIndex - 1)) {
       setCurrentStep(stepIndex);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+  };
+
+  const handleGameComplete = (score?: number) => {
+    // Award bonus XP for game completion
+    if (score) {
+      const progress = getUnitProgress(contentId, unitId);
+      updateUnitProgress(contentId, unitId, {
+        score: (progress?.score || 0) + score,
+      });
+    }
+    
+    // Auto-advance after game completion
+    setTimeout(() => handleNext(), 1500);
   };
 
   if (loading) {
@@ -122,14 +179,12 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
         <Card className="text-center max-w-md">
-          {/* Error Icon Based on Type */}
           <div className="text-6xl mb-4">
             {error.code === 'NOT_FOUND' ? '🔍' : 
              error.code === 'NETWORK_ERROR' ? '📡' : 
              error.code === 'PARSE_ERROR' ? '⚠️' : '❌'}
           </div>
           
-          {/* Error Title */}
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
             {error.code === 'NOT_FOUND' ? 'Unit Not Found' :
              error.code === 'NETWORK_ERROR' ? 'Connection Error' :
@@ -137,12 +192,8 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
              'Something Went Wrong'}
           </h2>
           
-          {/* Error Message */}
-          <p className="text-gray-600 mb-6">
-            {error.message}
-          </p>
+          <p className="text-gray-600 mb-6">{error.message}</p>
           
-          {/* Error Details (Development) */}
           {import.meta.env.DEV && (
             <details className="text-left mb-6 p-4 bg-gray-100 rounded text-sm">
               <summary className="cursor-pointer font-medium mb-2">
@@ -152,15 +203,10 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
                 <p><strong>Code:</strong> {error.code}</p>
                 <p><strong>Content ID:</strong> {error.contentId || 'N/A'}</p>
                 <p><strong>Unit ID:</strong> {error.unitId || 'N/A'}</p>
-                <p><strong>Stack:</strong></p>
-                <pre className="bg-white p-2 rounded overflow-auto max-h-32">
-                  {error.stack}
-                </pre>
               </div>
             </details>
           )}
           
-          {/* Actions */}
           <div className="space-y-3">
             {error.code === 'NETWORK_ERROR' && (
               <Button onClick={retry} size="lg" className="w-full">
@@ -181,14 +227,18 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
     );
   }
   
-  if (!unit) {
-    return null; // Should not happen if loading/error are handled
-  }
+  if (!unit) return null;
 
-  const stepName = STEP_NAMES[currentStep];
-  const stepData = unit.steps[stepName];
+  const currentStepKey = stepKeys[currentStep];
+  const stepData = unit.steps[currentStepKey];
   const progress = getUnitProgress(contentId, unitId);
   const completedSteps = progress?.stepsCompleted || [];
+  
+  const currentStepIcon = getStepIcon(stepData);
+  const currentStepTitle = getStepTitle(currentStepKey, stepData);
+
+  // Check if this is a gamified unit
+  const hasGames = stepKeys.some(key => isGameStep(unit.steps[key].type));
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -198,7 +248,7 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
           unitTitle={unit.title}
           xpEarned={unit.xp}
           timeSpent={Math.floor((Date.now() - startTime) / 1000)}
-          nextUnitId={unit.unlocks[0]}
+          nextUnitId={unit.unlocks?.[0]}
           contentId={contentId}
           isOpen={showCompletion}
           onClose={() => {
@@ -209,44 +259,60 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
       )}
 
       {/* Progress Sidebar */}
-      <div className="fixed left-0 top-16 h-full w-16 bg-white border-r border-gray-200 hidden lg:block">
-        <div className="flex flex-col items-center py-6 gap-6">
-          {STEP_NAMES.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => handleStepClick(index)}
-              className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
-                index === currentStep
-                  ? 'bg-primary-600 text-white scale-110'
-                  : completedSteps.includes(index)
-                  ? 'bg-green-100 text-green-600 hover:bg-green-200 cursor-pointer'
-                  : index < currentStep
-                  ? 'bg-gray-200 text-gray-600 hover:bg-gray-300 cursor-pointer'
-                  : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-              }`}
-              disabled={index > currentStep && !completedSteps.includes(index - 1)}
-              title={STEP_TITLES[index]}
-            >
-              {completedSteps.includes(index) ? '✓' : STEP_ICONS[index]}
-            </button>
-          ))}
+      <div className="fixed left-0 top-16 h-full w-16 bg-white border-r border-gray-200 hidden lg:block z-40">
+        <div className="flex flex-col items-center py-6 gap-4">
+          {stepKeys.map((key, index) => {
+            const step = unit.steps[key];
+            const icon = getStepIcon(step);
+            const isGame = isGameStep(step.type);
+            
+            return (
+              <button
+                key={key}
+                onClick={() => handleStepClick(index)}
+                className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
+                  index === currentStep
+                    ? isGame
+                      ? 'bg-gradient-to-br from-purple-600 to-pink-600 text-white scale-110 shadow-lg'
+                      : 'bg-primary-600 text-white scale-110'
+                    : completedSteps.includes(index)
+                    ? 'bg-green-100 text-green-600 hover:bg-green-200 cursor-pointer'
+                    : index < currentStep
+                    ? 'bg-gray-200 text-gray-600 hover:bg-gray-300 cursor-pointer'
+                    : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                }`}
+                disabled={index > currentStep && !completedSteps.includes(index - 1)}
+                title={getStepTitle(key, step)}
+              >
+                {completedSteps.includes(index) ? '✓' : icon}
+              </button>
+            );
+          })}
         </div>
       </div>
 
       {/* Main Content */}
       <div className="lg:ml-16">
         {/* Progress Bar */}
-        <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
+        <div className={`bg-white border-b border-gray-200 sticky top-0 z-40 ${
+          isGameStep(stepData.type) ? 'bg-gradient-to-r from-purple-50 to-pink-50' : ''
+        }`}>
           <div className="max-w-5xl mx-auto px-4 py-4">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-3">
-                <span className="text-2xl">{STEP_ICONS[currentStep]}</span>
+                <span className="text-2xl">{currentStepIcon}</span>
                 <div>
-                  <div className="text-sm font-medium text-gray-700">
-                    Step {currentStep + 1} of 5
+                  <div className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                    Step {currentStep + 1} of {totalSteps}
+                    {isGameStep(stepData.type) && (
+                      <span className="bg-purple-100 text-purple-700 text-xs px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
+                        <Gamepad2 className="w-3 h-3" />
+                        GAME
+                      </span>
+                    )}
                   </div>
                   <div className="text-xs text-gray-500">
-                    {STEP_TITLES[currentStep]}
+                    {currentStepTitle}
                   </div>
                 </div>
               </div>
@@ -256,35 +322,45 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div 
-                className="bg-primary-600 h-2 rounded-full transition-all duration-300"
-                style={{ width: `${((currentStep + 1) / 5) * 100}%` }}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  hasGames 
+                    ? 'bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500'
+                    : 'bg-primary-600'
+                }`}
+                style={{ width: `${((currentStep + 1) / totalSteps) * 100}%` }}
               ></div>
             </div>
           </div>
         </div>
 
         {/* Content */}
-        <div className="max-w-[110rem] mx-auto px-4 py-8">
+        <div className="max-w-5xl mx-auto px-4 py-8">
           <div className="animate-fade-in">
             {/* Step Content */}
-            <Card className="mb-6">
-              <div className="mb-6">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                  {stepData.title}
-                </h1>
-                {stepData.description && (
-                  <p className="text-gray-600">{stepData.description}</p>
-                )}
-              </div>
+            <Card className={`mb-6 ${
+              isGameStep(stepData.type) 
+                ? 'border-2 border-purple-300 bg-gradient-to-br from-purple-50 to-pink-50' 
+                : ''
+            }`}>
+              {!isGameStep(stepData.type) && (
+                <div className="mb-6">
+                  <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                    {stepData.title}
+                  </h1>
+                  {stepData.description && (
+                    <p className="text-gray-600">{stepData.description}</p>
+                  )}
+                </div>
+              )}
 
-              {/* Refresher Step */}
+              {/* Markdown Step */}
               {stepData.type === 'markdown' && (
                 <div className="prose max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded">
                   <ReactMarkdown>{stepData.content}</ReactMarkdown>
                 </div>
               )}
 
-              {/* Positive Case */}
+              {/* Interactive Code */}
               {stepData.type === 'interactive-code' && (
                 <PositiveCaseStep stepData={stepData} />
               )}
@@ -304,26 +380,11 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
                 <CodingChallengeStep stepData={stepData} />
               )}
 
-               {/* GAME TYPES */}
-              {(stepData.type === 'game-intro' || 
-                stepData.type === 'code-battle' ||
-                stepData.type === 'code-puzzle' ||
-                stepData.type === 'memory-game' ||
-                stepData.type === 'speed-typing-race' ||
-                stepData.type === 'bug-hunt-shooter' ||
-                stepData.type === 'tower-defense') && (
+              {/* GAME TYPES - All handled by GameRouter */}
+              {isGameStep(stepData.type) && (
                 <GameRouter 
                   stepData={stepData} 
-                  onComplete={(score) => {
-                    // Award bonus XP for game completion
-                    if (score) {
-                      updateUnitProgress(contentId, unitId, {
-                        score: (getUnitProgress(contentId, unitId)?.score || 0) + score,
-                      });
-                    }
-                    // Auto-advance after game completion
-                    setTimeout(() => handleNext(), 1500);
-                  }}
+                  onComplete={handleGameComplete}
                 />
               )}
             </Card>
@@ -335,20 +396,21 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
                 onClick={handlePrevious}
                 disabled={currentStep === 0}
                 size="lg"
+                className="cursor-pointer"
               >
                 ← Previous
               </Button>
               
               <div className="text-sm text-gray-600">
-                {currentStep + 1} / 5 steps
+                {currentStep + 1} / {totalSteps} steps
               </div>
 
               <Button 
                 onClick={handleNext}
                 size="lg"
-                className="min-w-[150px]"
+                className="min-w-[150px] cursor-pointer"
               >
-                {currentStep === 4 ? (
+                {currentStep === totalSteps - 1 ? (
                   <>
                     Complete Unit ✓
                     <span className="ml-2">+{unit.xp} XP</span>
@@ -365,7 +427,7 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
   );
 }
 
-// Positive Case Component
+// Traditional step components remain the same
 function PositiveCaseStep({ stepData }: { stepData: any }) {
   return (
     <div className="space-y-6">
@@ -384,7 +446,6 @@ function PositiveCaseStep({ stepData }: { stepData: any }) {
   );
 }
 
-// Debug Quiz Component
 function DebugQuizStep({ stepData }: { stepData: any }) {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -398,18 +459,15 @@ function DebugQuizStep({ stepData }: { stepData: any }) {
 
   return (
     <div className="space-y-6">
-      {/* Broken Code */}
       <div>
         <h3 className="text-sm font-semibold text-gray-700 mb-2">🐛 Broken Code:</h3>
         <CodeDisplay code={stepData.code} />
       </div>
 
-      {/* Question */}
       <div className="bg-orange-50 p-6 rounded-lg">
         <p className="font-medium text-lg text-gray-900">{stepData.question}</p>
       </div>
 
-      {/* Options */}
       <div className="space-y-3">
         {stepData.options.map((option: any) => (
           <button
@@ -444,7 +502,6 @@ function DebugQuizStep({ stepData }: { stepData: any }) {
         ))}
       </div>
 
-      {/* Result */}
       {showResult && selectedAnswer && (
         <div className={`p-6 rounded-lg ${
           selectedAnswer.isCorrect ? 'bg-green-50 border-2 border-green-200' : 'bg-orange-50 border-2 border-orange-200'
@@ -456,7 +513,6 @@ function DebugQuizStep({ stepData }: { stepData: any }) {
         </div>
       )}
 
-      {/* Correct Code */}
       {showResult && stepData.correctCode && (
         <div className="space-y-3">
           <h3 className="text-sm font-semibold text-gray-700">✅ Fixed Code:</h3>
@@ -475,7 +531,6 @@ function DebugQuizStep({ stepData }: { stepData: any }) {
   );
 }
 
-// Coding Task Component
 function CodingTaskStep({ stepData }: { stepData: any }) {
   const [code, setCode] = useState(stepData.starterCode);
   const [showHints, setShowHints] = useState(false);
@@ -483,7 +538,6 @@ function CodingTaskStep({ stepData }: { stepData: any }) {
 
   return (
     <div className="space-y-6">
-      {/* Requirements */}
       <div className="bg-blue-50 p-6 rounded-lg">
         <h3 className="font-bold mb-3 flex items-center gap-2">
           <span>📋</span> Requirements:
@@ -498,7 +552,6 @@ function CodingTaskStep({ stepData }: { stepData: any }) {
         </ul>
       </div>
 
-      {/* Code Editor */}
       <div>
         <h3 className="text-sm font-semibold text-gray-700 mb-2">Your Code:</h3>
         <InteractiveCodeEditor 
@@ -509,7 +562,6 @@ function CodingTaskStep({ stepData }: { stepData: any }) {
         />
       </div>
 
-      {/* Actions */}
       <div className="flex gap-3">
         <Button
           variant="outline"
@@ -532,7 +584,6 @@ function CodingTaskStep({ stepData }: { stepData: any }) {
         </Button>
       </div>
 
-      {/* Hints */}
       {showHints && (
         <div className="bg-yellow-50 p-6 rounded-lg border-2 border-yellow-200">
           <h4 className="font-bold mb-3 flex items-center gap-2">
@@ -550,7 +601,6 @@ function CodingTaskStep({ stepData }: { stepData: any }) {
         </div>
       )}
 
-      {/* Solution */}
       {showSolution && (
         <div className="space-y-3">
           <h3 className="text-sm font-semibold text-gray-700">✅ Solution:</h3>
@@ -561,7 +611,6 @@ function CodingTaskStep({ stepData }: { stepData: any }) {
   );
 }
 
-// Coding Challenge Component
 function CodingChallengeStep({ stepData }: { stepData: any }) {
   return <CodingTaskStep stepData={stepData} />;
 }
