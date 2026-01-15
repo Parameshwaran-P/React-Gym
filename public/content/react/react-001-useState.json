@@ -8,6 +8,16 @@
   "prerequisites": [],
   "unlocks": ["react-002-useeffect"],
   "xp": 50,
+  "preview":{
+  "id": "react-003-custom-hooks",
+  "title": "Custom Hooks",
+  "preview": {
+    "videoUrl": "/videos/custom-hooks-intro.mp4", 
+    "platform": "direct",
+    "thumbnail": "/thumbnails/custom-hooks.jpg",
+    "duration": "10:15"
+  }
+},
   "steps": {
    "refresher": {
   "type": "markdown",
