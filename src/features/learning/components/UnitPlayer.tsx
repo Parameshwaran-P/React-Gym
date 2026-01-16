@@ -630,7 +630,8 @@ import { InteractiveCodeEditor } from './InteractiveCodeEditor';
 import { CodeDisplay } from './CodeDisplay';
 import { CompletionModal } from './CompletionModal';
 import { GameRouter } from './games/GameRouter';
-import { VideoPreview } from './VideoPreview';
+
+import { VideoPlayer } from './VideoPlayer'; // Our new dynamic video player
 import { 
   CheckCircle2, 
   Circle, 
@@ -639,8 +640,7 @@ import {
   EyeOff,
   Gamepad2,
   Play,
-  X,
-  Maximize2
+  Video as VideoIcon
 } from 'lucide-react';
 
 interface UnitPlayerProps {
@@ -665,23 +665,37 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
   const [showCompletion, setShowCompletion] = useState(false);
   const [showVideoPreview, setShowVideoPreview] = useState(false);
   const [videoFullscreen, setVideoFullscreen] = useState(false);
+  
+  const [showUnitVideo, setShowUnitVideo] = useState(false);
+  const [showStepVideo, setShowStepVideo] = useState(false);
+  const [videoLayout, setVideoLayout] = useState<'split' | 'embedded' | 'modal'>('split');
   const navigate = useNavigate();
 
   // Get all step keys dynamically from unit.steps
   const stepKeys = unit ? Object.keys(unit.steps) : [];
   const totalSteps = stepKeys.length;
 
+  const currentStepKey = stepKeys[currentStep];
+  const stepData = unit?.steps[currentStepKey];
   // Auto-show video preview on first visit to refresher step
   useEffect(() => {
     if (unit && unit.preview && currentStep === 0) {
       const progress = getUnitProgress(contentId, unitId);
       if (!progress || progress.currentStep === 0) {
         // First time visiting this unit, show video
-        setShowVideoPreview(true);
+         setShowStepVideo(true);
       }
     }
-  }, [unit, currentStep, contentId, unitId]);
+  }, [unit, currentStep, stepData, contentId, unitId]);
 
+  
+
+  // Check if unit has preview video
+  const hasUnitVideo = !!unit.preview?.videoUrl;
+  
+  // Check if current step has video
+  const hasStepVideo = !!stepData?.video?.videoUrl;
+  const hasHelpVideo = !!stepData?.helpVideo?.videoUrl;
   // Get step icons and titles dynamically
   const getStepIcon = (stepData: any) => {
     if (isGameStep(stepData.type)) {
@@ -841,8 +855,7 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
   
   if (!unit) return null;
 
-  const currentStepKey = stepKeys[currentStep];
-  const stepData = unit.steps[currentStepKey];
+  
   const progress = getUnitProgress(contentId, unitId);
   const completedSteps = progress?.stepsCompleted || [];
   
