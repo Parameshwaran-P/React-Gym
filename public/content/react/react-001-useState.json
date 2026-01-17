@@ -8,22 +8,25 @@
   "prerequisites": [],
   "unlocks": ["react-002-useeffect"],
   "xp": 50,
-  "preview":{
-  "id": "react-003-custom-hooks",
-  "title": "Custom Hooks",
+ 
   "preview": {
-    "videoUrl": "/videos/custom-hooks-intro.mp4", 
+    "videoUrl": "/public/input.mp4", 
     "platform": "direct",
     "thumbnail": "/thumbnails/custom-hooks.jpg",
     "duration": "10:15"
-  }
-},
+  },
   "steps": {
    "refresher": {
   "type": "markdown",
   "title": "🏋️ What is useState?",
-  "content": "# 🏋️ Real-Life Story: React Gym Counter\n\nImagine you're running **React Gym** 🏋️‍♂️.\n\nAt the entrance, there’s a digital screen that shows:\n\n> **Members inside: 0**\n\nEach time a member enters, the number should increase.\n\nBut there's a problem 👇\n\n- A member enters → count becomes **1**\n- Screen refreshes\n- Count resets back to **0** ❌\n\nWhy?\n\nBecause the screen **does not remember** the previous value.\n\n---\n\n## 🧠 The Problem React Solves\n\nReact components re-render frequently.\n\nWithout memory, a component **forgets everything** on every render.\n\nThis is where **state** comes in.\n\n---\n\n## ✅ What is useState?\n\n`useState` allows a React component to **remember values between renders**.\n\nIt gives your UI **memory**.\n\n---\n\n## 🔧 Basic Syntax\n\n```javascript\nconst [value, setValue] = useState(initialValue);\n```\n\n- `value` → current memory\n- `setValue` → updates memory\n- `initialValue` → starting value\n\n👉 **Next: Let’s build the gym counter correctly.**"
-    },
+  "content": "# 🏋️ Real-Life Story: React Gym Counter\n\nImagine you're running **React Gym** 🏋️‍♂️.\n\nAt the entrance, there’s a digital screen that shows:\n\n> **Members inside: 0**\n\nEach time a member enters, the number should increase.\n\nBut there's a problem 👇\n\n- A member enters → count becomes **1**\n- Screen refreshes\n- Count resets back to **0** ❌\n\nWhy?\n\nBecause the screen **does not remember** the previous value.\n\n---\n\n## 🧠 The Problem React Solves\n\nReact components re-render frequently.\n\nWithout memory, a component **forgets everything** on every render.\n\nThis is where **state** comes in.\n\n---\n\n## ✅ What is useState?\n\n`useState` allows a React component to **remember values between renders**.\n\nIt gives your UI **memory**.\n\n---\n\n## 🔧 Basic Syntax\n\n```javascript\nconst [value, setValue] = useState(initialValue);\n```\n\n- `value` → current memory\n- `setValue` → updates memory\n- `initialValue` → starting value\n\n👉 **Next: Let’s build the gym counter correctly.**",
+      "video": {
+        "videoUrl": "/public/input.mp4",
+        "title": "useState Fundamentals",
+        "duration": "5:30",
+        "autoShow": true  
+      }
+},
     "positive": {
       "type": "interactive-code",
       "title": "✅ Positive Case: Counter",
