@@ -1,0 +1,143 @@
+{
+  "id": "react-000-what-is-react",
+  "title": "What is React? Why Do We Use It?",
+  "description": "Understand React from zero: the problem before React, its history, and why developers love it",
+  "duration": 8,
+  "difficulty": "beginner",
+  "tags": ["react", "basics", "history", "fundamentals"],
+  "prerequisites": [],
+  "unlocks": ["react-001-usestate"],
+  "xp": 40,
+
+  "preview": {
+    "videoUrl": "/public/react-intro.mp4",
+    "platform": "direct",
+    "thumbnail": "/thumbnails/react-intro.jpg",
+    "duration": "9:00"
+  },
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "🌍 Welcome to the Web World",
+      "story": "Before React, developers were tired, confused, and scared of breaking the UI. Your mission is to understand why React was created and bring peace to the Web World.",
+      "preview": "You’ll face DOM chaos, broken screens, and finally discover React — the hero."
+    },
+
+    "refresher": {
+      "type": "markdown",
+      "title": "🧒 Let’s Explain Like a Child",
+      "content": "# 🧠 Simple Question First\n\n**What is React?**\n\n👉 React helps the screen **update automatically** when data changes.\n\nThat’s it.\n\n---\n\n## 🧱 Life Before React (The Problem)\n\nImagine you write a number on a board:\n\n> Count: 0\n\nNow:\n- You erase it\n- Write 1\n- Erase again\n- Write 2\n\nYou must do this **every time**.\n\nThis is how websites worked before React.\n\n---\n\n## 😖 Why This Was Painful\n\n- Developers manually changed the screen\n- Forgot to update some places\n- UI broke easily\n- Bugs everywhere\n\nDevelopers were **afraid to touch code**."
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "❌ Old Way: Manual Screen Update",
+      "description": "Before React, developers controlled the screen manually.",
+      "code": "let count = 0;\n\nfunction increment() {\n  count++;\n  document.getElementById('count').innerText = count;\n}",
+      "showPreview": false,
+      "explanation": "❌ Every UI change needs manual work. Easy to forget. Easy to break."
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "🐛 Why Does This Fail?",
+      "description": "What happens when the app becomes big?",
+      "question": "Why is manual DOM update dangerous?",
+      "options": [
+        {
+          "id": "a",
+          "text": "JavaScript is bad",
+          "isCorrect": false
+        },
+        {
+          "id": "b",
+          "text": "Too many manual updates cause bugs",
+          "isCorrect": true,
+          "explanation": "✅ Correct! Manually syncing UI becomes unmanageable."
+        },
+        {
+          "id": "c",
+          "text": "HTML cannot scale",
+          "isCorrect": false
+        }
+      ]
+    },
+
+    "history": {
+      "type": "markdown",
+      "title": "📜 How React Was Born",
+      "content": "# 🏢 Facebook’s Big Problem\n\nFacebook had:\n- Likes\n- Comments\n- Messages\n- Notifications\n\nWhen one thing changed, many parts of the screen had to update.\n\nManual updates failed.\n\n---\n\n## 💡 The Smart Idea\n\nFacebook said:\n\n> \"Don’t touch the screen directly.\"\n\n> \"Just change the data.\"\n\n> \"We’ll update the screen for you.\"\n\nAnd **React was born** (2011)."
+    },
+
+    "why": {
+      "type": "markdown",
+      "title": "🤔 Why We Use React",
+      "content": "## ✅ React’s Promise\n\n- You change **data**\n- React changes **UI**\n\nYou don’t worry about the screen.\n\n---\n\n## 🧠 One Golden Rule\n\n```text\nData → Screen\n```\n\nIf data is correct,\nUI is always correct.\n\nThis gives developers **confidence**."
+    },
+
+    "task": {
+      "type": "concept-task",
+      "title": "🛠️ Think Like React",
+      "description": "What should developers focus on?",
+      "options": [
+        "Manually updating UI",
+        "Changing data only",
+        "Refreshing the page",
+        "Writing HTML again"
+      ],
+      "correct": 1,
+      "explanation": "✅ Correct! In React, developers focus on data. React handles UI."
+    },
+
+    "battle1": {
+      "type": "concept-battle",
+      "title": "Battle: DOM Chaos Monster",
+      "description": "Defeat DOM Chaos by choosing the correct philosophy.",
+      "enemy": {
+        "name": "DOM Chaos",
+        "avatar": "💥",
+        "health": 100
+      },
+      "lesson": "Declarative UI removes fear and bugs."
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "React Basics Memory",
+      "pairs": [
+        { "concept": "Before React", "code": "Manual DOM update" },
+        { "concept": "React", "code": "Automatic UI update" },
+        { "concept": "State", "code": "Data memory" },
+        { "concept": "Rule", "code": "Data → UI" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "React is mainly used to…",
+          "options": [
+            "Write HTML",
+            "Control database",
+            "Build UI easily",
+            "Replace JavaScript"
+          ],
+          "correct": 2
+        },
+        {
+          "question": "What does React update automatically?",
+          "options": [
+            "Server",
+            "Database",
+            "UI (Screen)",
+            "Browser"
+          ],
+          "correct": 2
+        }
+      ],
+      "waves": 2
+    }
+  }
+}

@@ -1,9 +1,15 @@
 {
   "nodes": [
+      {
+      "id": "react-000-what-is-react",
+      "title": "What is React?",
+      "prerequisites": [],
+      "unlocks": ["react-001-usestate"]
+    },
     {
       "id": "react-001-usestate",
       "title": "useState Hook",
-      "prerequisites": [],
+      "prerequisites": ["react-000-what-is-react"],
       "unlocks": ["react-002-useeffect"]
     },
     {
