@@ -12,6 +12,7 @@
       "id": "fundamentals",
       "name": "React Fundamentals",
       "units": [
+        "react-000-what-is-react",
         "react-001-usestate",
         "react-002-useeffect",
         "react-003-props",
