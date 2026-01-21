@@ -13,10 +13,13 @@ export function CodeDisplay({ code, language = 'jsx' }: CodeDisplayProps) {
         template="react"
         theme="dark"
         files={{
-          '/App.js': code,
+           "/App.js": {
+      code,
+      active: true,
+    },
         }}
         options={{
-          readOnly: true,
+          editorHeight: 400,
         }}
       >
         <SandpackCodeEditor

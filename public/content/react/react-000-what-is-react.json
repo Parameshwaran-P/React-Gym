@@ -26,24 +26,24 @@
 
     "refresher": {
       "type": "markdown",
-      "title": "🧒 Let’s Explain Like a Child",
-      "content": "# 🧠 Simple Question First\n\n**What is React?**\n\n👉 React helps the screen **update automatically** when data changes.\n\nThat’s it.\n\n---\n\n## 🧱 Life Before React (The Problem)\n\nImagine you write a number on a board:\n\n> Count: 0\n\nNow:\n- You erase it\n- Write 1\n- Erase again\n- Write 2\n\nYou must do this **every time**.\n\nThis is how websites worked before React.\n\n---\n\n## 😖 Why This Was Painful\n\n- Developers manually changed the screen\n- Forgot to update some places\n- UI broke easily\n- Bugs everywhere\n\nDevelopers were **afraid to touch code**."
+      "title": "🧒 React Explained Like a Child",
+      "content": "# 🧠 Simple Question First\n\n**What is React?**\n\n👉 React helps the screen **update automatically** when data changes.\n\nThat’s it. Nothing more.\n\n---\n\n## 🧱 Life Before React (The Problem)\n\nImagine you write a number on a board:\n\n> Count: 0\n\nNow every time the number changes:\n- You erase it\n- You write a new number\n\nYou must remember **where** to erase and **where** to write.\n\nThis is how websites worked before React.\n\n---\n\n## 😖 Why This Was Painful\n\n- Developers manually changed the screen\n- Missed some places\n- UI broke easily\n- Bugs appeared everywhere\n\nDevelopers were **afraid to touch working code**."
     },
 
     "positive": {
       "type": "interactive-code",
       "title": "❌ Old Way: Manual Screen Update",
-      "description": "Before React, developers controlled the screen manually.",
-      "code": "let count = 0;\n\nfunction increment() {\n  count++;\n  document.getElementById('count').innerText = count;\n}",
+      "description": "Before React, developers controlled the screen by hand.",
+      "code": "// Imagine this code controls the screen manually\n\nlet count = 0;\n\nfunction increment() {\n  count++;\n  // document.getElementById('count').innerText = count;\n}\n\n// Every UI update must be done by hand\n",
       "showPreview": false,
-      "explanation": "❌ Every UI change needs manual work. Easy to forget. Easy to break."
+      "explanation": "❌ This approach depends on memory and care. As apps grow bigger, this becomes risky and error-prone."
     },
 
     "negative": {
       "type": "debug-quiz",
-      "title": "🐛 Why Does This Fail?",
-      "description": "What happens when the app becomes big?",
-      "question": "Why is manual DOM update dangerous?",
+      "title": "🐛 Why Does This Fail at Scale?",
+      "description": "What happens when apps become large?",
+      "question": "Why is manual DOM update dangerous in big apps?",
       "options": [
         {
           "id": "a",
@@ -54,7 +54,7 @@
           "id": "b",
           "text": "Too many manual updates cause bugs",
           "isCorrect": true,
-          "explanation": "✅ Correct! Manually syncing UI becomes unmanageable."
+          "explanation": "✅ Correct! Humans forget things. Manual syncing breaks easily."
         },
         {
           "id": "c",
@@ -67,13 +67,13 @@
     "history": {
       "type": "markdown",
       "title": "📜 How React Was Born",
-      "content": "# 🏢 Facebook’s Big Problem\n\nFacebook had:\n- Likes\n- Comments\n- Messages\n- Notifications\n\nWhen one thing changed, many parts of the screen had to update.\n\nManual updates failed.\n\n---\n\n## 💡 The Smart Idea\n\nFacebook said:\n\n> \"Don’t touch the screen directly.\"\n\n> \"Just change the data.\"\n\n> \"We’ll update the screen for you.\"\n\nAnd **React was born** (2011)."
+      "content": "# 🏢 Facebook’s Big Problem\n\nFacebook had:\n- Likes\n- Comments\n- Messages\n- Notifications\n\nWhen one thing changed, many parts of the screen needed updates.\n\nManual control failed.\n\n---\n\n## 💡 The Smart Idea\n\nFacebook engineers said:\n\n> \"Don’t touch the screen directly.\"\n\n> \"Just change the data.\"\n\n> \"We’ll update the screen for you.\"\n\nReact was created internally around **2011** and shared publicly in **2013**."
     },
 
     "why": {
       "type": "markdown",
       "title": "🤔 Why We Use React",
-      "content": "## ✅ React’s Promise\n\n- You change **data**\n- React changes **UI**\n\nYou don’t worry about the screen.\n\n---\n\n## 🧠 One Golden Rule\n\n```text\nData → Screen\n```\n\nIf data is correct,\nUI is always correct.\n\nThis gives developers **confidence**."
+      "content": "## ✅ React’s Promise\n\n- You change **data**\n- React changes **UI**\n\nYou stop worrying about the screen.\n\n---\n\n## 🧠 One Golden Rule\n\n```text\nData → UI\n```\n\nIf data is correct,\nUI is always correct.\n\nThis gives developers **confidence and courage**."
     },
 
     "task": {
@@ -87,29 +87,28 @@
         "Writing HTML again"
       ],
       "correct": 1,
-      "explanation": "✅ Correct! In React, developers focus on data. React handles UI."
+      "explanation": "✅ Correct! React developers focus on data. React handles the screen."
     },
-       "challenge": {
+
+    "challenge": {
       "type": "coding-challenge",
-      "title": "🏆 Challenge: Multi-State Form",
-      "description": "Build a form that manages multiple pieces of state.",
+      "title": "🏆 Preview Challenge: How React Thinks",
+      "description": "This is NOT about mastering code yet. This is just a preview of how React stores data.",
       "requirements": [
-        "Create inputs for name (text) and age (number)",
-        "Each input should have its own useState",
-        "Display both values below the form",
-        "Clear button to reset both fields"
+        "Notice how data is stored separately",
+        "Observe how UI depends on data",
+        "Do not worry if this feels new"
       ],
-      "starterCode": "import { useState } from 'react';\n\nfunction UserForm() {\n  // TODO: Add state for name and age\n  \n  return (\n    <div className=\"p-6 max-w-md\">\n      <h2 className=\"text-2xl font-bold mb-4\">User Info</h2>\n      {/* TODO: Add inputs and display */}\n    </div>\n  );\n}\n\nexport default UserForm;",
-      "solution": "import { useState } from 'react';\n\nfunction UserForm() {\n  const [name, setName] = useState('');\n  const [age, setAge] = useState('');\n  \n  return (\n    <div className=\"p-6 max-w-md\">\n      <h2 className=\"text-2xl font-bold mb-4\">User Info</h2>\n      <input\n        type=\"text\"\n        value={name}\n        onChange={(e) => setName(e.target.value)}\n        placeholder=\"Name\"\n        className=\"w-full px-4 py-2 border rounded mb-2\"\n      />\n      <input\n        type=\"number\"\n        value={age}\n        onChange={(e) => setAge(e.target.value)}\n        placeholder=\"Age\"\n        className=\"w-full px-4 py-2 border rounded mb-4\"\n      />\n      <button\n        onClick={() => { setName(''); setAge(''); }}\n        className=\"bg-red-600 text-white px-4 py-2 rounded mb-4\"\n      >\n        Clear\n      </button>\n      <div className=\"p-4 bg-gray-100 rounded\">\n        <p>Name: {name || 'Not set'}</p>\n        <p>Age: {age || 'Not set'}</p>\n      </div>\n    </div>\n  );\n}\n\nexport default UserForm;",
+      "starterCode": "import { useState } from 'react';\n\nfunction UserForm() {\n  // This is only a preview\n  // You will learn useState deeply in the next lesson\n  \n  return (\n    <div>\n      <h2>User Info</h2>\n    </div>\n  );\n}\n\nexport default UserForm;",
+      "solution": "import { useState } from 'react';\n\nfunction UserForm() {\n  const [name, setName] = useState('');\n  const [age, setAge] = useState('');\n\n  return (\n    <div>\n      <p>Name: {name}</p>\n      <p>Age: {age}</p>\n    </div>\n  );\n}\n\nexport default UserForm;",
       "hints": [
-        "You'll need two useState hooks",
-        "Use onChange={(e) => setName(e.target.value)}",
-        "Clear button calls both setters"
+        "This is only a preview",
+        "Focus on idea, not syntax",
+        "Next lesson explains everything"
       ],
       "tests": [
-        "Both inputs update state",
-        "Display shows values",
-        "Clear button resets both"
+        "Component renders",
+        "Data controls UI"
       ]
     },
 

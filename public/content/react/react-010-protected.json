@@ -8,6 +8,12 @@
   "prerequisites": ["react-009-router"],
   "unlocks": ["react-011-performance"],
   "xp": 80,
+    "preview": {
+        "videoUrl": "/public/input.mp4", 
+        "platform": "direct",
+        "thumbnail": "/thumbnails/custom-hooks.jpg",
+        "duration": "10:15"
+      },
   "steps": {
     "refresher": {
       "type": "markdown",

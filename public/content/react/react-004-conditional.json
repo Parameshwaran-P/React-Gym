@@ -8,6 +8,12 @@
   "prerequisites": ["react-003-props", "react-005-forms"],
   "unlocks": ["react-005-forms"],
   "xp": 45,
+   "preview": {
+    "videoUrl": "/public/input.mp4", 
+    "platform": "direct",
+    "thumbnail": "/thumbnails/custom-hooks.jpg",
+    "duration": "10:15"
+  },
   "steps": {
     "refresher": {
       "type": "markdown",

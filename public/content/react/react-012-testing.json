@@ -8,6 +8,12 @@
   "prerequisites": ["react-011-performance"],
   "unlocks": ["react-013-portals"],
   "xp": 100,
+   "preview": {
+    "videoUrl": "/public/input.mp4", 
+    "platform": "direct",
+    "thumbnail": "/thumbnails/custom-hooks.jpg",
+    "duration": "10:15"
+  },
   "steps": {
     "refresher": {
       "type": "markdown",
