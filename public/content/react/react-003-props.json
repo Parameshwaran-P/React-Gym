@@ -5,8 +5,8 @@
   "duration": 8,
   "difficulty": "beginner",
   "tags": ["props", "components", "data-flow"],
-  "prerequisites": [],
-  "unlocks": ["react-001-usestate"],
+  "prerequisites": ["react-002-useeffect"],
+  "unlocks": ["react-004-conditional"],
   "xp": 40,
    "preview": {
     "videoUrl": "/public/input.mp4", 

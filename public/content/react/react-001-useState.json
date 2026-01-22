@@ -5,7 +5,7 @@
   "duration": 7,
   "difficulty": "beginner",
   "tags": ["hooks", "state", "fundamentals"],
-  "prerequisites": [],
+  "prerequisites": ["react-001-usestate"],
   "unlocks": ["react-002-useeffect"],
   "xp": 50,
  

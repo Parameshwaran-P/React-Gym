@@ -19,7 +19,7 @@ export function CodeDisplay({ code, language = 'jsx' }: CodeDisplayProps) {
     },
         }}
         options={{
-          editorHeight: 400,
+          readOnly: true,
         }}
       >
         <SandpackCodeEditor
