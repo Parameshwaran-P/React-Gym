@@ -7,8 +7,8 @@
     @apply border-gray-200;
   }
   
-  body {
-    @apply bg-white text-gray-900;
+   body {
+    @apply bg-white text-gray-900 select-none;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
   

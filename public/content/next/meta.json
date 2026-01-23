@@ -1,43 +1,102 @@
 {
-  "id": "react",
-  "name": "React Gym",
-  "description": "Master React through practical, hands-on learning",
+  "id": "next",
+  "name": "Next.js Gym",
+  "description": "Master Next.js through practical, hands-on learning",
   "icon": "⚛️",
   "color": "#61DAFB",
   "version": "18.x",
-  "totalUnits": 50,
-  "estimatedHours": 25,
+  "totalUnits": 60,
+  "estimatedHours": 65.5,
   "categories": [
     {
       "id": "fundamentals",
-      "name": "React Fundamentals",
+      "name": "Beginner",
       "units": [
-        "react-000-what-is-react",
-        "react-001-usestate",
-        "react-002-useeffect",
-        "react-003-props",
-        "react-004-components"
+        "next-000-webbasics",
+        "next-001-javascript",
+        "next-002-reactbasics",
+        "next-003-what-is-nextjs",
+        "next-004-renderingmodels",
+        "next-005-whentouse",
+        "next-006-installation",
+        "next-007-folderstructure",
+        "next-008-config",
+        "next-009-filerouting",
+        "next-010-staticroutes",
+        "next-011-dynamicroutes",
+        "next-012-nestedroutes",
+        "next-013-navigation",
+        "next-014-pages",
+        "next-015-layouts",
+        "next-016-appjs",
+        "next-017-head"
       ]
     },
     {
       "id": "hooks",
-      "name": "React Hooks",
+      "name": "Intermediate",
       "units": [
-        "react-005-usecontext",
-        "react-006-usereducer",
-        "react-007-usememo",
-        "react-008-usecallback",
-        "react-009-useref",
-        "react-010-custom-hooks"
+        "next-018-getstaticprops",
+        "next-019-getstaticpaths",
+        "next-020-getserversideprops",
+        "next-021-clientfetching",
+        "next-022-isr",
+        "next-023-approuter",
+        "next-024-servercomponents",
+        "next-025-useclient",
+        "next-026-applayouts",
+        "next-027-loadingerror",
+        "next-028-routegroups"
       ]
     },
     {
       "id": "advanced",
       "name": "Advanced Patterns",
       "units": [
-        "react-011-performance",
-        "react-012-code-splitting",
-        "react-013-error-boundaries"
+        "next-029-globalcss",
+        "next-030-cssmodules",
+        "next-031-tailwind",
+        "next-032-staticassets",
+        "next-033-image",
+        "next-034-font",
+        "next-035-forms",
+        "next-036-serveractions",
+        "next-037-statemgmt",
+        "next-038-authbasics",
+        "next-039-nextauth",
+        "next-040-protectedroutes"
+      ]
+    },
+     {
+      "id": "pro",
+      "name": "Advanced Patterns",
+      "units": [
+        "next-041-apiroutes",
+        "next-042-databaseconnect",
+        "next-043-orm",
+        "next-044-env",
+        "next-045-seo",
+        "next-046-performance",
+        "next-047-security"
+      ]
+    },
+     {
+      "id": "expert",
+      "name": "Advanced Patterns",
+      "units": [
+        "next-048-middleware",
+        "next-049-i18n",
+        "next-050-errorhandling",
+        "next-051-testing",
+        "next-052-deployment",
+        "next-053-productionenv",
+        "next-054-scaling",
+        "next-055-project-blog",
+        "next-056-project-dashboard",
+        "next-057-project-saas",
+        "next-058-folderarchitecture",
+        "next-059-commonmistakes",
+        "next-060-interviewqna"
       ]
     }
   ]

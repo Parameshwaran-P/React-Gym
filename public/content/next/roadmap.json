@@ -1,0 +1,370 @@
+{
+  "nodes": [
+    {
+      "id": "next-000-webbasics",
+      "title": "Web Basics",
+      "prerequisites": [],
+      "unlocks": ["next-001-javascript"]
+    },
+    {
+      "id": "next-001-javascript",
+      "title": "Modern JavaScript",
+      "prerequisites": ["next-000-webbasics"],
+      "unlocks": ["next-002-reactbasics"]
+    },
+    {
+      "id": "next-002-reactbasics",
+      "title": "React Basics",
+      "prerequisites": ["next-001-javascript"],
+      "unlocks": ["next-003-what-is-nextjs"]
+    },
+    {
+      "id": "next-003-what-is-nextjs",
+      "title": "What is Next.js?",
+      "prerequisites": ["next-002-reactbasics"],
+      "unlocks": ["next-004-renderingmodels"]
+    },
+    {
+      "id": "next-004-renderingmodels",
+      "title": "Rendering Models (CSR, SSR, SSG, ISR)",
+      "prerequisites": ["next-003-what-is-nextjs"],
+      "unlocks": ["next-005-whentouse"]
+    },
+    {
+      "id": "next-005-whentouse",
+      "title": "When to Use Next.js",
+      "prerequisites": ["next-004-renderingmodels"],
+      "unlocks": ["next-006-installation"]
+    },
+    {
+      "id": "next-006-installation",
+      "title": "Next.js Installation",
+      "prerequisites": ["next-005-whentouse"],
+      "unlocks": ["next-007-folderstructure"]
+    },
+    {
+      "id": "next-007-folderstructure",
+      "title": "Folder Structure",
+      "prerequisites": ["next-006-installation"],
+      "unlocks": ["next-008-config"]
+    },
+    {
+      "id": "next-008-config",
+      "title": "Next.js Config",
+      "prerequisites": ["next-007-folderstructure"],
+      "unlocks": ["next-009-filerouting"]
+    },
+    {
+      "id": "next-009-filerouting",
+      "title": "File-based Routing",
+      "prerequisites": ["next-008-config"],
+      "unlocks": ["next-010-staticroutes"]
+    },
+    {
+      "id": "next-010-staticroutes",
+      "title": "Static Routes",
+      "prerequisites": ["next-009-filerouting"],
+      "unlocks": ["next-011-dynamicroutes"]
+    },
+    {
+      "id": "next-011-dynamicroutes",
+      "title": "Dynamic Routes",
+      "prerequisites": ["next-010-staticroutes"],
+      "unlocks": ["next-012-nestedroutes"]
+    },
+    {
+      "id": "next-012-nestedroutes",
+      "title": "Nested & Catch-all Routes",
+      "prerequisites": ["next-011-dynamicroutes"],
+      "unlocks": ["next-013-navigation"]
+    },
+    {
+      "id": "next-013-navigation",
+      "title": "Navigation (next/link & useRouter)",
+      "prerequisites": ["next-012-nestedroutes"],
+      "unlocks": ["next-014-pages"]
+    },
+    {
+      "id": "next-014-pages",
+      "title": "Pages Concept",
+      "prerequisites": ["next-013-navigation"],
+      "unlocks": ["next-015-layouts"]
+    },
+    {
+      "id": "next-015-layouts",
+      "title": "Layouts (Global & Per-Page)",
+      "prerequisites": ["next-014-pages"],
+      "unlocks": ["next-016-appjs"]
+    },
+    {
+      "id": "next-016-appjs",
+      "title": "_app.js & Lifecycle",
+      "prerequisites": ["next-015-layouts"],
+      "unlocks": ["next-017-head"]
+    },
+    {
+      "id": "next-017-head",
+      "title": "Head & SEO Basics",
+      "prerequisites": ["next-016-appjs"],
+      "unlocks": ["next-018-getstaticprops"]
+    },
+    {
+      "id": "next-018-getstaticprops",
+      "title": "getStaticProps (SSG)",
+      "prerequisites": ["next-017-head"],
+      "unlocks": ["next-019-getstaticpaths"]
+    },
+    {
+      "id": "next-019-getstaticpaths",
+      "title": "getStaticPaths (Dynamic SSG)",
+      "prerequisites": ["next-018-getstaticprops"],
+      "unlocks": ["next-020-getserversideprops"]
+    },
+    {
+      "id": "next-020-getserversideprops",
+      "title": "getServerSideProps (SSR)",
+      "prerequisites": ["next-019-getstaticpaths"],
+      "unlocks": ["next-021-clientfetching"]
+    },
+    {
+      "id": "next-021-clientfetching",
+      "title": "Client-side Fetching",
+      "prerequisites": ["next-020-getserversideprops"],
+      "unlocks": ["next-022-isr"]
+    },
+    {
+      "id": "next-022-isr",
+      "title": "Incremental Static Regeneration (ISR)",
+      "prerequisites": ["next-021-clientfetching"],
+      "unlocks": ["next-023-approuter"]
+    },
+    {
+      "id": "next-023-approuter",
+      "title": "App Router (Modern Next.js)",
+      "prerequisites": ["next-022-isr"],
+      "unlocks": ["next-024-servercomponents"]
+    },
+    {
+      "id": "next-024-servercomponents",
+      "title": "Server & Client Components",
+      "prerequisites": ["next-023-approuter"],
+      "unlocks": ["next-025-useclient"]
+    },
+    {
+      "id": "next-025-useclient",
+      "title": "Client Boundaries (`use client`)",
+      "prerequisites": ["next-024-servercomponents"],
+      "unlocks": ["next-026-applayouts"]
+    },
+    {
+      "id": "next-026-applayouts",
+      "title": "Nested Layouts (App Router)",
+      "prerequisites": ["next-025-useclient"],
+      "unlocks": ["next-027-loadingerror"]
+    },
+    {
+      "id": "next-027-loadingerror",
+      "title": "Loading & Error Pages",
+      "prerequisites": ["next-026-applayouts"],
+      "unlocks": ["next-028-routegroups"]
+    },
+    {
+      "id": "next-028-routegroups",
+      "title": "Route Groups & Parallel Routes",
+      "prerequisites": ["next-027-loadingerror"],
+      "unlocks": ["next-029-globalcss"]
+    },
+    {
+      "id": "next-029-globalcss",
+      "title": "Global CSS",
+      "prerequisites": ["next-028-routegroups"],
+      "unlocks": ["next-030-cssmodules"]
+    },
+    {
+      "id": "next-030-cssmodules",
+      "title": "CSS Modules",
+      "prerequisites": ["next-029-globalcss"],
+      "unlocks": ["next-031-tailwind"]
+    },
+    {
+      "id": "next-031-tailwind",
+      "title": "Tailwind CSS",
+      "prerequisites": ["next-030-cssmodules"],
+      "unlocks": ["next-032-staticassets"]
+    },
+    {
+      "id": "next-032-staticassets",
+      "title": "Static Assets (public folder)",
+      "prerequisites": ["next-031-tailwind"],
+      "unlocks": ["next-033-image"]
+    },
+    {
+      "id": "next-033-image",
+      "title": "Image Optimization (`next/image`)",
+      "prerequisites": ["next-032-staticassets"],
+      "unlocks": ["next-034-font"]
+    },
+    {
+      "id": "next-034-font",
+      "title": "Font Optimization (`next/font`)",
+      "prerequisites": ["next-033-image"],
+      "unlocks": ["next-035-forms"]
+    },
+    {
+      "id": "next-035-forms",
+      "title": "Forms & Validation",
+      "prerequisites": ["next-034-font"],
+      "unlocks": ["next-036-serveractions"]
+    },
+    {
+      "id": "next-036-serveractions",
+      "title": "Server Actions (App Router)",
+      "prerequisites": ["next-035-forms"],
+      "unlocks": ["next-037-statemgmt"]
+    },
+    {
+      "id": "next-037-statemgmt",
+      "title": "State Management (Context, Zustand, Redux)",
+      "prerequisites": ["next-036-serveractions"],
+      "unlocks": ["next-038-authbasics"]
+    },
+    {
+      "id": "next-038-authbasics",
+      "title": "Authentication Basics",
+      "prerequisites": ["next-037-statemgmt"],
+      "unlocks": ["next-039-nextauth"]
+    },
+    {
+      "id": "next-039-nextauth",
+      "title": "NextAuth.js Setup",
+      "prerequisites": ["next-038-authbasics"],
+      "unlocks": ["next-040-protectedroutes"]
+    },
+    {
+      "id": "next-040-protectedroutes",
+      "title": "Protected Routes & RBAC",
+      "prerequisites": ["next-039-nextauth"],
+      "unlocks": ["next-041-apiroutes"]
+    },
+    {
+      "id": "next-041-apiroutes",
+      "title": "API Routes",
+      "prerequisites": ["next-040-protectedroutes"],
+      "unlocks": ["next-042-databaseconnect"]
+    },
+    {
+      "id": "next-042-databaseconnect",
+      "title": "Database Integration (MongoDB / SQL)",
+      "prerequisites": ["next-041-apiroutes"],
+      "unlocks": ["next-043-orm"]
+    },
+    {
+      "id": "next-043-orm",
+      "title": "ORM (Prisma / Mongoose)",
+      "prerequisites": ["next-042-databaseconnect"],
+      "unlocks": ["next-044-env"]
+    },
+    {
+      "id": "next-044-env",
+      "title": "Environment Variables & Secrets",
+      "prerequisites": ["next-043-orm"],
+      "unlocks": ["next-045-seo"]
+    },
+    {
+      "id": "next-045-seo",
+      "title": "SEO & Metadata",
+      "prerequisites": ["next-044-env"],
+      "unlocks": ["next-046-performance"]
+    },
+    {
+      "id": "next-046-performance",
+      "title": "Performance Optimization",
+      "prerequisites": ["next-045-seo"],
+      "unlocks": ["next-047-security"]
+    },
+    {
+      "id": "next-047-security",
+      "title": "Security Best Practices",
+      "prerequisites": ["next-046-performance"],
+      "unlocks": ["next-048-middleware"]
+    },
+    {
+      "id": "next-048-middleware",
+      "title": "Middleware Deep Dive",
+      "prerequisites": ["next-047-security"],
+      "unlocks": ["next-049-i18n"]
+    },
+    {
+      "id": "next-049-i18n",
+      "title": "Internationalization (i18n)",
+      "prerequisites": ["next-048-middleware"],
+      "unlocks": ["next-050-errorhandling"]
+    },
+    {
+      "id": "next-050-errorhandling",
+      "title": "Error Handling & Logging",
+      "prerequisites": ["next-049-i18n"],
+      "unlocks": ["next-051-testing"]
+    },
+    {
+      "id": "next-051-testing",
+      "title": "Testing (Unit & E2E)",
+      "prerequisites": ["next-050-errorhandling"],
+      "unlocks": ["next-052-deployment"]
+    },
+    {
+      "id": "next-052-deployment",
+      "title": "Deployment (Vercel & CI/CD)",
+      "prerequisites": ["next-051-testing"],
+      "unlocks": ["next-053-productionenv"]
+    },
+    {
+      "id": "next-053-productionenv",
+      "title": "Production Environment Configs",
+      "prerequisites": ["next-052-deployment"],
+      "unlocks": ["next-054-scaling"]
+    },
+    {
+      "id": "next-054-scaling",
+      "title": "Scaling Next.js Apps",
+      "prerequisites": ["next-053-productionenv"],
+      "unlocks": ["next-055-project-blog"]
+    },
+    {
+      "id": "next-055-project-blog",
+      "title": "SEO Blog Project",
+      "prerequisites": ["next-054-scaling"],
+      "unlocks": ["next-056-project-dashboard"]
+    },
+    {
+      "id": "next-056-project-dashboard",
+      "title": "Dashboard Project",
+      "prerequisites": ["next-055-project-blog"],
+      "unlocks": ["next-057-project-saas"]
+    },
+    {
+      "id": "next-057-project-saas",
+      "title": "Full SaaS Project",
+      "prerequisites": ["next-056-project-dashboard"],
+      "unlocks": ["next-058-folderarchitecture"]
+    },
+    {
+      "id": "next-058-folderarchitecture",
+      "title": "Folder Architecture & Best Practices",
+      "prerequisites": ["next-057-project-saas"],
+      "unlocks": ["next-059-commonmistakes"]
+    },
+    {
+      "id": "next-059-commonmistakes",
+      "title": "Common Mistakes & Anti-Patterns",
+      "prerequisites": ["next-058-folderarchitecture"],
+      "unlocks": ["next-060-interviewqna"]
+    },
+    {
+      "id": "next-060-interviewqna",
+      "title": "Interview Q&A & Resume Tips",
+      "prerequisites": ["next-059-commonmistakes"],
+      "unlocks": []
+    }
+  ]
+}

@@ -45,7 +45,7 @@ function categorizeUnits(units: any[]): Array<{ category: string; units: any[] }
 
 export default function RoadmapPage() {
   const [searchParams] = useSearchParams();
-  const contentId = searchParams.get('content') || 'react';
+  const contentId = searchParams.get('content') || 'react'||'next';
   
   const [stats, setStats] = useState({
     totalXP: 0,

@@ -15,7 +15,7 @@ export default function DashboardPage() {
   const tracks = [
     { id: 'react', name: 'React', icon: '⚛️' },
     { id: 'typescript', name: 'TypeScript', icon: 'TS' },
-    { id: 'nextjs', name: 'Next.js', icon: '▲' },
+    { id: 'next', name: 'Next.js', icon: '▲' },
     // Add more: { id: 'nodejs', name: 'Node.js', icon: '🟢' },
   ];
 

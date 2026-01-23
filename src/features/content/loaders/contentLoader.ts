@@ -34,6 +34,13 @@ export const AVAILABLE_CONTENTS = [
     icon: '⚛️',
     color: '#61DAFB'
   },
+  { 
+    id: 'next', 
+    name: 'Next.js Gym',
+    path: '/content/next',
+    icon: '⚛️',
+    color: '#000000'
+  },
   // Future: Add more languages here
   // { id: 'nodejs', name: 'Node.js Gym', path: '/content/nodejs', icon: '🟢', color: '#339933' },
   // { id: 'python', name: 'Python Gym', path: '/content/python', icon: '🐍', color: '#3776AB' },
