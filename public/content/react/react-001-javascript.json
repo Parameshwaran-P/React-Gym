@@ -1,0 +1,202 @@
+{
+  "id": "react-001-javascript",
+  "title": "Modern JavaScript for React (ES6+)",
+  "description": "Learn the JavaScript concepts required to build React applications",
+  "duration": 9,
+  "difficulty": "beginner",
+  "tags": ["javascript", "es6", "react-basics"],
+  "prerequisites": ["react-000-webbasics"],
+  "unlocks": ["react-002-what-is-react"],
+  "xp": 60,
+
+  "preview": {
+    "videoUrl": "/public/js-intro.mp4",
+    "platform": "direct",
+    "thumbnail": "/thumbnails/javascript.jpg",
+    "duration": "12:40"
+  },
+
+  "steps": {
+    "refresher": {
+      "type": "markdown",
+      "title": "JavaScript is the Brain",
+      "content": "# Real-Life Story: Smart TV Remote\n\nImagine a **TV without a remote**.\n\n- Screen exists\n- Colors exist\n- Speakers exist\n\nBut you **cannot change channel or volume**.\n\nThat TV is like **HTML + CSS only**.\n\nNow add a **remote**:\n\n- Press button → channel changes\n- Press volume → sound increases\n\nThat remote is **JavaScript**.\n\n---\n\n## What JavaScript Does\n\nJavaScript makes the page **think and react**.\n\n- Handle clicks\n- Store values\n- Make decisions\n- Talk to servers\n\nReact is built **on top of JavaScript**, not instead of it.\n\n---\n\n## React Needs Modern JavaScript\n\nReact uses **ES6+ features** heavily.\n\nWe will learn **only what React needs**, nothing extra.",
+      "video": {
+        "videoUrl": "/public/js-refresher.mp4",
+        "title": "Why JavaScript for React",
+        "duration": "4:50",
+        "autoShow": true
+      }
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "Variables: let & const",
+      "description": "Modern JavaScript uses let and const instead of var.",
+      "code": "const gymName = 'React Gym';\nlet members = 10;\n\nmembers = members + 1;\n\nconsole.log(gymName);\nconsole.log(members);",
+      "showPreview": true,
+      "explanation": "Use **const** for values that never change.\n\nUse **let** for values that change.\n\nReact code mostly uses **const**."
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "Common Mistake: Using var",
+      "description": "Why is using var not recommended?",
+      "code": "var score = 10;\n\nif (true) {\n  var score = 20;\n}\n\nconsole.log(score);",
+      "question": "What is the problem here?",
+      "options": [
+        {
+          "id": "a",
+          "text": "var ignores block scope",
+          "isCorrect": true,
+          "explanation": "Correct. var leaks outside blocks and causes bugs."
+        },
+        {
+          "id": "b",
+          "text": "console.log is wrong",
+          "isCorrect": false,
+          "explanation": "console.log works fine."
+        },
+        {
+          "id": "c",
+          "text": "JavaScript is broken",
+          "isCorrect": false,
+          "explanation": "JavaScript behaves as designed."
+        },
+        {
+          "id": "d",
+          "text": "if condition is wrong",
+          "isCorrect": false,
+          "explanation": "if condition is correct."
+        }
+      ],
+      "correctCode": "let score = 10;\n\nif (true) {\n  let score = 20;\n}\n\nconsole.log(score);",
+      "lesson": "Always use **let / const**. React code avoids var completely."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "Arrow Functions",
+      "description": "Convert a normal function into an arrow function.",
+      "requirements": [
+        "Use arrow function syntax",
+        "Return a value",
+        "Keep code short"
+      ],
+      "starterCode": "function add(a, b) {\n  return a + b;\n}",
+      "solution": "const add = (a, b) => a + b;",
+      "hints": [
+        "Arrow functions use =>",
+        "Single line return needs no return keyword"
+      ],
+      "tests": [
+        "Function returns correct sum",
+        "Uses arrow syntax"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "Destructuring Objects",
+      "description": "Extract values from an object like React props.",
+      "requirements": [
+        "Use object destructuring",
+        "Access properties directly"
+      ],
+      "starterCode": "const user = {\n  name: 'Arun',\n  age: 22\n};\n\n// TODO",
+      "solution": "const { name, age } = user;\n\nconsole.log(name);\nconsole.log(age);",
+      "hints": [
+        "Use curly braces",
+        "Property names must match"
+      ],
+      "tests": [
+        "Name extracted correctly",
+        "Age extracted correctly"
+      ]
+    },
+
+    "intro": {
+      "type": "game-intro",
+      "title": "JavaScript Training Ground",
+      "story": "Before entering React City, you must master JavaScript tools. Each challenge sharpens your skills.",
+      "preview": "Arrow battles, destructuring puzzles, async missions"
+    },
+
+    "battle1": {
+      "type": "code-battle",
+      "title": "Battle: Map Function",
+      "description": "Transform data like React lists.",
+      "enemy": {
+        "name": "Loop Beast",
+        "avatar": "🧩",
+        "health": 100,
+        "attack": 10
+      },
+      "starterCode": "const numbers = [1, 2, 3];\n\n// TODO",
+      "solution": "const doubled = numbers.map(n => n * 2);\n\nconsole.log(doubled);",
+      "hints": [
+        "map returns a new array",
+        "Do not use for loops in React lists"
+      ],
+      "tests": [
+        { "description": "Array length preserved", "input": null, "expected": 3 },
+        { "description": "Values doubled", "input": null, "expected": [2,4,6] }
+      ]
+    },
+
+    "race": {
+      "type": "speed-typing-race",
+      "targetCode": "const { title } = props;\nitems.map(item => item.name);",
+      "language": "javascript",
+      "rivals": [
+        { "name": "JS Kid", "avatar": "🏃", "speed": 0.7 },
+        { "name": "Arrow Pro", "avatar": "⚡", "speed": 1.0 }
+      ]
+    },
+
+    "bughunt": {
+      "type": "bug-hunt-shooter",
+      "code": "const add = (a b) => a + b;",
+      "bugs": [
+        {
+          "id": "bug1",
+          "line": 1,
+          "type": "syntax",
+          "description": "Missing comma between parameters",
+          "fix": "(a, b)"
+        }
+      ],
+      "timeLimit": 45
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "JavaScript Memory",
+      "pairs": [
+        { "concept": "const", "code": "Cannot be reassigned" },
+        { "concept": "let", "code": "Can be reassigned" },
+        { "concept": "map()", "code": "Transforms array" },
+        { "concept": "() => {}", "code": "Arrow function" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Which keyword React prefers?",
+          "code": "const value = 10;",
+          "options": ["var", "let", "const", "function"],
+          "correct": 2
+        },
+        {
+          "question": "Which method renders lists in React?",
+          "code": "items.map(...)",
+          "options": ["for", "while", "map", "filter"],
+          "correct": 2
+        }
+      ],
+      "waves": 2
+    }
+  }
+}

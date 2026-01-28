@@ -1,0 +1,203 @@
+{
+  "id": "react-000-webbasics",
+  "title": "Web Basics",
+  "description": "Learn how websites work using simple real-life examples",
+  "duration": 6,
+  "difficulty": "beginner",
+  "tags": ["html", "css", "javascript", "fundamentals"],
+  "prerequisites": [],
+  "unlocks": ["react-001-javascript"],
+  "xp": 40,
+
+  "preview": {
+    "videoUrl": "/public/web-basics.mp4",
+    "platform": "direct",
+    "thumbnail": "/thumbnails/web-basics.jpg",
+    "duration": "08:30"
+  },
+
+  "steps": {
+    "refresher": {
+      "type": "markdown",
+      "title": "What is a Website?",
+      "content": "# Real-Life Story: Building a Toy Shop\n\nImagine you want to open a **small toy shop**.\n\nYour shop needs:\n\n- A **board** with shop name\n- Toys arranged nicely\n- Someone to open the door and talk to customers\n\nA **website works the same way**.\n\n---\n\n## Three Important Parts of a Website\n\n1. **HTML** – Structure (like walls and shelves)\n2. **CSS** – Style (colors, size, beauty)\n3. **JavaScript** – Brain (actions and logic)\n\nWithout these three, a website cannot work.\n\n---\n\n## Simple Rule\n\n- HTML shows **what is there**\n- CSS shows **how it looks**\n- JavaScript shows **how it behaves**\n\nNext, let’s understand them one by one.",
+      "video": {
+        "videoUrl": "/public/web-basics.mp4",
+        "title": "Website Basics Explained",
+        "duration": "4:10",
+        "autoShow": true
+      }
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "Positive Case: Simple Web Page",
+      "description": "This is a very small web page using HTML, CSS, and JavaScript.",
+      "code": "<!DOCTYPE html>\n<html>\n  <head>\n    <style>\n      h1 { color: blue; }\n      button { padding: 10px; }\n    </style>\n  </head>\n  <body>\n    <h1>My Toy Shop</h1>\n    <button onclick=\"sayHello()\">Click Me</button>\n\n    <script>\n      function sayHello() {\n        alert('Welcome to my shop');\n      }\n    </script>\n  </body>\n</html>",
+      "showPreview": true,
+      "explanation": "**How this works:**\n\n- `<h1>` is HTML (structure)\n- `color: blue` is CSS (style)\n- `onclick` is JavaScript (action)\n\nAll three work together like a team."
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "Common Confusion",
+      "description": "This page shows text but button does nothing. Why?",
+      "code": "<button>Click Me</button>",
+      "question": "Why does nothing happen when clicking?",
+      "options": [
+        {
+          "id": "a",
+          "text": "HTML buttons are broken",
+          "isCorrect": false,
+          "explanation": "HTML buttons work fine."
+        },
+        {
+          "id": "b",
+          "text": "JavaScript is missing",
+          "isCorrect": true,
+          "explanation": "Correct. Without JavaScript, buttons cannot perform actions."
+        },
+        {
+          "id": "c",
+          "text": "CSS is required",
+          "isCorrect": false,
+          "explanation": "CSS only changes looks, not actions."
+        },
+        {
+          "id": "d",
+          "text": "Browser needs refresh",
+          "isCorrect": false,
+          "explanation": "Refresh is not the issue."
+        }
+      ],
+      "correctCode": "<button onclick=\"alert('Hello')\">Click Me</button>",
+      "lesson": "HTML creates the button.\nJavaScript gives it life."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "Your Turn: Build a Name Board",
+      "description": "Create a page that shows your name and a welcome message.",
+      "requirements": [
+        "Use HTML heading",
+        "Add some color using CSS",
+        "Use JavaScript alert on button click"
+      ],
+      "starterCode": "<h1>Your Name</h1>\n<button>Welcome</button>",
+      "solution": "<h1 style=\"color: green\">My Name</h1>\n<button onclick=\"alert('Welcome to my website')\">Welcome</button>",
+      "hints": [
+        "Use <h1> for heading",
+        "Add style attribute",
+        "Use onclick for action"
+      ],
+      "tests": [
+        "Heading is visible",
+        "Button is clickable",
+        "Alert shows on click"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "Mini Challenge: Color Switch",
+      "description": "Change text color when button is clicked.",
+      "requirements": [
+        "Text should start black",
+        "Button click changes color to red"
+      ],
+      "starterCode": "<p id=\"text\">Hello</p>\n<button>Change Color</button>",
+      "solution": "<p id=\"text\">Hello</p>\n<button onclick=\"document.getElementById('text').style.color='red'\">Change Color</button>",
+      "hints": [
+        "Use getElementById",
+        "Change style.color"
+      ],
+      "tests": [
+        "Text exists",
+        "Color changes on click"
+      ]
+    },
+
+    "intro": {
+      "type": "game-intro",
+      "title": "Welcome to Web World",
+      "story": "You are entering the Web World. Before learning React powers, you must understand how the web itself works.",
+      "preview": "You will learn structure, style, and actions."
+    },
+
+    "battle1": {
+      "type": "code-battle",
+      "title": "Battle: Wake the Button",
+      "description": "Make the button respond to click.",
+      "enemy": {
+        "name": "Silent Button",
+        "avatar": "⬛",
+        "health": 50,
+        "attack": 5
+      },
+      "starterCode": "<button>Click</button>",
+      "solution": "<button onclick=\"alert('Clicked')\">Click</button>",
+      "hints": [
+        "Buttons need JavaScript",
+        "Use onclick"
+      ],
+      "tests": [
+        { "description": "Button exists", "input": null, "expected": "rendered" },
+        { "description": "Alert shows", "input": "click", "expected": "alert" }
+      ]
+    },
+
+    "race": {
+      "type": "speed-typing-race",
+      "targetCode": "<button onclick=\"alert('Hi')\">Click</button>",
+      "language": "html",
+      "rivals": [
+        { "name": "Fast Kid", "avatar": "👦", "speed": 0.7 },
+        { "name": "Quick Coder", "avatar": "🧠", "speed": 0.9 }
+      ]
+    },
+
+    "bughunt": {
+      "type": "bug-hunt-shooter",
+      "code": "<button onlick=\"alert('Hi')\">Click</button>",
+      "bugs": [
+        {
+          "id": "bug1",
+          "line": 1,
+          "type": "typo",
+          "description": "Wrong attribute name",
+          "fix": "onclick"
+        }
+      ],
+      "timeLimit": 45
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Web Basics Memory",
+      "pairs": [
+        { "concept": "HTML", "code": "Structure" },
+        { "concept": "CSS", "code": "Style" },
+        { "concept": "JavaScript", "code": "Action" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Which controls structure?",
+          "code": "<h1>Hello</h1>",
+          "options": ["CSS", "HTML", "JavaScript", "React"],
+          "correct": 1
+        },
+        {
+          "question": "Which adds behavior?",
+          "code": "onclick",
+          "options": ["HTML", "CSS", "JavaScript", "Browser"],
+          "correct": 2
+        }
+      ],
+      "waves": 2
+    }
+  }
+}

@@ -1,0 +1,204 @@
+{
+  "id": "react-002-what-is-react",
+  "title": "What is React & Why React?",
+  "description": "Understand React from zero: the problem before React, its history, and why developers love it",
+  "duration": 8,
+  "difficulty": "beginner",
+  "tags": ["react", "frontend", "library", "javascript"],
+  "prerequisites": ["react-001-javascript"],
+  "unlocks": ["react-003-create-react-app"],
+  "xp": 50,
+
+  "preview": {
+    "videoUrl": "/public/react-intro.mp4",
+    "platform": "direct",
+    "thumbnail": "/thumbnails/react-intro.jpg",
+    "duration": "8:45"
+  },
+
+  "steps": {
+    "refresher": {
+      "type": "markdown",
+      "title": "🏗️ The Problem Before React",
+      "content": "# Real-Life Story: Gym Notice Board Chaos\n\nImagine the **React Gym** notice board:\n\n- Trainers update schedules manually\n- Members check classes\n- Board often shows wrong info\n\nProblems:\n- Updating one class breaks others\n- Rewriting parts is slow\n- Hard to manage for multiple branches\n\n---\n\n## What React Does\n\nReact is like a **digital, self-updating notice board**:\n\n- Automatically updates only what changes\n- Reusable components (like mini boards)\n- Easy to maintain and scale\n\nReact is a **JavaScript library for building UI**.\n\n---\n\n## Key Features\n\n- **Components**: Mini building blocks\n- **JSX**: HTML inside JS\n- **State & Props**: Remember and communicate data\n- **Virtual DOM**: Fast updates without full refresh"
+      ,
+      "video": {
+        "videoUrl": "/public/react-refresher.mp4",
+        "title": "Why React Exists",
+        "duration": "4:20",
+        "autoShow": true
+      }
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "✅ Component Example",
+      "description": "Create a simple functional component showing a gym class.",
+      "code": "function GymClass() {\n  return <h2>Yoga Class: 6 PM</h2>;\n}\n\nexport default GymClass;",
+      "showPreview": true,
+      "explanation": "✅ Components are like **mini reusable boards**. You can create multiple and place them anywhere."
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "🐛 Mistake: Multiple DOM Updates",
+      "description": "Directly updating HTML instead of React component.",
+      "code": "document.getElementById('root').innerHTML = '<h2>Yoga 6 PM</h2>';\ndocument.getElementById('root').innerHTML = '<h2>Pilates 7 PM</h2>';",
+      "question": "Why is this approach bad in React?",
+      "options": [
+        {
+          "id": "a",
+          "text": "React does not like HTML",
+          "isCorrect": false,
+          "explanation": "React can render HTML via JSX. That’s not the issue."
+        },
+        {
+          "id": "b",
+          "text": "Direct DOM updates overwrite previous content",
+          "isCorrect": true,
+          "explanation": "✅ Correct! Each update replaces the previous one. React manages updates intelligently using Virtual DOM."
+        },
+        {
+          "id": "c",
+          "text": "It is slower",
+          "isCorrect": false,
+          "explanation": "Yes, slower is a side effect, but main problem is overwriting."
+        },
+        {
+          "id": "d",
+          "text": "Syntax is wrong",
+          "isCorrect": false,
+          "explanation": "Syntax is valid JS."
+        }
+      ],
+      "correctCode": "function Schedule() {\n  return (\n    <div>\n      <h2>Yoga Class: 6 PM</h2>\n      <h2>Pilates Class: 7 PM</h2>\n    </div>\n  );\n}\n\nexport default Schedule;",
+      "lesson": "React avoids overwriting UI manually. Always use **components** and **state**."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "🛠️ Your Turn: Create a Component",
+      "description": "Create a component for a Gym Trainer with name and specialization.",
+      "requirements": [
+        "Use functional component",
+        "Display trainer name and class",
+        "Use JSX properly"
+      ],
+      "starterCode": "function Trainer() {\n  // TODO\n}\n\nexport default Trainer;",
+      "solution": "function Trainer() {\n  return <h2>Trainer: Arun - Yoga</h2>;\n}\n\nexport default Trainer;",
+      "hints": [
+        "Use return inside function",
+        "Wrap HTML in parentheses if needed"
+      ],
+      "tests": [
+        "Component renders without crashing",
+        "Displays name and class"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "🏆 Challenge: Multiple Components",
+      "description": "Create three components for different gym classes and render them together.",
+      "requirements": [
+        "Create components: YogaClass, PilatesClass, CardioClass",
+        "Render all inside App component",
+        "Each shows class name and time"
+      ],
+      "starterCode": "function App() {\n  return (\n    <div>\n      {/* TODO */}\n    </div>\n  );\n}\n\nexport default App;",
+      "solution": "function YogaClass() { return <h2>Yoga: 6 PM</h2>; }\nfunction PilatesClass() { return <h2>Pilates: 7 PM</h2>; }\nfunction CardioClass() { return <h2>Cardio: 8 PM</h2>; }\n\nfunction App() {\n  return (\n    <div>\n      <YogaClass />\n      <PilatesClass />\n      <CardioClass />\n    </div>\n  );\n}\n\nexport default App;",
+      "hints": [
+        "Create each component separately",
+        "Use <ComponentName /> to render"
+      ],
+      "tests": [
+        "All three components render",
+        "Correct text displayed"
+      ]
+    },
+
+    "intro": {
+      "type": "game-intro",
+      "title": "⚔️ Welcome to React City!",
+      "story": "React City is full of components waiting to be built. Your mission: organize the city using React components and state to fight chaos.",
+      "preview": "You'll face: Component Battles, JSX Puzzles, and State Mysteries!"
+    },
+
+    "battle1": {
+      "type": "code-battle",
+      "title": "Battle: Component Army",
+      "description": "Create an army of class components to defeat the Chaos Monster!",
+      "enemy": {
+        "name": "Chaos Monster",
+        "avatar": "👹",
+        "health": 120,
+        "attack": 20
+      },
+      "starterCode": "function Class1() {\n  // TODO\n}\n\nexport default Class1;",
+      "solution": "function YogaClass() { return <h2>Yoga: 6 PM</h2>; }\nfunction PilatesClass() { return <h2>Pilates: 7 PM</h2>; }\nfunction CardioClass() { return <h2>Cardio: 8 PM</h2>; }",
+      "hints": [
+        "Use separate functions",
+        "Return JSX for each class"
+      ],
+      "tests": [
+        "Three components defined",
+        "All render correctly"
+      ]
+    },
+
+    "race": {
+      "type": "speed-typing-race",
+      "targetCode": "function App() { return (<YogaClass /><PilatesClass />); }",
+      "language": "javascript",
+      "rivals": [
+        { "name": "React Rookie", "avatar": "🏃", "speed": 0.8 },
+        { "name": "Component Master", "avatar": "🧙", "speed": 1.0 }
+      ]
+    },
+
+    "bughunt": {
+      "type": "bug-hunt-shooter",
+      "code": "function App() { return <div><YogaClass><PilatesClass /></div> }",
+      "bugs": [
+        {
+          "id": "bug1",
+          "line": 1,
+          "type": "syntax",
+          "description": "YogaClass not closed properly",
+          "fix": "<YogaClass />"
+        }
+      ],
+      "timeLimit": 50
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "React Basics Memory",
+      "pairs": [
+        { "concept": "Component", "code": "Reusable UI block" },
+        { "concept": "JSX", "code": "HTML inside JS" },
+        { "concept": "State", "code": "Memory inside component" },
+        { "concept": "Props", "code": "Data from parent to child" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "React is a:",
+          "code": "",
+          "options": ["Framework", "Library", "Language", "Tool"],
+          "correct": 1
+        },
+        {
+          "question": "JSX allows you to:",
+          "code": "",
+          "options": ["Write CSS in JS", "Write HTML in JS", "Write JS in HTML", "None"],
+          "correct": 1
+        }
+      ],
+      "waves": 2
+    }
+  }
+}

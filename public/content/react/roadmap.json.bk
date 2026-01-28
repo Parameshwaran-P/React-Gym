@@ -1,0 +1,100 @@
+{
+  "nodes": [
+      {
+      "id": "react-000-what-is-react",
+      "title": "What is React?",
+      "prerequisites": [],
+      "unlocks": ["react-001-usestate"]
+    },
+    {
+      "id": "react-001-usestate",
+      "title": "useState Hook",
+      "prerequisites": ["react-000-what-is-react"],
+      "unlocks": ["react-002-useeffect"]
+    },
+    {
+      "id": "react-002-useeffect",
+      "title": "useEffect Hook",
+      "prerequisites": ["react-001-usestate"],
+      "unlocks": ["react-003-props"]
+    },
+    {
+      "id": "react-003-props",
+      "title": "Props & Components",
+      "prerequisites": ["react-002-useeffect"],
+      "unlocks": ["react-004-conditional"]
+    },
+       {
+      "id": "react-004-conditional",
+      "title": "Props & Components",
+      "prerequisites": ["react-003-props"],
+      "unlocks": ["react-004-forms"]
+    },
+    {
+      "id": "react-005-forms",
+      "title": "Forms",
+      "prerequisites": ["react-004-conditional"],
+      "unlocks": ["react-006-context"]
+    },
+    {
+      "id": "react-006-context",
+      "title": "Context",
+      "prerequisites": ["react-005-forms"],
+      "unlocks": ["react-007-usereducer"]
+    },
+     {
+      "id": "react-007-usereducer",
+      "title": "useReducer Hook",
+      "prerequisites": ["react-006-context"],
+      "unlocks": ["react-008-custom-hooks"]
+    },
+     {
+      "id": "react-008-custom-hooks",
+      "title": "Custom Hooks",
+      "prerequisites": ["react-007-usereducer"],
+      "unlocks": ["react-009-router"]
+    }
+    ,
+     {
+      "id": "react-009-router",
+      "title": "Routes",
+      "prerequisites": ["react-008-custom-hooks"],
+      "unlocks": ["react-010-protected"]
+    }
+     ,
+     {
+      "id": "react-010-protected",
+      "title": "Producted",
+      "prerequisites": ["react-009-router"],
+      "unlocks": ["react-011-performance"]
+    }
+     ,
+     {
+      "id": "react-011-performance",
+      "title": "Performance",
+      "prerequisites": ["react-010-protected"],
+      "unlocks": ["react-012-testing"]
+    }
+    ,
+     {
+      "id": "react-012-testing",
+      "title": "Performance",
+      "prerequisites": ["react-011-performance"],
+      "unlocks": ["react-013-portals"]
+    },
+     {
+      "id": "react-013-portals",
+      "title": "Portals",
+      "prerequisites": ["react-012-testing"],
+      "unlocks": ["react-014-suspense"]
+    },
+      {
+      "id": "react-014-suspense",
+      "title": "Suspense",
+      "prerequisites": ["react-013-portals"],
+      "unlocks": ["react-015-final-project"]
+    }
+  ]
+}
+
+

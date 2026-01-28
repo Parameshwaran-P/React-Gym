@@ -1,100 +1,244 @@
 {
   "nodes": [
-      {
-      "id": "react-000-what-is-react",
-      "title": "What is React?",
+    {
+      "id": "react-000-webbasics",
+      "title": "Web Basics (HTML, CSS, JS overview)",
       "prerequisites": [],
-      "unlocks": ["react-001-usestate"]
+      "unlocks": ["react-001-javascript"]
     },
     {
-      "id": "react-001-usestate",
+      "id": "react-001-javascript",
+      "title": "Modern JavaScript (ES6+)",
+      "prerequisites": ["react-000-webbasics"],
+      "unlocks": ["react-002-what-is-react"]
+    },
+    {
+      "id": "react-002-what-is-react",
+      "title": "What is React & Why React?",
+      "prerequisites": ["react-001-javascript"],
+      "unlocks": ["react-003-create-react-app"]
+    },
+    {
+      "id": "react-003-create-react-app",
+      "title": "Create React App & Vite Setup",
+      "prerequisites": ["react-002-what-is-react"],
+      "unlocks": ["react-004-folder-structure"]
+    },
+    {
+      "id": "react-004-folder-structure",
+      "title": "React Folder Structure & Best Practices",
+      "prerequisites": ["react-003-create-react-app"],
+      "unlocks": ["react-005-jsx"]
+    },
+    {
+      "id": "react-005-jsx",
+      "title": "JSX Deep Dive",
+      "prerequisites": ["react-004-folder-structure"],
+      "unlocks": ["react-006-components"]
+    },
+    {
+      "id": "react-006-components",
+      "title": "Functional Components",
+      "prerequisites": ["react-005-jsx"],
+      "unlocks": ["react-007-props"]
+    },
+    {
+      "id": "react-007-props",
+      "title": "Props & Component Communication",
+      "prerequisites": ["react-006-components"],
+      "unlocks": ["react-008-conditional-rendering"]
+    },
+    {
+      "id": "react-008-conditional-rendering",
+      "title": "Conditional Rendering",
+      "prerequisites": ["react-007-props"],
+      "unlocks": ["react-009-lists-keys"]
+    },
+    {
+      "id": "react-009-lists-keys",
+      "title": "Lists & Keys",
+      "prerequisites": ["react-008-conditional-rendering"],
+      "unlocks": ["react-010-events"]
+    },
+    {
+      "id": "react-010-events",
+      "title": "Event Handling",
+      "prerequisites": ["react-009-lists-keys"],
+      "unlocks": ["react-011-usestate"]
+    },
+    {
+      "id": "react-011-usestate",
       "title": "useState Hook",
-      "prerequisites": ["react-000-what-is-react"],
-      "unlocks": ["react-002-useeffect"]
+      "prerequisites": ["react-010-events"],
+      "unlocks": ["react-012-forms"]
     },
     {
-      "id": "react-002-useeffect",
+      "id": "react-012-forms",
+      "title": "Forms & Controlled Components",
+      "prerequisites": ["react-011-usestate"],
+      "unlocks": ["react-013-lifting-state"]
+    },
+    {
+      "id": "react-013-lifting-state",
+      "title": "Lifting State Up",
+      "prerequisites": ["react-012-forms"],
+      "unlocks": ["react-014-useeffect"]
+    },
+    {
+      "id": "react-014-useeffect",
       "title": "useEffect Hook",
-      "prerequisites": ["react-001-usestate"],
-      "unlocks": ["react-003-props"]
+      "prerequisites": ["react-013-lifting-state"],
+      "unlocks": ["react-015-data-fetching"]
     },
     {
-      "id": "react-003-props",
-      "title": "Props & Components",
-      "prerequisites": ["react-002-useeffect"],
-      "unlocks": ["react-004-conditional"]
-    },
-       {
-      "id": "react-004-conditional",
-      "title": "Props & Components",
-      "prerequisites": ["react-003-props"],
-      "unlocks": ["react-004-forms"]
+      "id": "react-015-data-fetching",
+      "title": "Data Fetching (API Calls)",
+      "prerequisites": ["react-014-useeffect"],
+      "unlocks": ["react-016-custom-hooks"]
     },
     {
-      "id": "react-005-forms",
-      "title": "Forms",
-      "prerequisites": ["react-004-conditional"],
-      "unlocks": ["react-006-context"]
-    },
-    {
-      "id": "react-006-context",
-      "title": "Context",
-      "prerequisites": ["react-005-forms"],
-      "unlocks": ["react-007-usereducer"]
-    },
-     {
-      "id": "react-007-usereducer",
-      "title": "useReducer Hook",
-      "prerequisites": ["react-006-context"],
-      "unlocks": ["react-008-custom-hooks"]
-    },
-     {
-      "id": "react-008-custom-hooks",
+      "id": "react-016-custom-hooks",
       "title": "Custom Hooks",
-      "prerequisites": ["react-007-usereducer"],
-      "unlocks": ["react-009-router"]
-    }
-    ,
-     {
-      "id": "react-009-router",
-      "title": "Routes",
-      "prerequisites": ["react-008-custom-hooks"],
-      "unlocks": ["react-010-protected"]
-    }
-     ,
-     {
-      "id": "react-010-protected",
-      "title": "Producted",
-      "prerequisites": ["react-009-router"],
-      "unlocks": ["react-011-performance"]
-    }
-     ,
-     {
-      "id": "react-011-performance",
-      "title": "Performance",
-      "prerequisites": ["react-010-protected"],
-      "unlocks": ["react-012-testing"]
-    }
-    ,
-     {
-      "id": "react-012-testing",
-      "title": "Performance",
-      "prerequisites": ["react-011-performance"],
-      "unlocks": ["react-013-portals"]
+      "prerequisites": ["react-015-data-fetching"],
+      "unlocks": ["react-017-context"]
     },
-     {
-      "id": "react-013-portals",
+    {
+      "id": "react-017-context",
+      "title": "Context API",
+      "prerequisites": ["react-016-custom-hooks"],
+      "unlocks": ["react-018-usereducer"]
+    },
+    {
+      "id": "react-018-usereducer",
+      "title": "useReducer Hook",
+      "prerequisites": ["react-017-context"],
+      "unlocks": ["react-019-memoization"]
+    },
+    {
+      "id": "react-019-memoization",
+      "title": "useMemo & useCallback",
+      "prerequisites": ["react-018-usereducer"],
+      "unlocks": ["react-020-react-memo"]
+    },
+    {
+      "id": "react-020-react-memo",
+      "title": "React.memo",
+      "prerequisites": ["react-019-memoization"],
+      "unlocks": ["react-021-refs"]
+    },
+    {
+      "id": "react-021-refs",
+      "title": "Refs & useRef",
+      "prerequisites": ["react-020-react-memo"],
+      "unlocks": ["react-022-portals"]
+    },
+    {
+      "id": "react-022-portals",
       "title": "Portals",
-      "prerequisites": ["react-012-testing"],
-      "unlocks": ["react-014-suspense"]
+      "prerequisites": ["react-021-refs"],
+      "unlocks": ["react-023-error-boundaries"]
     },
-      {
-      "id": "react-014-suspense",
-      "title": "Suspense",
-      "prerequisites": ["react-013-portals"],
-      "unlocks": ["react-015-final-project"]
+    {
+      "id": "react-023-error-boundaries",
+      "title": "Error Boundaries",
+      "prerequisites": ["react-022-portals"],
+      "unlocks": ["react-024-suspense"]
+    },
+    {
+      "id": "react-024-suspense",
+      "title": "Suspense & Lazy Loading",
+      "prerequisites": ["react-023-error-boundaries"],
+      "unlocks": ["react-025-routing"]
+    },
+    {
+      "id": "react-025-routing",
+      "title": "React Router",
+      "prerequisites": ["react-024-suspense"],
+      "unlocks": ["react-026-protected-routes"]
+    },
+    {
+      "id": "react-026-protected-routes",
+      "title": "Protected Routes",
+      "prerequisites": ["react-025-routing"],
+      "unlocks": ["react-027-state-management"]
+    },
+    {
+      "id": "react-027-state-management",
+      "title": "State Management Overview",
+      "prerequisites": ["react-026-protected-routes"],
+      "unlocks": ["react-028-redux"]
+    },
+    {
+      "id": "react-028-redux",
+      "title": "Redux Toolkit",
+      "prerequisites": ["react-027-state-management"],
+      "unlocks": ["react-029-zustand"]
+    },
+    {
+      "id": "react-029-zustand",
+      "title": "Zustand State Management",
+      "prerequisites": ["react-028-redux"],
+      "unlocks": ["react-030-performance"]
+    },
+    {
+      "id": "react-030-performance",
+      "title": "Performance Optimization",
+      "prerequisites": ["react-029-zustand"],
+      "unlocks": ["react-031-testing"]
+    },
+    {
+      "id": "react-031-testing",
+      "title": "Testing (Jest & React Testing Library)",
+      "prerequisites": ["react-030-performance"],
+      "unlocks": ["react-032-env"]
+    },
+    {
+      "id": "react-032-env",
+      "title": "Environment Variables",
+      "prerequisites": ["react-031-testing"],
+      "unlocks": ["react-033-build"]
+    },
+    {
+      "id": "react-033-build",
+      "title": "Build & Deployment",
+      "prerequisites": ["react-032-env"],
+      "unlocks": ["react-034-project-mini"]
+    },
+    {
+      "id": "react-034-project-mini",
+      "title": "Mini Project",
+      "prerequisites": ["react-033-build"],
+      "unlocks": ["react-035-project-dashboard"]
+    },
+    {
+      "id": "react-035-project-dashboard",
+      "title": "Dashboard Project",
+      "prerequisites": ["react-034-project-mini"],
+      "unlocks": ["react-036-project-full"]
+    },
+    {
+      "id": "react-036-project-full",
+      "title": "Full React Application",
+      "prerequisites": ["react-035-project-dashboard"],
+      "unlocks": ["react-037-best-practices"]
+    },
+    {
+      "id": "react-037-best-practices",
+      "title": "Best Practices & Architecture",
+      "prerequisites": ["react-036-project-full"],
+      "unlocks": ["react-038-common-mistakes"]
+    },
+    {
+      "id": "react-038-common-mistakes",
+      "title": "Common Mistakes & Anti-patterns",
+      "prerequisites": ["react-037-best-practices"],
+      "unlocks": ["react-039-interview"]
+    },
+    {
+      "id": "react-039-interview",
+      "title": "Interview Questions & Preparation",
+      "prerequisites": ["react-038-common-mistakes"],
+      "unlocks": []
     }
   ]
 }
-
-
