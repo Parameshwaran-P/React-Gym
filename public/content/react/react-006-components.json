@@ -1,0 +1,139 @@
+{
+  "id": "react-006-components",
+  "title": "React Components",
+  "description": "Understand what components are and how React builds UI using components",
+  "duration": 10,
+  "difficulty": "beginner",
+  "tags": ["react", "components", "basics"],
+  "prerequisites": ["react-005-jsx"],
+  "unlocks": ["react-007-props"],
+  "xp": 70,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "Building with Blocks",
+      "story": "Big applications are built using small reusable parts called components.",
+      "preview": "You will learn how React breaks UI into small pieces."
+    },
+
+    "refresher": {
+      "type": "markdown",
+      "title": "🏠 Real-World Story: House Construction",
+      "content": "# Think Like a House\n\nA house is not built at once.\n\nIt has:\n- Door\n- Window\n- Room\n- Kitchen\n\nEach part is separate.\n\n---\n\n## Same in React\n\nA React app is made of **components**.\n\nEach component:\n- Does one job\n- Can be reused\n- Can be combined with others\n\n---\n\n## What is a Component?\n\nA component is a **JavaScript function** that returns JSX.\n\nIt tells React **what to show on the screen**."
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "✅ Simple Component",
+      "description": "This is a basic React component.",
+      "code": "function Welcome() {\n  return <h1>Welcome to React Gym</h1>;\n}\n\nexport default Welcome;",
+      "showPreview": true,
+      "explanation": "A component is just a function that returns JSX."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "🧠 Component Rules",
+      "content": "## Important Rules\n\n1. Component name must start with a capital letter\n2. Must return JSX\n3. One component = one responsibility\n\n---\n\nExample:\n\n`function Header() {}`\n\nCorrect\n\n`function header() {}`\n\nWrong"
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "🐛 Component Mistake",
+      "description": "Why will this not render?",
+      "code": "function header() {\n  return <h1>Hello</h1>;\n}",
+      "question": "What is the issue?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Component name must start with capital letter",
+          "isCorrect": true,
+          "explanation": "Correct. React treats lowercase as normal HTML tags."
+        },
+        {
+          "id": "b",
+          "text": "JSX is invalid",
+          "isCorrect": false,
+          "explanation": "JSX is valid here."
+        },
+        {
+          "id": "c",
+          "text": "Functions cannot return JSX",
+          "isCorrect": false,
+          "explanation": "Functions can return JSX."
+        }
+      ],
+      "lesson": "Always capitalize component names."
+    },
+
+    "concept2": {
+      "type": "markdown",
+      "title": "🧩 Using Components",
+      "content": "## Calling a Component\n\nOnce created, use it like HTML:\n\n`<Welcome />`\n\n---\n\nExample:\n\n```\nfunction App() {\n  return (\n    <div>\n      <Welcome />\n    </div>\n  );\n}\n```"
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "🛠️ Create Your First Component",
+      "description": "Create a component called `Footer`.",
+      "requirements": [
+        "Component name Footer",
+        "Return a paragraph",
+        "Use it inside App component"
+      ],
+      "starterCode": "function App() {\n  return (\n    <div>\n      {/* Use Footer here */}\n    </div>\n  );\n}\n\nexport default App;",
+      "solution": "function Footer() {\n  return <p>© 2026 React Gym</p>;\n}\n\nfunction App() {\n  return (\n    <div>\n      <Footer />\n    </div>\n  );\n}\n\nexport default App;",
+      "hints": [
+        "Component names start with capital letter",
+        "Use <Footer /> to render"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "🏆 Challenge: Page Layout",
+      "description": "Create a simple page using components.",
+      "requirements": [
+        "Header component",
+        "Content component",
+        "Footer component",
+        "Use all inside App"
+      ],
+      "solution": "function Header() {\n  return <h1>React Gym</h1>;\n}\n\nfunction Content() {\n  return <p>Learn React step by step</p>;\n}\n\nfunction Footer() {\n  return <p>All rights reserved</p>;\n}\n\nfunction App() {\n  return (\n    <div>\n      <Header />\n      <Content />\n      <Footer />\n    </div>\n  );\n}\n\nexport default App;"
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Component Memory",
+      "pairs": [
+        { "concept": "Component", "code": "Reusable UI piece" },
+        { "concept": "Capital Letter", "code": "Component naming rule" },
+        { "concept": "<Header />", "code": "Using component" },
+        { "concept": "return JSX", "code": "Component output" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "What is a React component?",
+          "options": [
+            "CSS file",
+            "JavaScript function returning JSX",
+            "HTML page",
+            "API"
+          ],
+          "correct": 1
+        },
+        {
+          "question": "Which name is valid?",
+          "options": ["footer", "header", "Footer", "content"],
+          "correct": 2
+        }
+      ],
+      "waves": 3
+    }
+  }
+}

@@ -1,0 +1,198 @@
+{
+  "id": "react-003-create-react-app",
+  "title": "Create React App & Vite Setup",
+  "description": "Learn how to set up a React project using CRA and Vite, and understand project initialization",
+  "duration": 10,
+  "difficulty": "beginner",
+  "tags": ["react", "setup", "tools", "vite", "CRA"],
+  "prerequisites": ["react-002-what-is-react"],
+  "unlocks": ["react-004-folder-structure"],
+  "xp": 60,
+
+  "preview": {
+    "videoUrl": "/public/react-setup.mp4",
+    "platform": "direct",
+    "thumbnail": "/thumbnails/react-setup.jpg",
+    "duration": "7:30"
+  },
+
+  "steps": {
+    "refresher": {
+      "type": "markdown",
+      "title": "🛠️ Setting Up Your React Gym",
+      "content": "# Real-Life Story: Opening a New Gym Branch\n\nImagine you’re opening a new **React Gym branch** 🏋️‍♂️:\n\n- You need proper equipment, walls, floors, and staff\n- You can’t start without a foundation\n\nIn React terms:\n- The **project folder** is your gym\n- CRA/Vite is your **setup tool** that builds the foundation for you\n\n---\n\n## Why CRA & Vite?\n\n- **Create React App (CRA)**: Traditional, zero-config setup\n- **Vite**: Modern, faster, supports hot module replacement\n\nBoth create the initial project structure so you can **focus on coding**.\n\n---\n\n## Basic Commands\n\n**CRA:**\n```bash\nnpx create-react-app my-gym\ncd my-gym\nnpm start\n```\n\n**Vite:**\n```bash\nnpm create vite@latest my-gym\ncd my-gym\nnpm install\nnpm run dev\n```\n\n✅ You now have a running React project!"
+      ,
+      "video": {
+        "videoUrl": "/public/react-setup-refresher.mp4",
+        "title": "React Project Setup Explained",
+        "duration": "4:10",
+        "autoShow": true
+      }
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "✅ Verify Setup",
+      "description": "Check your React app is running with a basic component.",
+      "code": "function Welcome() {\n  return <h2>Welcome to React Gym!</h2>;\n}\n\nexport default Welcome;",
+      "showPreview": true,
+      "explanation": "✅ If you see 'Welcome to React Gym!' in your browser, your setup works!"
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "🐛 Common Mistake: Missing Dependencies",
+      "description": "App doesn’t start after setup.",
+      "code": "npm start",
+      "question": "Why doesn’t your app run?",
+      "options": [
+        {
+          "id": "a",
+          "text": "You didn’t install dependencies",
+          "isCorrect": true,
+          "explanation": "✅ Correct! Always run `npm install` or `yarn` after creating a project."
+        },
+        {
+          "id": "b",
+          "text": "React is not installed globally",
+          "isCorrect": false,
+          "explanation": "Global installation is not needed; CRA/Vite handles it locally."
+        },
+        {
+          "id": "c",
+          "text": "Browser doesn’t support React",
+          "isCorrect": false,
+          "explanation": "Modern browsers fully support React."
+        }
+      ],
+      "correctCode": "npm install\nnpm start",
+      "lesson": "Always install dependencies before running the React app."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "🛠️ Your Turn: Initialize Your Gym App",
+      "description": "Create a new React project and verify it runs.",
+      "requirements": [
+        "Use CRA or Vite",
+        "Start the dev server",
+        "Create a Welcome component and render it"
+      ],
+      "starterCode": "function App() {\n  return (\n    <div>\n      {/* TODO: Render Welcome component */}\n    </div>\n  );\n}\n\nexport default App;",
+      "solution": "function Welcome() { return <h2>Welcome to React Gym!</h2>; }\n\nfunction App() {\n  return (\n    <div>\n      <Welcome />\n    </div>\n  );\n}\n\nexport default App;",
+      "hints": [
+        "Create a component for Welcome",
+        "Render it inside App component"
+      ],
+      "tests": [
+        "App component renders",
+        "Welcome component displays text"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "🏆 Challenge: Multi-Component Gym Dashboard",
+      "description": "Create a dashboard with three sections: Schedule, Trainers, and Membership.",
+      "requirements": [
+        "Create separate components for each section",
+        "Render all inside App",
+        "Each section shows some placeholder info"
+      ],
+      "starterCode": "function App() {\n  return (\n    <div>\n      {/* TODO */}\n    </div>\n  );\n}\n\nexport default App;",
+      "solution": "function Schedule() { return <h2>Schedule: Yoga 6PM</h2>; }\nfunction Trainers() { return <h2>Trainers: Arun, Priya</h2>; }\nfunction Membership() { return <h2>Members: 20</h2>; }\n\nfunction App() {\n  return (\n    <div>\n      <Schedule />\n      <Trainers />\n      <Membership />\n    </div>\n  );\n}\n\nexport default App;",
+      "hints": [
+        "Create 3 separate functional components",
+        "Render them inside App"
+      ],
+      "tests": [
+        "All 3 components render",
+        "Text matches placeholders"
+      ]
+    },
+
+    "intro": {
+      "type": "game-intro",
+      "title": "⚔️ Welcome to the Setup Arena!",
+      "story": "Your React Gym needs a foundation. Only by setting up the project correctly can you start training your components and defeating Chaos!",
+      "preview": "You'll face: Installation Battles, Dependency Puzzles, and Server Challenges!"
+    },
+
+    "battle1": {
+      "type": "code-battle",
+      "title": "Battle: The Broken Server",
+      "description": "Start the dev server to defeat the Error Troll!",
+      "enemy": {
+        "name": "Error Troll",
+        "avatar": "👹",
+        "health": 100,
+        "attack": 20
+      },
+      "starterCode": "// Try running npm start or vite dev",
+      "solution": "npm install\nnpm start  // CRA\nnpm run dev  // Vite",
+      "hints": [
+        "Check dependencies",
+        "Run the correct dev server command"
+      ],
+      "tests": [
+        "Dev server starts",
+        "No errors in console"
+      ]
+    },
+
+    "race": {
+      "type": "speed-typing-race",
+      "targetCode": "npx create-react-app my-gym\ncd my-gym\nnpm start",
+      "language": "bash",
+      "rivals": [
+        { "name": "Speedy Installer", "avatar": "🏃", "speed": 0.9 },
+        { "name": "Setup Ninja", "avatar": "🥷", "speed": 1.0 }
+      ]
+    },
+
+    "bughunt": {
+      "type": "bug-hunt-shooter",
+      "code": "function App() { return <div><Welcome></div>; }",
+      "bugs": [
+        {
+          "id": "bug1",
+          "line": 1,
+          "type": "syntax",
+          "description": "Welcome component not closed",
+          "fix": "<Welcome />"
+        }
+      ],
+      "timeLimit": 60
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Setup Memory Master",
+      "pairs": [
+        { "concept": "CRA", "code": "Create React App setup tool" },
+        { "concept": "Vite", "code": "Modern fast React setup tool" },
+        { "concept": "npm install", "code": "Install dependencies" },
+        { "concept": "npm start / npm run dev", "code": "Start dev server" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Command to start CRA dev server?",
+          "code": "",
+          "options": ["npm run dev", "npm start", "npx start", "npm init"],
+          "correct": 1
+        },
+        {
+          "question": "Command to create Vite project?",
+          "code": "",
+          "options": ["npx create-vite", "npm create vite@latest", "npm init vite", "npx vite-start"],
+          "correct": 1
+        }
+      ],
+      "waves": 2
+    }
+  }
+}

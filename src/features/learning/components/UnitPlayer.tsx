@@ -10,7 +10,7 @@ import {
   completeUnit 
 } from '../store/progressStore';
 import ReactMarkdown from 'react-markdown';
-import { InteractiveCodeEditor } from './InteractiveCodeEditor';
+import { UniversalPracticeEditor } from '../components/UniversalPracticeEditor';
 import { CodeDisplay } from './CodeDisplay';
 import { CompletionModal } from './CompletionModal';
 import { GameRouter } from './games/GameRouter';
@@ -707,14 +707,50 @@ function VideoPlayerEmbedded({
 // ============================================
 
 function PositiveCaseStep({ stepData }: { stepData: any }) {
+  // Detect language from code content or use default
+  const detectLanguage = (code: string): 'html' | 'react' | 'javascript' => {
+    if (code.includes('import React') || code.includes('export default') || 
+        (code.includes('function') && code.includes('return ('))) {
+      return 'react';
+    }
+    if (code.includes('<!DOCTYPE') || code.includes('<html>')) {
+      return 'html';
+    }
+    return 'javascript';
+  };
+
+  const language = stepData.language || detectLanguage(stepData.code);
+  
+  // Determine the main file path based on language
+  const getMainFilePath = (lang: string): string => {
+    const paths: Record<string, string> = {
+      html: '/index.html',
+      css: '/styles.css',
+      javascript: '/index.js',
+      react: '/App.js',
+      nextjs: '/pages/index.js',
+      nodejs: '/index.js',
+    };
+    return paths[lang] || '/App.js';
+  };
+
+  const mainFilePath = getMainFilePath(language);
+
   return (
     <div className="space-y-6">
-      <InteractiveCodeEditor 
-        code={stepData.code}
-        readOnly={true}
-        showPreview={stepData.showPreview}
+      <UniversalPracticeEditor
+        config={{
+          language: language,
+          title: stepData.title,
+          description: 'Review this working example',
+          files: {
+            [mainFilePath]: stepData.code,
+          },
+          showPreview: stepData.showPreview ?? true,
+          showConsole: false,
+        }}
       />
-      
+     
       {stepData.explanation && (
         <div className="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg">
           <div className="prose prose-blue max-w-none">
@@ -837,6 +873,20 @@ function CodingTaskStep({ stepData, showHelpVideo, onToggleHelpVideo }: any) {
 
   const hasHelpVideo = !!stepData.helpVideo?.videoUrl;
 
+  // Detect language
+  const language = stepData.language || 'react';
+  const getMainFilePath = (lang: string): string => {
+    const paths: Record<string, string> = {
+      html: '/index.html',
+      javascript: '/index.js',
+      react: '/App.js',
+      nextjs: '/pages/index.js',
+      nodejs: '/index.js',
+    };
+    return paths[lang] || '/App.js';
+  };
+  const mainFilePath = getMainFilePath(language);
+
   return (
     <div className="space-y-6">
       <div className="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg">
@@ -863,11 +913,23 @@ function CodingTaskStep({ stepData, showHelpVideo, onToggleHelpVideo }: any) {
             Your Code
           </h3>
         </div>
-        <InteractiveCodeEditor 
-          code={code}
-          readOnly={false}
-          showPreview={true}
-          onCodeChange={setCode}
+        <UniversalPracticeEditor
+          config={{
+            language: language,
+            title: 'Practice Editor',
+            description: 'Edit the code and see live results',
+            files: {
+              [mainFilePath]: code,
+            },
+            showPreview: true,
+            showConsole: true,
+          }}
+          onCodeChange={(files) => {
+            setCode(files[mainFilePath] || '');
+          }}
+          initialFiles={{
+            [mainFilePath]: stepData.starterCode,
+          }}
         />
       </div>
 

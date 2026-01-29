@@ -1,0 +1,121 @@
+{
+  "id": "react-004-folder-structure",
+  "title": "React Folder Structure",
+  "description": "Understand how a React project is organized and why each folder exists",
+  "duration": 8,
+  "difficulty": "beginner",
+  "tags": ["react", "folders", "project-structure"],
+  "prerequisites": ["react-003-create-react-app"],
+  "unlocks": ["react-005-jsx"],
+  "xp": 50,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "Welcome to the React Gym Building",
+      "story": "You have built the gym. Now you must organize it. Without proper rooms, trainers and equipment get lost.",
+      "preview": "You will learn where everything belongs in a React project."
+    },
+
+    "refresher": {
+      "type": "markdown",
+      "title": "🏢 Real-World Story: School Building",
+      "content": "# Think Like a School\n\nImagine a school:\n\n- Classrooms → Where learning happens\n- Office → Manages administration\n- Store room → Keeps extra materials\n\nA React project is the same.\n\nEach folder has **one responsibility**.\n\n---\n\n## Important Folders\n\n### 📁 node_modules\n- Contains all installed packages\n- Never edit manually\n\n### 📁 public\n- Static files\n- index.html lives here\n\n### 📁 src (Most Important)\n- Where we write React code\n\nInside `src`:\n- `main.jsx / index.js` → Entry gate\n- `App.jsx` → Main building\n- `components/` → Small rooms\n- `assets/` → Images, icons\n- `styles/` → CSS files\n\n---\n\n## Golden Rule\n\nOne file → One purpose\n\nClean structure = Easy maintenance"
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "✅ Correct Structure",
+      "description": "This is a clean React structure.",
+      "code": "src/\n ├─ components/\n │   └─ Header.jsx\n ├─ assets/\n │   └─ logo.png\n ├─ App.jsx\n └─ main.jsx",
+      "showPreview": false,
+      "explanation": "Each file has a clear responsibility. This is industry practice."
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "🐛 Common Mistake: Everything in App.jsx",
+      "description": "Why is this a bad practice?",
+      "code": "function App() {\n  // Header\n  // Footer\n  // Sidebar\n  // API logic\n}",
+      "question": "What problem will this cause?",
+      "options": [
+        {
+          "id": "a",
+          "text": "File becomes hard to read",
+          "isCorrect": true,
+          "explanation": "Correct. Large files reduce readability and increase bugs."
+        },
+        {
+          "id": "b",
+          "text": "React will stop working",
+          "isCorrect": false,
+          "explanation": "React still works, but code quality drops."
+        },
+        {
+          "id": "c",
+          "text": "Browser crashes",
+          "isCorrect": false,
+          "explanation": "Browser will not crash because of file size."
+        }
+      ],
+      "lesson": "Split UI into small reusable components."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "🛠️ Organize the Gym",
+      "description": "Create a clean folder structure.",
+      "requirements": [
+        "Create components folder",
+        "Move Header into components",
+        "Import Header into App"
+      ],
+      "starterCode": "function App() {\n  return <h1>React Gym</h1>;\n}\n\nexport default App;",
+      "solution": "// components/Header.jsx\nfunction Header() {\n  return <h1>React Gym</h1>;\n}\nexport default Header;\n\n// App.jsx\nimport Header from './components/Header';\n\nfunction App() {\n  return <Header />;\n}\n\nexport default App;",
+      "hints": [
+        "One UI piece = one component",
+        "Import components into App"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "🏆 Challenge: Build Gym Layout",
+      "description": "Create Header, Footer, and Content components.",
+      "requirements": [
+        "Create 3 components",
+        "Keep each in components folder",
+        "Render all in App"
+      ],
+      "solution": "function Header() { return <h2>Header</h2>; }\nfunction Content() { return <p>Main Content</p>; }\nfunction Footer() { return <h4>Footer</h4>; }\n\nfunction App() {\n  return (\n    <>\n      <Header />\n      <Content />\n      <Footer />\n    </>\n  );\n}\n\nexport default App;"
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Folder Match",
+      "pairs": [
+        { "concept": "src", "code": "React source code" },
+        { "concept": "components", "code": "Reusable UI pieces" },
+        { "concept": "public", "code": "Static files" },
+        { "concept": "node_modules", "code": "Installed packages" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Where should reusable UI go?",
+          "options": ["public", "components", "node_modules", "assets"],
+          "correct": 1
+        },
+        {
+          "question": "Which folder should not be edited?",
+          "options": ["src", "components", "node_modules", "assets"],
+          "correct": 2
+        }
+      ],
+      "waves": 2
+    }
+  }
+}

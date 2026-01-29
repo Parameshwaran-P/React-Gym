@@ -33,7 +33,8 @@
       "type": "interactive-code",
       "title": "Positive Case: Simple Web Page",
       "description": "This is a very small web page using HTML, CSS, and JavaScript.",
-      "code": "<!DOCTYPE html>\n<html>\n  <head>\n    <style>\n      h1 { color: blue; }\n      button { padding: 10px; }\n    </style>\n  </head>\n  <body>\n    <h1>My Toy Shop</h1>\n    <button onclick=\"sayHello()\">Click Me</button>\n\n    <script>\n      function sayHello() {\n        alert('Welcome to my shop');\n      }\n    </script>\n  </body>\n</html>",
+        "language": "html", 
+      "code": "<html>\n  <head>\n    <style>\n      h1 { color: blue; }\n      button { padding: 10px; }\n    </style>\n  </head>\n  <body>\n    <h1>My Toy Shop</h1>\n    <button onclick=\"sayHello()\">Click Me</button>\n\n    <script>\n      function sayHello() {\n        alert('Welcome to my shop');\n      }\n    </script>\n  </body>\n</html>",
       "showPreview": true,
       "explanation": "**How this works:**\n\n- `<h1>` is HTML (structure)\n- `color: blue` is CSS (style)\n- `onclick` is JavaScript (action)\n\nAll three work together like a team."
     },
@@ -44,6 +45,7 @@
       "description": "This page shows text but button does nothing. Why?",
       "code": "<button>Click Me</button>",
       "question": "Why does nothing happen when clicking?",
+        "language": "html", 
       "options": [
         {
           "id": "a",
@@ -105,6 +107,7 @@
         "Text should start black",
         "Button click changes color to red"
       ],
+        "language": "html", 
       "starterCode": "<p id=\"text\">Hello</p>\n<button>Change Color</button>",
       "solution": "<p id=\"text\">Hello</p>\n<button onclick=\"document.getElementById('text').style.color='red'\">Change Color</button>",
       "hints": [
@@ -134,6 +137,7 @@
         "health": 50,
         "attack": 5
       },
+        "language": "html", 
       "starterCode": "<button>Click</button>",
       "solution": "<button onclick=\"alert('Clicked')\">Click</button>",
       "hints": [
@@ -158,6 +162,7 @@
 
     "bughunt": {
       "type": "bug-hunt-shooter",
+        "language": "html", 
       "code": "<button onlick=\"alert('Hi')\">Click</button>",
       "bugs": [
         {

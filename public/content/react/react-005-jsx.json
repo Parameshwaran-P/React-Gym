@@ -1,0 +1,126 @@
+{
+  "id": "react-005-jsx",
+  "title": "JSX Basics",
+  "description": "Learn how JSX works and why React uses it to build UI",
+  "duration": 9,
+  "difficulty": "beginner",
+  "tags": ["react", "jsx", "ui"],
+  "prerequisites": ["react-004-folder-structure"],
+  "unlocks": ["react-006-components"],
+  "xp": 60,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "The Language of React",
+      "story": "React does not understand HTML directly. It speaks a special language called JSX.",
+      "preview": "You will learn how JSX turns ideas into visible screens."
+    },
+
+    "refresher": {
+      "type": "markdown",
+      "title": "🧱 Real-World Story: Lego Blocks",
+      "content": "# Think Like Lego\n\nImagine Lego blocks:\n\n- Blocks look colorful\n- Inside, they are plastic\n\nJSX looks like HTML\nBut inside, it is JavaScript\n\n---\n\n## What is JSX?\n\nJSX = JavaScript + HTML-like syntax\n\nExample:\n\n`<h1>Hello</h1>`\n\nThis is not HTML.\nIt becomes JavaScript behind the scenes.\n\n---\n\n## Why JSX?\n\nWithout JSX:\n\n`React.createElement('h1', null, 'Hello')`\n\nWith JSX:\n\n`<h1>Hello</h1>`\n\nJSX is easier to read and write."
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "✅ JSX Example",
+      "description": "This is valid JSX inside a component.",
+      "code": "function App() {\n  return <h1>Welcome to React Gym</h1>;\n}\n\nexport default App;",
+      "showPreview": true,
+      "explanation": "JSX must be returned from a component."
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "🐛 JSX Mistake",
+      "description": "What is wrong here?",
+      "code": "function App() {\n  return (\n    <h1>Hello</h1>\n    <p>World</p>\n  );\n}",
+      "question": "Why will this fail?",
+      "options": [
+        {
+          "id": "a",
+          "text": "JSX must have one parent element",
+          "isCorrect": true,
+          "explanation": "Correct. JSX must be wrapped inside a single parent."
+        },
+        {
+          "id": "b",
+          "text": "JSX does not support paragraphs",
+          "isCorrect": false,
+          "explanation": "JSX supports all HTML elements."
+        },
+        {
+          "id": "c",
+          "text": "React does not allow text",
+          "isCorrect": false,
+          "explanation": "Text is allowed inside JSX."
+        }
+      ],
+      "lesson": "Wrap multiple elements inside a parent or fragment."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "📦 JSX Rules",
+      "content": "## Important JSX Rules\n\n1. Only one parent element\n2. Use `className` instead of `class`\n3. JavaScript inside `{ }`\n4. JSX expressions must return a value\n\n---\n\nExample:\n\n`<h1>{2 + 2}</h1>`\n\nResult:\n\n4"
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "🛠️ Fix the JSX",
+      "description": "Make this JSX valid.",
+      "requirements": [
+        "Wrap elements properly",
+        "Use fragment or div"
+      ],
+      "starterCode": "function App() {\n  return (\n    <h1>React</h1>\n    <h2>Gym</h2>\n  );\n}",
+      "solution": "function App() {\n  return (\n    <>\n      <h1>React</h1>\n      <h2>Gym</h2>\n    </>\n  );\n}\n\nexport default App;",
+      "hints": [
+        "Use fragment <> </>",
+        "JSX needs one root"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "🏆 Challenge: Profile Card",
+      "description": "Create a JSX layout for a user profile.",
+      "requirements": [
+        "Use h2, p, and div",
+        "Show name and role",
+        "Wrap correctly"
+      ],
+      "solution": "function App() {\n  return (\n    <div>\n      <h2>Arun</h2>\n      <p>Frontend Developer</p>\n    </div>\n  );\n}\n\nexport default App;"
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "JSX Match",
+      "pairs": [
+        { "concept": "JSX", "code": "HTML-like JavaScript" },
+        { "concept": "{}", "code": "JavaScript expression" },
+        { "concept": "Fragment", "code": "Invisible wrapper" },
+        { "concept": "className", "code": "CSS class in JSX" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "How many parent elements JSX allows?",
+          "options": ["Unlimited", "One", "Two", "None"],
+          "correct": 1
+        },
+        {
+          "question": "Which is correct in JSX?",
+          "options": ["class", "classname", "className", "cssClass"],
+          "correct": 2
+        }
+      ],
+      "waves": 2
+    }
+  }
+}
