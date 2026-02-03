@@ -1,0 +1,146 @@
+{
+  "id": "react-021-refs",
+  "title": "Refs & useRef",
+  "description": "Access DOM elements and store values without re-render",
+  "duration": 6,
+  "difficulty": "intermediate",
+  "tags": ["useRef", "dom", "performance"],
+  "prerequisites": ["react-020-react-memo"],
+  "unlocks": ["react-022-portals"],
+  "xp": 110,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "The Silent Notebook",
+      "story": "Some things are remembered quietly.",
+      "preview": "Change values without disturbing the UI."
+    },
+
+    "story": {
+      "type": "markdown",
+      "title": "Real Life Story: Teacher's Notes",
+      "content": "A teacher writes notes in a notebook.\n\nStudents don't stand up every time the teacher writes.\n\nuseRef works the same way.\n\nIt stores values quietly without re-rendering the class."
+    },
+
+    "problem": {
+      "type": "markdown",
+      "title": "The Problem",
+      "content": "Sometimes we need:\n• Direct access to input fields\n• Store previous values\n• Count renders\n\nuseState causes re-render.\nWe don’t want that."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "What is useRef?",
+      "content": "useRef is a hook.\n\nIt gives an object with:\n• a .current property\n• value stays between renders\n• updating it does NOT re-render"
+    },
+
+    "syntax": {
+      "type": "markdown",
+      "title": "Basic Syntax",
+      "content": "```javascript\nconst myRef = React.useRef(initialValue);\n\nmyRef.current = newValue;\n```"
+    },
+
+    "example": {
+      "type": "interactive-code",
+      "title": "Accessing DOM Element",
+      "description": "Focus input on button click.",
+      "code": "function App() {\n  const inputRef = React.useRef(null);\n\n  const focusInput = () => {\n    inputRef.current.focus();\n  };\n\n  return (\n    <div>\n      <input ref={inputRef} />\n      <button onClick={focusInput}>Focus</button>\n    </div>\n  );\n}\n\nexport default App;",
+      "showPreview": false,
+      "explanation": "No state, no re-render. Direct DOM access."
+    },
+
+    "secondExample": {
+      "type": "interactive-code",
+      "title": "Store Value Without Re-render",
+      "description": "Count renders silently.",
+      "code": "function Counter() {\n  const renders = React.useRef(0);\n\n  renders.current += 1;\n\n  return <p>Renders: {renders.current}</p>;\n}\n\nexport default Counter;",
+      "showPreview": false,
+      "explanation": "Value updates but UI does not re-render."
+    },
+
+    "difference": {
+      "type": "markdown",
+      "title": "useRef vs useState",
+      "content": "useState:\n• Updates cause re-render\n• Used for UI changes\n\nuseRef:\n• No re-render\n• Used for DOM or memory"
+    },
+
+    "mistake": {
+      "type": "debug-quiz",
+      "title": "Common Mistake",
+      "description": "Why inputRef is null?",
+      "code": "const inputRef = useRef();\n<input ref={inputRef.current} />",
+      "question": "What is wrong?",
+      "options": [
+        {
+          "id": "a",
+          "text": "ref should be passed directly",
+          "isCorrect": true,
+          "explanation": "Use ref={inputRef}, not .current."
+        },
+        {
+          "id": "b",
+          "text": "useRef does not work with inputs",
+          "isCorrect": false,
+          "explanation": "useRef works perfectly with DOM."
+        }
+      ],
+      "lesson": "React controls ref assignment."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "Auto Focus Input",
+      "description": "Focus input on page load.",
+      "requirements": [
+        "Use useRef",
+        "Call focus in useEffect"
+      ],
+      "starterCode": "function App() {\n  return <input />;\n}",
+      "solution": "function App() {\n  const inputRef = React.useRef(null);\n\n  React.useEffect(() => {\n    inputRef.current.focus();\n  }, []);\n\n  return <input ref={inputRef} />;\n}"
+    },
+
+    "realuse": {
+      "type": "markdown",
+      "title": "Real World Usage",
+      "content": "• Auto focus inputs\n• Modals\n• Timers\n• Scroll positions"
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Quick Match",
+      "pairs": [
+        { "concept": "useRef", "code": "No re-render" },
+        { "concept": ".current", "code": "Stored value" },
+        { "concept": "DOM access", "code": "Input focus" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "useRef update causes?",
+          "options": [
+            "Re-render",
+            "API call",
+            "Nothing",
+            "Crash"
+          ],
+          "correct": 2
+        },
+        {
+          "question": "Best use of useRef?",
+          "options": [
+            "Form values",
+            "DOM access",
+            "Styling",
+            "API fetch"
+          ],
+          "correct": 1
+        }
+      ],
+      "waves": 2
+    }
+  }
+}

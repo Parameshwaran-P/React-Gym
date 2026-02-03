@@ -1,0 +1,138 @@
+{
+  "id": "react-007-props",
+  "title": "Props in React",
+  "description": "Learn how components talk to each other using props",
+  "duration": 9,
+  "difficulty": "beginner",
+  "tags": ["react", "props", "components"],
+  "prerequisites": ["react-006-components"],
+  "unlocks": ["react-008-conditional-rendering"],
+  "xp": 80,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "Message Delivery Mission",
+      "story": "Components are lonely if they cannot talk. Props help them send messages safely.",
+      "preview": "You will learn how data flows from parent to child."
+    },
+
+    "refresher": {
+      "type": "markdown",
+      "title": "📦 Real-World Story: School Bag",
+      "content": "# Imagine a School\n\nA parent gives a school bag to a child.\n\nInside the bag:\n- Books\n- Lunch box\n- Water bottle\n\nThe child **uses** the items.\nBut the child **cannot change** what the parent packed.\n\n---\n\n## Same in React\n\n- Parent component sends data\n- Child component receives data\n- This data is called **props**\n\n---\n\n## What are Props?\n\nProps are **inputs** to a component.\n\nThey make components **dynamic** and **reusable**."
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "✅ Passing Props",
+      "description": "Parent sends a name to child component.",
+      "code": "function Welcome(props) {\n  return <h1>Hello, {props.name}</h1>;\n}\n\nfunction App() {\n  return <Welcome name=\"Arjun\" />;\n}\n\nexport default App;",
+      "showPreview": true,
+      "explanation": "The App component sends `name`. The Welcome component receives it using props."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "🧠 Props Rules",
+      "content": "## Important Rules\n\n1. Props are read-only\n2. Child cannot modify props\n3. Props flow from parent to child\n\n---\n\nThink of props like exam question paper.\nYou can read it.\nYou cannot change it."
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "🐛 Wrong Usage",
+      "description": "Why is this wrong?",
+      "code": "function Student(props) {\n  props.name = 'Raj';\n  return <h1>{props.name}</h1>;\n}",
+      "question": "What is the mistake?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Props are read-only",
+          "isCorrect": true,
+          "explanation": "Correct. Props should never be changed inside child components."
+        },
+        {
+          "id": "b",
+          "text": "JSX syntax error",
+          "isCorrect": false,
+          "explanation": "JSX is correct."
+        },
+        {
+          "id": "c",
+          "text": "Function name is wrong",
+          "isCorrect": false,
+          "explanation": "Function name is fine."
+        }
+      ],
+      "lesson": "Props are like gifts. You can use them, not change them."
+    },
+
+    "concept2": {
+      "type": "markdown",
+      "title": "🎯 Multiple Props",
+      "content": "## Passing More Data\n\nYou can pass many props:\n\n```\n<Student name=\"Arjun\" age={20} />\n```\n\nAnd receive:\n\n```\nfunction Student(props) {\n  return <p>{props.name} - {props.age}</p>;\n}\n```"
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "🛠️ Build a Profile Card",
+      "description": "Create a Profile component using props.",
+      "requirements": [
+        "Accept name prop",
+        "Accept role prop",
+        "Display both"
+      ],
+      "starterCode": "function Profile(props) {\n  return (\n    <div>\n      {/* show name and role */}\n    </div>\n  );\n}\n\nexport default Profile;",
+      "solution": "function Profile(props) {\n  return (\n    <div>\n      <h2>{props.name}</h2>\n      <p>{props.role}</p>\n    </div>\n  );\n}\n\nexport default Profile;",
+      "hints": [
+        "Use props.name",
+        "Use props.role"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "🏆 Challenge: Product Card",
+      "description": "Create a reusable Product component.",
+      "requirements": [
+        "Accept title prop",
+        "Accept price prop",
+        "Render multiple products"
+      ],
+      "solution": "function Product(props) {\n  return (\n    <div>\n      <h3>{props.title}</h3>\n      <p>₹{props.price}</p>\n    </div>\n  );\n}\n\nfunction App() {\n  return (\n    <div>\n      <Product title=\"Shoes\" price={999} />\n      <Product title=\"Bag\" price={499} />\n    </div>\n  );\n}\n\nexport default App;"
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Props Memory",
+      "pairs": [
+        { "concept": "Props", "code": "Component inputs" },
+        { "concept": "Read-only", "code": "Cannot be changed" },
+        { "concept": "Parent → Child", "code": "Props flow direction" },
+        { "concept": "props.name", "code": "Access prop value" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Who sends props?",
+          "options": [
+            "Child",
+            "Parent",
+            "Browser",
+            "React"
+          ],
+          "correct": 1
+        },
+        {
+          "question": "Can child change props?",
+          "options": ["Yes", "No"],
+          "correct": 1
+        }
+      ],
+      "waves": 3
+    }
+  }
+}

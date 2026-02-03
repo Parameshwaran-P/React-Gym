@@ -1,0 +1,133 @@
+{
+  "id": "react-018-usereducer",
+  "title": "useReducer Hook",
+  "description": "Manage complex state logic in a predictable way",
+  "duration": 8,
+  "difficulty": "intermediate",
+  "tags": ["hooks", "state-management", "reducer"],
+  "prerequisites": ["react-017-context"],
+  "unlocks": ["react-019-memoization"],
+  "xp": 130,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "The Control Room",
+      "story": "Too many buttons. Too many rules.",
+      "preview": "One control room will manage everything."
+    },
+
+    "story": {
+      "type": "markdown",
+      "title": "Real Life Story: TV Remote",
+      "content": "Think about a TV remote.\n\n• Power button\n• Volume up\n• Volume down\n• Channel change\n\nEach button sends a **command**.\n\nThe TV decides what to do.\n\nuseReducer works the same way."
+    },
+
+    "problem": {
+      "type": "markdown",
+      "title": "Why useReducer?",
+      "content": "useState is great.\n\nBut when:\n• Many state values\n• Many rules\n• Many updates\n\nuseState becomes messy.\n\nuseReducer brings **order**."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "What is useReducer?",
+      "content": "useReducer:\n• Centralizes logic\n• Uses actions\n• Updates state predictably"
+    },
+
+    "syntax": {
+      "type": "markdown",
+      "title": "Basic Syntax",
+      "content": "```javascript\nconst [state, dispatch] = useReducer(reducer, initialState);\n```"
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "Counter with useReducer",
+      "description": "All logic handled in one place.",
+      "code": "import { useReducer } from 'react';\n\nfunction reducer(state, action) {\n  switch (action.type) {\n    case 'INCREMENT':\n      return { count: state.count + 1 };\n    case 'DECREMENT':\n      return { count: state.count - 1 };\n    default:\n      return state;\n  }\n}\n\nfunction Counter() {\n  const [state, dispatch] = useReducer(reducer, { count: 0 });\n\n  return (\n    <div className=\"p-6 text-center\">\n      <p className=\"text-4xl mb-4\">{state.count}</p>\n      <button onClick={() => dispatch({ type: 'INCREMENT' })}>+</button>\n      <button onClick={() => dispatch({ type: 'DECREMENT' })}>-</button>\n    </div>\n  );\n}\n\nexport default Counter;",
+      "showPreview": true,
+      "explanation": "Buttons send actions. Reducer decides changes."
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "Common Mistake",
+      "description": "Why is this wrong?",
+      "code": "dispatch({ count: state.count + 1 });",
+      "question": "What is missing?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Action type",
+          "isCorrect": true,
+          "explanation": "Reducer needs action.type to decide."
+        },
+        {
+          "id": "b",
+          "text": "useState",
+          "isCorrect": false,
+          "explanation": "Reducer replaces useState."
+        }
+      ],
+      "lesson": "Always send an action object with type."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "Build a Cart Reducer",
+      "description": "Manage cart items count.",
+      "requirements": [
+        "Initial count = 0",
+        "Add item",
+        "Remove item"
+      ],
+      "starterCode": "function cartReducer(state, action) {\n  // TODO\n}",
+      "solution": "function cartReducer(state, action) {\n  switch (action.type) {\n    case 'ADD':\n      return { items: state.items + 1 };\n    case 'REMOVE':\n      return { items: state.items - 1 };\n    default:\n      return state;\n  }\n}"
+    },
+
+    "realuse": {
+      "type": "markdown",
+      "title": "Where useReducer Is Used",
+      "content": "• Forms with many fields\n• Complex UI states\n• Combined with Context"
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Reducer Match",
+      "pairs": [
+        { "concept": "dispatch", "code": "Send action" },
+        { "concept": "reducer", "code": "Update logic" },
+        { "concept": "action", "code": "What happened" },
+        { "concept": "state", "code": "Current data" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Reducer decides?",
+          "options": [
+            "UI",
+            "State change",
+            "Routing",
+            "API calls"
+          ],
+          "correct": 1
+        },
+        {
+          "question": "dispatch is used to?",
+          "options": [
+            "Read state",
+            "Send action",
+            "Create reducer",
+            "Update JSX"
+          ],
+          "correct": 1
+        }
+      ],
+      "waves": 2
+    }
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "id": "react-009-lists-keys",
+  "title": "Lists & Keys",
+  "description": "Learn how to render multiple items efficiently in React",
+  "duration": 8,
+  "difficulty": "beginner",
+  "tags": ["react", "lists", "keys"],
+  "prerequisites": ["react-008-conditional-rendering"],
+  "unlocks": ["react-010-events"],
+  "xp": 70,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "📋 List Builder Mission",
+      "story": "A school needs to display student names dynamically. One-by-one is impossible!",
+      "preview": "You will learn how React handles collections."
+    },
+
+    "refresher": {
+      "type": "markdown",
+      "title": "🧺 Real-Life Story: Attendance Register",
+      "content": "# Classroom Attendance\n\nTeacher calls names:\n- Arjun\n- Priya\n- Karthik\n\nThis is a **list**.\n\n---\n\n## Same in React\n\nWe often have:\n- List of products\n- List of users\n- List of messages\n\nReact renders lists using **map()**."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "🧠 Rendering a List",
+      "content": "## Example\n\n```\nconst students = ['Arjun', 'Priya', 'Karthik'];\n\nstudents.map(name => <li>{name}</li>);\n```\n\n`map()` runs once for each item and returns JSX."
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "✅ Student List",
+      "description": "Rendering multiple students using map.",
+      "code": "function StudentList() {\n  const students = ['Arjun', 'Priya', 'Karthik'];\n\n  return (\n    <ul>\n      {students.map(name => (\n        <li>{name}</li>\n      ))}\n    </ul>\n  );\n}\n\nexport default StudentList;",
+      "showPreview": true,
+      "explanation": "Each student name becomes one list item."
+    },
+
+    "concept2": {
+      "type": "markdown",
+      "title": "🔑 Why Keys Matter",
+      "content": "## Imagine Roll Numbers\n\nEven if two students have same name,\nroll number is **unique**.\n\n---\n\n## Keys in React\n\nKeys help React identify items.\n\n```\n<li key={id}>Item</li>\n```\n\nWithout keys, React gets confused during updates."
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "🐛 Missing Key Bug",
+      "description": "What is missing here?",
+      "code": "{students.map(name => (\n  <li>{name}</li>\n))}",
+      "question": "Why is React warning shown?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Missing key prop",
+          "isCorrect": true,
+          "explanation": "Correct. Each item needs a unique key."
+        },
+        {
+          "id": "b",
+          "text": "map() is wrong",
+          "isCorrect": false,
+          "explanation": "map() usage is correct."
+        }
+      ],
+      "lesson": "Keys help React track items efficiently."
+    },
+
+    "positive2": {
+      "type": "interactive-code",
+      "title": "✅ Correct with Keys",
+      "description": "Using index as key (basic level).",
+      "code": "function StudentList() {\n  const students = ['Arjun', 'Priya', 'Karthik'];\n\n  return (\n    <ul>\n      {students.map((name, index) => (\n        <li key={index}>{name}</li>\n      ))}\n    </ul>\n  );\n}\n\nexport default StudentList;",
+      "showPreview": true,
+      "explanation": "Keys help React update only changed items."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "🛠️ Product List",
+      "description": "Display a list of products.",
+      "requirements": [
+        "Use array of product names",
+        "Render using map",
+        "Add key to each item"
+      ],
+      "starterCode": "function Products() {\n  const items = ['Pen', 'Book', 'Bag'];\n\n  return (\n    <ul>\n      {/* render list */}\n    </ul>\n  );\n}\n\nexport default Products;",
+      "solution": "function Products() {\n  const items = ['Pen', 'Book', 'Bag'];\n\n  return (\n    <ul>\n      {items.map((item, i) => (\n        <li key={i}>{item}</li>\n      ))}\n    </ul>\n  );\n}\n\nexport default Products;",
+      "hints": [
+        "Use map()",
+        "Add key attribute"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "🏆 Challenge: Price List",
+      "description": "Render product names with prices.",
+      "requirements": [
+        "Use array of objects",
+        "Show name and price",
+        "Use key"
+      ],
+      "solution": "function PriceList() {\n  const products = [\n    { id: 1, name: 'Pen', price: 10 },\n    { id: 2, name: 'Book', price: 50 }\n  ];\n\n  return (\n    <ul>\n      {products.map(p => (\n        <li key={p.id}>{p.name} - ₹{p.price}</li>\n      ))}\n    </ul>\n  );\n}\n\nexport default PriceList;"
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "List Memory",
+      "pairs": [
+        { "concept": "map()", "code": "Loop for rendering" },
+        { "concept": "key", "code": "Unique identity" },
+        { "concept": "array", "code": "Source of list" },
+        { "concept": "list rendering", "code": "Multiple UI items" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Why do we need keys?",
+          "options": [
+            "For styling",
+            "For uniqueness",
+            "For events",
+            "For routing"
+          ],
+          "correct": 1
+        },
+        {
+          "question": "Which method renders lists?",
+          "options": ["filter", "reduce", "map", "forEach"],
+          "correct": 2
+        }
+      ],
+      "waves": 3
+    }
+  }
+}

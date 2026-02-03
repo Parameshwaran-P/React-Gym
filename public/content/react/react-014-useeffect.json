@@ -1,133 +1,105 @@
 {
-  "id": "react-002-useeffect",
+  "id": "react-014-useeffect",
   "title": "useEffect Hook",
-  "description": "Handle side effects and lifecycle behavior in React components",
+  "description": "Run side effects in React like API calls, timers, and subscriptions",
   "duration": 9,
   "difficulty": "beginner",
-  "tags": ["hooks", "side-effects", "lifecycle"],
-  "prerequisites": ["react-001-usestate"],
-  "unlocks": ["react-003-props"],
-  "xp": 70,
-
-  "preview": {
-    "videoUrl": "/public/useeffect-intro.mp4",
-    "platform": "direct",
-    "thumbnail": "/thumbnails/useeffect.jpg",
-    "duration": "11:40"
-  },
+  "tags": ["react", "hooks", "lifecycle", "side-effects"],
+  "prerequisites": ["react-013-lifting-state"],
+  "unlocks": ["react-015-data-fetching"],
+  "xp": 100,
 
   "steps": {
     "intro": {
       "type": "game-intro",
-      "title": "⏳ Enter the Time Chamber",
-      "story": "Welcome to the Time Chamber! Events happen AFTER the screen updates. Notifications, API calls, timers — if you don’t control time, chaos begins.",
-      "preview": "You’ll master effects, dependencies, cleanups, and lifecycle powers."
+      "title": "⏰ Effect City",
+      "story": "Your app needs to do work AFTER screen updates.",
+      "preview": "Learn how React reacts to changes."
     },
 
-    "refresher": {
+    "story": {
       "type": "markdown",
-      "title": "🧠 What is useEffect?",
-      "content": "# ⏰ Real-Life Story: Gym Notification System\n\nYour **React Gym** opens at 6 AM.\n\nWhen the gym opens:\n- Send welcome notification\n- Start background music\n- Fetch today’s trainer schedule\n\nThese things **should NOT run during rendering**.\n\nThey must run **AFTER the screen updates**.\n\n---\n\n## 🧠 Side Effects\nSide effects are:\n- API calls\n- Timers\n- Subscriptions\n- DOM updates\n\n---\n\n## ✅ useEffect to the Rescue\n\n`useEffect` lets React say:\n\n> \"Render first. Then run this code.\"\n\n---\n\n## 🔧 Syntax\n\n```js\nuseEffect(() => {\n  // side effect\n}, [dependencies]);\n```\n\n👉 Dependencies control **WHEN** the effect runs."
+      "title": "Real Life Story: Alarm Clock",
+      "content": "You wake up.\n\nAfter waking:\n• Alarm rings\n• You check time\n• You turn it off\n\nAlarm doesn't ring while sleeping.\n\n👉 **Actions happen AFTER something changes.**"
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "What is useEffect?",
+      "content": "`useEffect` lets you run code **after render**.\n\nUsed for:\n• API calls\n• Timers\n• Event listeners\n• DOM updates\n\nThink of it as:\n> \"When this changes, do this.\""
+    },
+
+    "syntax": {
+      "type": "markdown",
+      "title": "Basic Syntax",
+      "content": "```js\nuseEffect(() => {\n  // side effect\n}, [dependencies]);\n```\n\n• Runs after render\n• Dependency controls WHEN"
     },
 
     "positive": {
       "type": "interactive-code",
-      "title": "✅ Effect on Mount",
-      "description": "This effect runs once when the component loads.",
-      "code": "import { useEffect } from 'react';\n\nfunction GymOpen() {\n  useEffect(() => {\n    console.log('Gym is now OPEN!');\n  }, []);\n\n  return <h2 className=\"text-xl\">React Gym</h2>;\n}\n\nexport default GymOpen;",
+      "title": "Correct Example: Page Title",
+      "description": "Update browser tab when count changes.",
+      "code": "import { useState, useEffect } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  useEffect(() => {\n    document.title = `Count: ${count}`;\n  }, [count]);\n\n  return (\n    <div>\n      <p>Count: {count}</p>\n      <button onClick={() => setCount(count + 1)}>+</button>\n    </div>\n  );\n}\n\nexport default Counter;",
       "showPreview": true,
-      "explanation": "Empty dependency array = run once (component mount)."
+      "explanation": "When count changes → effect runs → title updates."
     },
 
     "negative": {
       "type": "debug-quiz",
       "title": "🐛 Infinite Loop Bug",
-      "description": "Why does this crash the app?",
-      "code": "import { useState, useEffect } from 'react';\n\nfunction BuggyCounter() {\n  const [count, setCount] = useState(0);\n\n  useEffect(() => {\n    setCount(count + 1);\n  });\n\n  return <p>{count}</p>;\n}",
-      "question": "What is the bug?",
+      "description": "Why is this dangerous?",
+      "code": "useEffect(() => {\n  setCount(count + 1);\n});",
+      "question": "What is the issue?",
       "options": [
         {
           "id": "a",
-          "text": "Missing return statement",
-          "isCorrect": false
+          "text": "useEffect runs forever",
+          "isCorrect": true,
+          "explanation": "Correct. State update causes re-render → effect runs again."
         },
         {
           "id": "b",
-          "text": "Effect runs on every render causing infinite updates",
-          "isCorrect": true,
-          "explanation": "✅ Correct! Missing dependency array causes endless re-renders."
-        },
-        {
-          "id": "c",
-          "text": "useState is wrong",
-          "isCorrect": false
+          "text": "setCount is invalid",
+          "isCorrect": false,
+          "explanation": "setCount is valid but used incorrectly."
         }
       ],
-      "correctCode": "useEffect(() => {\n  setCount(count + 1);\n}, []);",
-      "lesson": "❌ Effects without dependencies run after EVERY render.\n\n✅ Always control effects using dependency arrays."
+      "lesson": "Always control effects with dependencies."
+    },
+
+    "dependency": {
+      "type": "markdown",
+      "title": "Dependency Types",
+      "content": "```js\nuseEffect(() => {}, [])\n```\nRuns once (on mount)\n\n```js\nuseEffect(() => {}, [count])\n```\nRuns when count changes\n\n```js\nuseEffect(() => {})\n```\nRuns every render ❌"
     },
 
     "task": {
       "type": "coding-task",
-      "title": "🛠️ Task: Page Title Setter",
-      "description": "Set the browser tab title when the component loads.",
+      "title": "⏱️ Timer App",
+      "description": "Show seconds passed since page load.",
       "requirements": [
+        "Use useState",
         "Use useEffect",
-        "Set document.title",
-        "Run only once"
+        "Increase seconds every 1 second"
       ],
-      "starterCode": "import { useEffect } from 'react';\n\nfunction PageTitle() {\n  // TODO\n  return <h2>Dashboard</h2>;\n}\n\nexport default PageTitle;",
-      "solution": "useEffect(() => {\n  document.title = 'React Gym Dashboard';\n}, []);",
-      "hints": [
-        "useEffect runs after render",
-        "Empty dependency array = once"
-      ]
+      "starterCode": "import { useState, useEffect } from 'react';\n\nfunction Timer() {\n  return <div />;\n}\n\nexport default Timer;",
+      "solution": "import { useState, useEffect } from 'react';\n\nfunction Timer() {\n  const [seconds, setSeconds] = useState(0);\n\n  useEffect(() => {\n    const id = setInterval(() => {\n      setSeconds(s => s + 1);\n    }, 1000);\n\n    return () => clearInterval(id);\n  }, []);\n\n  return <p>Seconds: {seconds}</p>;\n}\n\nexport default Timer;"
     },
 
-    "challenge": {
-      "type": "coding-challenge",
-      "title": "🏆 Challenge: Auto Timer",
-      "description": "Start a timer when component mounts and stop it on unmount.",
-      "requirements": [
-        "Use setInterval",
-        "Clean up interval",
-        "Display seconds"
-      ],
-      "solution": "useEffect(() => {\n  const id = setInterval(() => setTime(t => t + 1), 1000);\n  return () => clearInterval(id);\n}, []);"
-    },
-
-    "battle1": {
-      "type": "code-battle",
-      "title": "Battle: Dependency Dragon",
-      "enemy": {
-        "name": "Dependency Dragon",
-        "avatar": "🐉",
-        "health": 120
-      },
-      "task": "Fix the dependency array to stop the dragon!"
-    },
-
-    "bughunt": {
-      "type": "bug-hunt-shooter",
-      "code": "useEffect(() => {\n  fetchData();\n}, [fetchData]);",
-      "bugs": [
-        {
-          "id": "bug1",
-          "type": "logic",
-          "description": "Function recreated every render",
-          "fix": "Wrap fetchData in useCallback"
-        }
-      ],
-      "timeLimit": 45
+    "cleanup": {
+      "type": "markdown",
+      "title": "Cleanup Function",
+      "content": "Effects can clean up.\n\nUsed for:\n• Timers\n• Event listeners\n• Subscriptions\n\n```js\nreturn () => cleanup()\n```"
     },
 
     "memory": {
       "type": "memory-game",
+      "title": "Effect Match",
       "pairs": [
-        { "concept": "[]", "code": "Run once on mount" },
-        { "concept": "[count]", "code": "Run when count changes" },
-        { "concept": "return cleanup", "code": "Run on unmount" },
-        { "concept": "useEffect", "code": "Handle side effects" }
+        { "concept": "useEffect", "code": "After render" },
+        { "concept": "[]", "code": "Run once" },
+        { "concept": "[state]", "code": "Run on change" },
+        { "concept": "cleanup", "code": "Prevent memory leak" }
       ]
     },
 
@@ -138,11 +110,16 @@
           "question": "When does useEffect run?",
           "options": [
             "Before render",
-            "During render",
             "After render",
-            "Instead of render"
+            "During JSX",
+            "Before state"
           ],
-          "correct": 2
+          "correct": 1
+        },
+        {
+          "question": "Which dependency runs once?",
+          "options": ["[count]", "[]", "{}", "null"],
+          "correct": 1
         }
       ],
       "waves": 2

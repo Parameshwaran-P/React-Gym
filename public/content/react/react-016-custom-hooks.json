@@ -1,0 +1,133 @@
+{
+  "id": "react-016-custom-hooks",
+  "title": "Custom Hooks",
+  "description": "Create your own hooks to reuse logic cleanly",
+  "duration": 8,
+  "difficulty": "intermediate",
+  "tags": ["react", "hooks", "custom-hooks", "reusability"],
+  "prerequisites": ["react-015-data-fetching"],
+  "unlocks": ["react-017-context"],
+  "xp": 110,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "🧰 Hook Factory",
+      "story": "You are repeating the same logic again and again.",
+      "preview": "Time to build your own tools."
+    },
+
+    "story": {
+      "type": "markdown",
+      "title": "Real Life Story: Juice Machine",
+      "content": "Every day you make juice.\n\nSteps:\n• Cut fruits\n• Blend\n• Pour\n\nInstead of repeating, you build a machine.\n\n👉 Custom Hook = Logic Machine."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "What is a Custom Hook?",
+      "content": "A function that:\n• Starts with `use`\n• Uses React hooks\n• Shares logic\n\nExample:\n> useFetch\n> useToggle"
+    },
+
+    "rules": {
+      "type": "markdown",
+      "title": "Rules",
+      "content": "• Name must start with `use`\n• Call hooks at top level\n• Reusable logic only"
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "Correct Example: useCounter",
+      "description": "Extract counter logic into a hook.",
+      "code": "import { useState } from 'react';\n\nfunction useCounter() {\n  const [count, setCount] = useState(0);\n\n  const increment = () => setCount(c => c + 1);\n  const decrement = () => setCount(c => c - 1);\n\n  return { count, increment, decrement };\n}\n\nexport default useCounter;",
+      "showPreview": false,
+      "explanation": "Logic moved out. UI stays clean."
+    },
+
+    "usage": {
+      "type": "markdown",
+      "title": "Using Custom Hook",
+      "content": "```js\nconst { count, increment } = useCounter();\n```"
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "🐛 Wrong Custom Hook",
+      "description": "What's wrong here?",
+      "code": "function counter() {\n  const [c, setC] = useState(0);\n}",
+      "question": "Why is this invalid?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Hook name must start with use",
+          "isCorrect": true,
+          "explanation": "Correct. React won't treat it as a hook."
+        },
+        {
+          "id": "b",
+          "text": "useState can't be used",
+          "isCorrect": false,
+          "explanation": "useState is valid here."
+        }
+      ],
+      "lesson": "Always prefix hooks with `use`."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "🔁 useToggle Hook",
+      "description": "Create a reusable toggle hook.",
+      "requirements": [
+        "Initial value true/false",
+        "Toggle function",
+        "Reusable"
+      ],
+      "starterCode": "import { useState } from 'react';\n\nfunction useToggle() {\n  // TODO\n}\n\nexport default useToggle;",
+      "solution": "import { useState } from 'react';\n\nfunction useToggle(initial = false) {\n  const [value, setValue] = useState(initial);\n\n  const toggle = () => setValue(v => !v);\n\n  return [value, toggle];\n}\n\nexport default useToggle;"
+    },
+
+    "realuse": {
+      "type": "markdown",
+      "title": "Real World Uses",
+      "content": "• Fetch logic\n• Form handling\n• Theme toggles\n• Authentication"
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Hook Match",
+      "pairs": [
+        { "concept": "useFetch", "code": "API logic" },
+        { "concept": "useToggle", "code": "Boolean state" },
+        { "concept": "use", "code": "Hook prefix" },
+        { "concept": "Reuse", "code": "Main benefit" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Why use custom hooks?",
+          "options": [
+            "For CSS",
+            "For reusability",
+            "For routing",
+            "For JSX"
+          ],
+          "correct": 1
+        },
+        {
+          "question": "Hook naming rule?",
+          "options": [
+            "Any name",
+            "Start with use",
+            "Start with hook",
+            "End with state"
+          ],
+          "correct": 1
+        }
+      ],
+      "waves": 2
+    }
+  }
+}

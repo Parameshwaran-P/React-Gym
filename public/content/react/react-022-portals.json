@@ -1,0 +1,72 @@
+{
+  "id": "react-022-portals",
+  "title": "Portals",
+  "description": "Render components outside the main DOM hierarchy, like modals or tooltips.",
+  "duration": 5,
+  "difficulty": "intermediate",
+  "tags": ["portals", "modals", "tooltips", "DOM"],
+  "prerequisites": ["react-021-refs"],
+  "unlocks": ["react-023-error-boundaries"],
+  "xp": 100,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "Portal Magic",
+      "story": "You can open windows to other worlds! Render content anywhere without moving the main app.",
+      "preview": "Modals, tooltips, floating menus are your magic portals."
+    },
+
+    "story": {
+      "type": "markdown",
+      "title": "Real Life Story: Secret Window",
+      "content": "Imagine you have a secret window in your house.\n\nYou can show a message outside your room without disturbing other rooms.\n\nReact Portals work similarly—they let components appear elsewhere in the DOM."
+    },
+
+    "problem": {
+      "type": "markdown",
+      "title": "The Problem",
+      "content": "Normal React rendering keeps components inside their parent.\n\nExample: A modal inside a deeply nested div may get hidden or styled incorrectly.\n\nWe need a way to render outside the parent."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "What is a Portal?",
+      "content": "ReactDOM.createPortal(children, container) allows you to render **children** into a **DOM node outside the parent**."
+    },
+
+    "syntax": {
+      "type": "markdown",
+      "title": "Basic Syntax",
+      "content": "```javascript\nimport ReactDOM from 'react-dom';\n\nReactDOM.createPortal(\n  <div>Modal Content</div>,\n  document.getElementById('modal-root')\n);\n```"
+    },
+
+    "example": {
+      "type": "interactive-code",
+      "title": "Simple Modal Using Portal",
+      "description": "Open a modal anywhere in the DOM",
+      "code": "import ReactDOM from 'react-dom';\nimport { useState } from 'react';\n\nfunction Modal({ isOpen, onClose }) {\n  if (!isOpen) return null;\n  return ReactDOM.createPortal(\n    <div style={{position: 'fixed', top:0, left:0, right:0, bottom:0, background:'rgba(0,0,0,0.5)'}}>\n      <div style={{background:'white', padding:'20px', margin:'50px auto', width:'200px'}}>\n        <p>This is a modal!</p>\n        <button onClick={onClose}>Close</button>\n      </div>\n    </div>,\n    document.getElementById('modal-root')\n  );\n}\n\nfunction App() {\n  const [open, setOpen] = useState(false);\n  return (\n    <div>\n      <button onClick={() => setOpen(true)}>Open Modal</button>\n      <Modal isOpen={open} onClose={() => setOpen(false)} />\n    </div>\n  );\n}\n\nexport default App;",
+      "showPreview": true,
+      "explanation": "The modal is rendered outside the main app div, preventing CSS issues and keeping UI isolated."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "Build a Tooltip Portal",
+      "description": "Show a tooltip above a button using a portal.",
+      "requirements": [
+        "Use createPortal",
+        "Tooltip should appear outside main hierarchy",
+        "Hide tooltip when mouse leaves button"
+      ],
+      "starterCode": "function Tooltip({ text }) {\n  return <div>{text}</div>;\n}\n\nfunction App() {\n  return <button>Hover me</button>;\n}",
+      "solution": "import ReactDOM from 'react-dom';\nimport { useState } from 'react';\n\nfunction Tooltip({ text }) {\n  return ReactDOM.createPortal(\n    <div style={{position:'absolute', background:'yellow', padding:'5px'}}>{text}</div>,\n    document.getElementById('tooltip-root')\n  );\n}\n\nfunction App() {\n  const [show, setShow] = useState(false);\n  return (\n    <div>\n      <button onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)}>\n        Hover me\n      </button>\n      {show && <Tooltip text=\"I am a portal tooltip!\" />}\n    </div>\n  );\n}\n\nexport default App;"
+    },
+
+    "realuse": {
+      "type": "markdown",
+      "title": "Real World Usage",
+      "content": "• Modals\n• Tooltips\n• Popovers\n• Dropdown menus\n• Floating notifications"
+    }
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "id": "react-008-conditional-rendering",
+  "title": "Conditional Rendering",
+  "description": "Learn how React decides what to show and what to hide",
+  "duration": 8,
+  "difficulty": "beginner",
+  "tags": ["react", "conditional", "rendering"],
+  "prerequisites": ["react-007-props"],
+  "unlocks": ["react-009-lists-keys"],
+  "xp": 70,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "🎭 Show or Hide Challenge",
+      "story": "The UI gatekeeper decides what users can see. Only correct conditions open the gate.",
+      "preview": "You will learn how React chooses which UI to display."
+    },
+
+    "refresher": {
+      "type": "markdown",
+      "title": "🚦 Real-Life Story: Traffic Signal",
+      "content": "# Traffic Signal Logic\n\n- Red → Stop\n- Yellow → Ready\n- Green → Go\n\nOnly **one signal shows at a time**.\n\n---\n\n## Same in React\n\nReact shows UI **based on conditions**.\n\nIf condition is true → show something\nIf condition is false → hide it\n\nThis is called **Conditional Rendering**."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "🧠 Basic Condition",
+      "content": "## Example\n\n```\n{isLoggedIn && <Dashboard />}\n```\n\n- If `isLoggedIn` is true → Dashboard shows\n- If false → Nothing shows\n\nReact simply **follows the condition**."
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "✅ Login Example",
+      "description": "Show welcome message only if user is logged in.",
+      "code": "function App() {\n  const isLoggedIn = true;\n\n  return (\n    <div>\n      {isLoggedIn && <h1>Welcome Back!</h1>}\n    </div>\n  );\n}\n\nexport default App;",
+      "showPreview": true,
+      "explanation": "The message appears only when `isLoggedIn` is true."
+    },
+
+    "concept2": {
+      "type": "markdown",
+      "title": "🔀 if–else using Ternary",
+      "content": "## Ternary Operator\n\n```\n{isLoggedIn ? <Dashboard /> : <Login />}\n```\n\n- True → Dashboard\n- False → Login screen\n\nUsed when you must choose **one of two UIs**."
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "🐛 Common Mistake",
+      "description": "Why does this break?",
+      "code": "if (isLoggedIn) {\n  return <h1>Welcome</h1>;\n}",
+      "question": "What is wrong?",
+      "options": [
+        {
+          "id": "a",
+          "text": "if statements cannot be used directly in JSX",
+          "isCorrect": true,
+          "explanation": "Correct. JSX only allows expressions, not statements."
+        },
+        {
+          "id": "b",
+          "text": "React does not support conditions",
+          "isCorrect": false,
+          "explanation": "React fully supports conditions."
+        }
+      ],
+      "lesson": "JSX allows expressions like ternary and &&, not raw if blocks."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "🛠️ Show Online Status",
+      "description": "Display Online or Offline text based on state.",
+      "requirements": [
+        "Use a boolean variable",
+        "Show 'Online' if true",
+        "Show 'Offline' if false"
+      ],
+      "starterCode": "function Status() {\n  const isOnline = false;\n\n  return (\n    <div>\n      {/* show status */}\n    </div>\n  );\n}\n\nexport default Status;",
+      "solution": "function Status() {\n  const isOnline = false;\n\n  return (\n    <div>\n      {isOnline ? <p>Online</p> : <p>Offline</p>}\n    </div>\n  );\n}\n\nexport default Status;",
+      "hints": [
+        "Use ternary operator",
+        "Condition must be inside JSX braces"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "🏆 Challenge: Age Checker",
+      "description": "Show different messages based on age.",
+      "requirements": [
+        "If age >= 18 show 'Allowed'",
+        "Else show 'Not Allowed'"
+      ],
+      "solution": "function AgeCheck() {\n  const age = 16;\n\n  return (\n    <div>\n      {age >= 18 ? <p>Allowed</p> : <p>Not Allowed</p>}\n    </div>\n  );\n}\n\nexport default AgeCheck;"
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Conditional Memory",
+      "pairs": [
+        { "concept": "&&", "code": "Show if true" },
+        { "concept": "Ternary", "code": "Choose one UI" },
+        { "concept": "Condition", "code": "Decides rendering" },
+        { "concept": "JSX", "code": "Expressions only" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Which operator is used for conditional rendering?",
+          "options": ["if", "&&", "for", "switch"],
+          "correct": 1
+        },
+        {
+          "question": "JSX allows?",
+          "options": [
+            "Statements",
+            "Expressions",
+            "Loops",
+            "Classes"
+          ],
+          "correct": 1
+        }
+      ],
+      "waves": 3
+    }
+  }
+}

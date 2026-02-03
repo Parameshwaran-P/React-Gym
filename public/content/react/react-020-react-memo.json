@@ -1,0 +1,146 @@
+{
+  "id": "react-020-react-memo",
+  "title": "React.memo (Pure Rendering)",
+  "description": "Stop unnecessary re-renders of components",
+  "duration": 6,
+  "difficulty": "intermediate",
+  "tags": ["performance", "react-memo", "rendering"],
+  "prerequisites": ["react-019-memoization"],
+  "unlocks": ["react-021-refs"],
+  "xp": 110,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "The Quiet Child",
+      "story": "Why shout again if nothing changed?",
+      "preview": "Render only when needed."
+    },
+
+    "story": {
+      "type": "markdown",
+      "title": "Real Life Story: Class Attendance",
+      "content": "Teacher calls names every day.\n\nIf your name is already marked present,\nno need to stand up again.\n\nReact.memo works the same way."
+    },
+
+    "problem": {
+      "type": "markdown",
+      "title": "The Re-render Problem",
+      "content": "When a parent re-renders:\n• All child components re-render\n• Even if props did not change\n• This wastes performance"
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "What is React.memo?",
+      "content": "React.memo is a wrapper.\n\nIt tells React:\n• Re-render only if props change\n• Otherwise reuse previous result"
+    },
+
+    "syntax": {
+      "type": "markdown",
+      "title": "Basic Syntax",
+      "content": "```javascript\nconst MyComponent = React.memo(function MyComponent(props) {\n  return <div>{props.value}</div>;\n});\n```"
+    },
+
+    "example": {
+      "type": "interactive-code",
+      "title": "Without React.memo",
+      "description": "Child re-renders every time.",
+      "code": "function Child({ value }) {\n  console.log('Child rendered');\n  return <p>{value}</p>;\n}\n\nfunction Parent() {\n  const [count, setCount] = React.useState(0);\n\n  return (\n    <div>\n      <Child value=\"Hello\" />\n      <button onClick={() => setCount(count + 1)}>+</button>\n    </div>\n  );\n}\n\nexport default Parent;",
+      "showPreview": false,
+      "explanation": "Child renders even though value never changes."
+    },
+
+    "optimized": {
+      "type": "interactive-code",
+      "title": "With React.memo",
+      "description": "Child renders only once.",
+      "code": "const Child = React.memo(function Child({ value }) {\n  console.log('Child rendered');\n  return <p>{value}</p>;\n});\n\nfunction Parent() {\n  const [count, setCount] = React.useState(0);\n\n  return (\n    <div>\n      <Child value=\"Hello\" />\n      <button onClick={() => setCount(count + 1)}>+</button>\n    </div>\n  );\n}\n\nexport default Parent;",
+      "showPreview": false,
+      "explanation": "Child does not re-render unnecessarily."
+    },
+
+    "important": {
+      "type": "markdown",
+      "title": "Important Rule",
+      "content": "React.memo compares props.\n\nIf props are:\n• Primitive → works well\n• Functions/Objects → need useCallback/useMemo"
+    },
+
+    "mistake": {
+      "type": "debug-quiz",
+      "title": "Common Mistake",
+      "description": "Why is React.memo not working?",
+      "code": "<Child onClick={() => doSomething()} />",
+      "question": "What is the issue?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Function is recreated every render",
+          "isCorrect": true,
+          "explanation": "Use useCallback to fix this."
+        },
+        {
+          "id": "b",
+          "text": "React.memo is broken",
+          "isCorrect": false,
+          "explanation": "React.memo works as expected."
+        }
+      ],
+      "lesson": "Stable props are required."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "Optimize Card Component",
+      "description": "Prevent card re-rendering.",
+      "requirements": [
+        "Wrap component with React.memo",
+        "Pass stable props"
+      ],
+      "starterCode": "function Card({ title }) {\n  return <h3>{title}</h3>;\n}",
+      "solution": "const Card = React.memo(function Card({ title }) {\n  return <h3>{title}</h3>;\n});"
+    },
+
+    "realuse": {
+      "type": "markdown",
+      "title": "Where React.memo Is Used",
+      "content": "• Product cards\n• Table rows\n• Dashboard widgets\n• List items"
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Quick Match",
+      "pairs": [
+        { "concept": "React.memo", "code": "Skip re-render" },
+        { "concept": "Props change", "code": "Trigger render" },
+        { "concept": "Stable props", "code": "Best performance" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "React.memo compares?",
+          "options": [
+            "State",
+            "Props",
+            "DOM",
+            "CSS"
+          ],
+          "correct": 1
+        },
+        {
+          "question": "Best with React.memo?",
+          "options": [
+            "Inline functions",
+            "Stable values",
+            "Global state",
+            "CSS modules"
+          ],
+          "correct": 1
+        }
+      ],
+      "waves": 2
+    }
+  }
+}

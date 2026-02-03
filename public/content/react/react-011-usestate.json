@@ -1,231 +1,138 @@
 {
-  "id": "react-001-usestate",
+  "id": "react-011-usestate",
   "title": "useState Hook",
-  "description": "Master state management in React functional components",
-  "duration": 7,
+  "description": "Learn how React remembers values and updates the screen",
+  "duration": 9,
   "difficulty": "beginner",
-  "tags": ["hooks", "state", "fundamentals"],
-  "prerequisites": ["react-001-usestate"],
-  "unlocks": ["react-002-useeffect"],
-  "xp": 50,
- 
-  "preview": {
-    "videoUrl": "/public/input.mp4", 
-    "platform": "direct",
-    "thumbnail": "/thumbnails/custom-hooks.jpg",
-    "duration": "10:15"
-  },
+  "tags": ["react", "hooks", "state"],
+  "prerequisites": ["react-010-events"],
+  "unlocks": ["react-012-conditional-rendering"],
+  "xp": 90,
+
   "steps": {
-  "refresher": {
-  "type": "markdown",
-  "title": "🏋️ What is useState?",
-  "content": "# 🏋️ Real-Life Story: React Gym Counter\n\nImagine you're running **React Gym** 🏋️‍♂️.\n\nAt the entrance, there’s a digital screen that shows:\n\n> **Members inside: 0**\n\nEach time a member enters, the number should increase.\n\nBut there's a problem 👇\n\n- A member enters → count becomes **1**\n- Screen refreshes\n- Count resets back to **0** ❌\n\nWhy?\n\nBecause the screen **does not remember** the previous value.\n\n---\n\n## 🧠 The Problem React Solves\n\nReact components re-render frequently.\n\nWithout memory, a component **forgets everything** on every render.\n\nThis is where **state** comes in.\n\n---\n\n## ✅ What is useState?\n\n`useState` allows a React component to **remember values between renders**.\n\nIt gives your UI **memory**.\n\n---\n\n## 🔧 Basic Syntax\n\n```javascript\nconst [value, setValue] = useState(initialValue);\n```\n\n- `value` → current memory\n- `setValue` → updates memory\n- `initialValue` → starting value\n\n👉 **Next: Let’s build the gym counter correctly.**",
-      "video": {
-        "videoUrl": "/public/input.mp4",
-        "title": "useState Fundamentals",
-        "duration": "5:30",
-        "autoShow": true  
-      }
-},
+    "intro": {
+      "type": "game-intro",
+      "title": "🧠 Give Memory to React",
+      "story": "Your app forgets everything after one click. Let's give it memory.",
+      "preview": "Counters, inputs, and live updates start here."
+    },
+
+    "refresher": {
+      "type": "markdown",
+      "title": "🧸 Real-Life Story: Toy Box",
+      "content": "# Toy Box Memory\n\nYou put 1 toy inside\n➡️ Box remembers\n\nYou add another toy\n➡️ Now it has 2\n\n---\n\nReact components also need a **box to remember values**.\n\nThat box is called **state**."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "🧠 What is State?",
+      "content": "State means **data that can change**.\n\nExamples:\n- Counter number\n- Input text\n- Like count\n\nReact uses **useState** to manage this memory."
+    },
+
+    "syntax": {
+      "type": "markdown",
+      "title": "🧩 useState Syntax",
+      "content": "```\nconst [value, setValue] = useState(initialValue);\n```\n\nThink like this:\n- `value` → what we remember\n- `setValue` → how we change it\n- `initialValue` → starting value"
+    },
+
     "positive": {
       "type": "interactive-code",
-      "title": "✅ Positive Case: Counter",
-      "description": "Here's useState working correctly. Click the button to see the count increase.",
-      "code": "import { useState } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <div className=\"p-6 bg-white rounded-lg shadow-md\">\n      <h2 className=\"text-2xl font-bold mb-4\">Counter App</h2>\n      <p className=\"text-4xl font-bold text-blue-600 mb-4\">{count}</p>\n      <button \n        onClick={() => setCount(count + 1)}\n        className=\"bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700\"\n      >\n        Increment\n      </button>\n    </div>\n  );\n}\n\nexport default Counter;",
+      "title": "✅ Simple Counter",
+      "description": "Click button to increase number.",
+      "code": "import { useState } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  function increase() {\n    setCount(count + 1);\n  }\n\n  return (\n    <div>\n      <p>Count: {count}</p>\n      <button onClick={increase}>Add</button>\n    </div>\n  );\n}\n\nexport default Counter;",
       "showPreview": true,
-      "explanation": "**How it works (Gym Version):**\n\n1. `useState(0)` sets the initial number of members to 0\n2. `count` remembers how many members are inside\n3. `setCount()` updates the system (not just the screen)\n4. Clicking the button adds a new member\n5. React re-renders with the updated value\n\n✅ **Key Rule:** Always update state using `setCount()`. This is how React remembers."
+      "explanation": "React remembers `count` even after re-render."
     },
+
+    "concept2": {
+      "type": "markdown",
+      "title": "⚠️ Important Rule",
+      "content": "## ❌ Wrong Way\n\n```\ncount = count + 1;\n```\n\nReact will NOT update UI.\n\n---\n\n## ✅ Correct Way\n\n```\nsetCount(count + 1);\n```\n\nAlways use setter function."
+    },
+
     "negative": {
       "type": "debug-quiz",
-      "title": "🐛 Common Mistake: Direct Mutation",
-      "description": "This code looks correct, but the counter doesn't work. Why?",
-      "code": "import { useState } from 'react';\n\nfunction BrokenCounter() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <div className=\"p-6\">\n      <p className=\"text-4xl mb-4\">{count}</p>\n      <button \n        onClick={() => count++}\n        className=\"bg-blue-600 text-white px-4 py-2 rounded\"\n      >\n        Increment\n      </button>\n    </div>\n  );\n}\n\nexport default BrokenCounter;",
-      "question": "Why doesn't the counter update when you click the button?",
+      "title": "🐛 Why UI Not Updating?",
+      "description": "The number changes but UI does not.",
+      "code": "function Test() {\n  let count = 0;\n\n  function add() {\n    count = count + 1;\n  }\n\n  return <button onClick={add}>{count}</button>;\n}",
+      "question": "What is missing?",
       "options": [
         {
           "id": "a",
-          "text": "useState doesn't support increment operators",
-          "isCorrect": false,
-          "explanation": "The ++ operator works fine in JavaScript, that's not the issue."
+          "text": "useState is not used",
+          "isCorrect": true,
+          "explanation": "Correct. React cannot track normal variables."
         },
         {
           "id": "b",
-          "text": "You must use setCount() to trigger a re-render",
-          "isCorrect": true,
-          "explanation": "✅ Correct! Direct mutation (count++) changes the variable but doesn't tell React to re-render. You must use setCount() to update state properly."
-        },
-        {
-          "id": "c",
-          "text": "The button onClick syntax is wrong",
+          "text": "Button syntax wrong",
           "isCorrect": false,
-          "explanation": "The onClick syntax is correct. The problem is with how we're updating state."
-        },
-        {
-          "id": "d",
-          "text": "You need to refresh the page first",
-          "isCorrect": false,
-          "explanation": "React should update automatically without page refresh when state changes correctly."
+          "explanation": "Button syntax is fine."
         }
       ],
-      "correctCode": "import { useState } from 'react';\n\nfunction WorkingCounter() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <div className=\"p-6\">\n      <p className=\"text-4xl mb-4\">{count}</p>\n      <button \n        onClick={() => setCount(count + 1)}\n        className=\"bg-green-600 text-white px-4 py-2 rounded\"\n      >\n        Increment\n      </button>\n    </div>\n  );\n}\n\nexport default WorkingCounter;",
-      "lesson": "**Real-Life Mistake:**\n\nThis is like manually changing the number on the gym screen without updating the system.\n\nReact doesn't detect `count++` because it bypasses the state system.\n\n❌ Direct mutation does not trigger re-renders.\n\n✅ Always use the setter function (`setCount`) so React knows something changed."
-
+      "lesson": "Only state changes trigger re-render."
     },
+
+    "positive2": {
+      "type": "interactive-code",
+      "title": "✅ Input with State",
+      "description": "React remembers what you type.",
+      "code": "import { useState } from 'react';\n\nfunction NameInput() {\n  const [name, setName] = useState('');\n\n  return (\n    <div>\n      <input\n        value={name}\n        onChange={(e) => setName(e.target.value)}\n        placeholder=\"Enter name\"\n      />\n      <p>Hello {name}</p>\n    </div>\n  );\n}\n\nexport default NameInput;",
+      "showPreview": true,
+      "explanation": "State connects input and UI."
+    },
+
     "task": {
       "type": "coding-task",
-      "title": "🛠️ Your Turn: Build a Toggle",
-     "description": "Build a power switch for a gym machine. When ON, the machine runs. When OFF, it stops.",
+      "title": "🛠️ Like Button",
+      "description": "Increase likes on click.",
       "requirements": [
-        "Use useState with initial value false",
-        "Display 'ON' when true, 'OFF' when false",
-        "Button should toggle the state",
-        "Style it nicely!"
+        "Create state",
+        "Button click increases count",
+        "Display count"
       ],
-      "starterCode": "import { useState } from 'react';\n\nfunction Toggle() {\n  // TODO: Add useState here\n  \n  return (\n    <div className=\"p-6\">\n      {/* TODO: Display ON/OFF text */}\n      {/* TODO: Add button to toggle */}\n    </div>\n  );\n}\n\nexport default Toggle;",
-      "solution": "import { useState } from 'react';\n\nfunction Toggle() {\n  const [isOn, setIsOn] = useState(false);\n  \n  return (\n    <div className=\"p-6 text-center\">\n      <div className={`text-4xl font-bold mb-4 ${\n        isOn ? 'text-green-600' : 'text-gray-400'\n      }`}>\n        {isOn ? 'ON' : 'OFF'}\n      </div>\n      <button \n        onClick={() => setIsOn(!isOn)}\n        className={`px-6 py-2 rounded-lg text-white ${\n          isOn ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-600 hover:bg-gray-700'\n        }`}\n      >\n        Toggle\n      </button>\n    </div>\n  );\n}\n\nexport default Toggle;",
+      "starterCode": "function Like() {\n  return (\n    <button>Like</button>\n  );\n}\n\nexport default Like;",
+      "solution": "import { useState } from 'react';\n\nfunction Like() {\n  const [likes, setLikes] = useState(0);\n\n  return (\n    <button onClick={() => setLikes(likes + 1)}>\n      Likes: {likes}\n    </button>\n  );\n}\n\nexport default Like;",
       "hints": [
-        "Start with: const [isOn, setIsOn] = useState(false);",
-        "Use the ternary operator: {isOn ? 'ON' : 'OFF'}",
-        "Toggle with: setIsOn(!isOn)"
-      ],
-      "tests": [
-        "Component renders without crashing",
-        "Displays 'OFF' initially",
-        "Button click toggles the text",
-        "Displays 'ON' after first click"
+        "useState needed",
+        "Use setter function"
       ]
     },
+
     "challenge": {
       "type": "coding-challenge",
-      "title": "🏆 Challenge: Multi-State Form",
-      "description": "Build a form that manages multiple pieces of state.",
+      "title": "🏆 Challenge: Reset Counter",
+      "description": "Add reset functionality.",
       "requirements": [
-        "Create inputs for name (text) and age (number)",
-        "Each input should have its own useState",
-        "Display both values below the form",
-        "Clear button to reset both fields"
+        "Increase button",
+        "Reset button sets value to 0"
       ],
-      "starterCode": "import { useState } from 'react';\n\nfunction UserForm() {\n  // TODO: Add state for name and age\n  \n  return (\n    <div className=\"p-6 max-w-md\">\n      <h2 className=\"text-2xl font-bold mb-4\">User Info</h2>\n      {/* TODO: Add inputs and display */}\n    </div>\n  );\n}\n\nexport default UserForm;",
-      "solution": "import { useState } from 'react';\n\nfunction UserForm() {\n  const [name, setName] = useState('');\n  const [age, setAge] = useState('');\n  \n  return (\n    <div className=\"p-6 max-w-md\">\n      <h2 className=\"text-2xl font-bold mb-4\">User Info</h2>\n      <input\n        type=\"text\"\n        value={name}\n        onChange={(e) => setName(e.target.value)}\n        placeholder=\"Name\"\n        className=\"w-full px-4 py-2 border rounded mb-2\"\n      />\n      <input\n        type=\"number\"\n        value={age}\n        onChange={(e) => setAge(e.target.value)}\n        placeholder=\"Age\"\n        className=\"w-full px-4 py-2 border rounded mb-4\"\n      />\n      <button\n        onClick={() => { setName(''); setAge(''); }}\n        className=\"bg-red-600 text-white px-4 py-2 rounded mb-4\"\n      >\n        Clear\n      </button>\n      <div className=\"p-4 bg-gray-100 rounded\">\n        <p>Name: {name || 'Not set'}</p>\n        <p>Age: {age || 'Not set'}</p>\n      </div>\n    </div>\n  );\n}\n\nexport default UserForm;",
-      "hints": [
-        "You'll need two useState hooks",
-        "Use onChange={(e) => setName(e.target.value)}",
-        "Clear button calls both setters"
-      ],
-      "tests": [
-        "Both inputs update state",
-        "Display shows values",
-        "Clear button resets both"
-      ]
+      "solution": "import { useState } from 'react';\n\nfunction ResetCounter() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <div>\n      <p>{count}</p>\n      <button onClick={() => setCount(count + 1)}>Add</button>\n      <button onClick={() => setCount(0)}>Reset</button>\n    </div>\n  );\n}\n\nexport default ResetCounter;"
     },
-     "intro": {
-      "type": "game-intro",
-      "title": "⚔️ Welcome to the useState Arena!",
-      "story": "The State Kingdom is under attack by the forces of chaos! Bugs, errors, and crashes are invading. Only YOU can save the kingdom by mastering the useState hook. Complete 5 epic challenges to restore peace and become a React Hero!",
-      "preview": "You'll face: Code Battles, Typing Races, Bug Hunts, Memory Challenges, and a final Tower Defense!"
-    },
-    "battle1": {
-      "type": "code-battle",
-      "title": "Battle 1: The Counter Monster",
-      "description": "Create a working counter to defeat the Counter Monster!",
-      "enemy": {
-        "name": "Counter Monster",
-        "avatar": "👾",
-        "health": 100,
-        "attack": 15
-      },
-      "starterCode": "import { useState } from 'react';\n\nfunction Counter() {\n  // TODO: Add state here\n  \n  return (\n    <div className=\"p-6 text-center\">\n      <p className=\"text-4xl mb-4\">Count: ???</p>\n      <button className=\"bg-blue-600 text-white px-6 py-2 rounded\">\n        Click me\n      </button>\n    </div>\n  );\n}\n\nexport default Counter;",
-      "solution": "import { useState } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  \n  return (\n    <div className=\"p-6 text-center\">\n      <p className=\"text-4xl mb-4\">Count: {count}</p>\n      <button \n        onClick={() => setCount(count + 1)}\n        className=\"bg-blue-600 text-white px-6 py-2 rounded\"\n      >\n        Click me\n      </button>\n    </div>\n  );\n}",
-      "hints": [
-        "Use useState(0) to initialize state with 0",
-        "Destructure: const [count, setCount] = useState(0)",
-        "Update state in onClick: () => setCount(count + 1)",
-        "Display count in JSX: {count}"
-      ],
-      "tests": [
-        { "description": "Counter initializes to 0", "input": null, "expected": 0 },
-        { "description": "Button increases count", "input": "click", "expected": 1 },
-        { "description": "Count displays in UI", "input": null, "expected": "rendered" }
-      ]
-    },
-    "race": {
-      "type": "speed-typing-race",
-      "targetCode": "const [count, setCount] = useState(0);\nsetCount(count + 1);",
-      "language": "javascript",
-      "rivals": [
-        { "name": "Speedy Dev", "avatar": "🏃", "speed": 0.8 },
-        { "name": "Code Ninja", "avatar": "🥷", "speed": 1.0 },
-        { "name": "Bug Bot", "avatar": "🤖", "speed": 0.6 }
-      ]
-    },
-    "bughunt": {
-      "type": "bug-hunt-shooter",
-      "code": "import { useState } from 'react';\n\nfunction App() {\n  const [count setCount] = useState(0);\n  \n  return (\n    <div>\n      <p>Count: {count}</p>\n      <button onClick={() => count++}>\n        Click\n      </button>\n    </div>\n  );\n}",
-      "bugs": [
-        {
-          "id": "bug1",
-          "line": 4,
-          "type": "syntax",
-          "description": "Missing comma in destructuring",
-          "fix": "const [count, setCount]"
-        },
-        {
-          "id": "bug2",
-          "line": 9,
-          "type": "logic",
-          "description": "Direct mutation instead of setState",
-          "fix": "onClick={() => setCount(count + 1)}"
-        }
-      ],
-      "timeLimit": 60
-    },
+
     "memory": {
       "type": "memory-game",
-      "title": "useState Memory Master",
+      "title": "State Memory",
       "pairs": [
-        { "concept": "useState(0)", "code": "Initialize state to 0" },
-        { "concept": "setCount(5)", "code": "Update state to 5" },
-        { "concept": "[count, setCount]", "code": "Array destructuring" },
-        { "concept": "useState hook", "code": "Add state to function" },
-        { "concept": "count++", "code": "❌ Wrong! Mutates directly" },
-        { "concept": "setCount(count+1)", "code": "✅ Correct! Updates state" }
+        { "concept": "useState", "code": "React memory" },
+        { "concept": "state", "code": "Changeable data" },
+        { "concept": "setter", "code": "Updates state" },
+        { "concept": "re-render", "code": "UI updates" }
       ]
     },
+
     "tower": {
       "type": "tower-defense",
       "concepts": [
         {
-          "question": "What does useState return?",
-          "code": "const result = useState(0);",
-          "options": [
-            "A number",
-            "An array with [value, setter]",
-            "A function",
-            "An object"
-          ],
+          "question": "Which updates UI?",
+          "options": ["variable", "setState", "console.log", "props"],
           "correct": 1
         },
         {
-          "question": "How do you update state?",
-          "code": "const [count, setCount] = useState(0);",
-          "options": [
-            "count = 5",
-            "count++",
-            "setCount(5)",
-            "useState(5)"
-          ],
-          "correct": 2
-        },
-        {
-          "question": "What's the initial state here?",
-          "code": "const [name, setName] = useState('Alice');",
-          "options": [
-            "undefined",
-            "null",
-            "'Alice'",
-            "setName"
-          ],
-          "correct": 2
+          "question": "State value is changed using?",
+          "options": ["assignment", "setter", "loop", "condition"],
+          "correct": 1
         }
       ],
       "waves": 3

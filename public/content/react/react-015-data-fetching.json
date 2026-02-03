@@ -1,0 +1,133 @@
+{
+  "id": "react-015-data-fetching",
+  "title": "Data Fetching with React",
+  "description": "Learn how to fetch data from APIs using useEffect",
+  "duration": 10,
+  "difficulty": "beginner",
+  "tags": ["react", "api", "fetch", "useeffect"],
+  "prerequisites": ["react-014-useeffect"],
+  "unlocks": ["react-016-custom-hooks"],
+  "xp": 120,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "📡 Data Town",
+      "story": "Your app is empty. It needs data from outside world.",
+      "preview": "Learn how React talks to servers."
+    },
+
+    "story": {
+      "type": "markdown",
+      "title": "Real Life Story: Ordering Food",
+      "content": "You open a food app.\n\nSteps:\n• You place order\n• App waits\n• Food arrives\n• UI updates\n\n👉 Data comes **after some time**.\n\nThat’s async data."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "What is Data Fetching?",
+      "content": "Getting data from a server.\n\nExamples:\n• Users list\n• Products\n• Posts\n• Weather\n\nReact itself doesn't fetch.\n\n👉 JavaScript does."
+    },
+
+    "syntax": {
+      "type": "markdown",
+      "title": "Basic Pattern",
+      "content": "```js\nuseEffect(() => {\n  fetch(url)\n    .then(res => res.json())\n    .then(data => setData(data));\n}, []);\n```"
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "Correct Example: User List",
+      "description": "Fetch users and display them.",
+      "code": "import { useEffect, useState } from 'react';\n\nfunction Users() {\n  const [users, setUsers] = useState([]);\n\n  useEffect(() => {\n    fetch('https://jsonplaceholder.typicode.com/users')\n      .then(res => res.json())\n      .then(data => setUsers(data));\n  }, []);\n\n  return (\n    <ul>\n      {users.map(user => (\n        <li key={user.id}>{user.name}</li>\n      ))}\n    </ul>\n  );\n}\n\nexport default Users;",
+      "showPreview": true,
+      "explanation": "Fetch once → store data → render list."
+    },
+
+    "loading": {
+      "type": "markdown",
+      "title": "Loading State",
+      "content": "User must wait.\n\nAlways show loading.\n\n```js\nconst [loading, setLoading] = useState(true);\n```"
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "🐛 Missing useEffect",
+      "description": "Why is this wrong?",
+      "code": "fetch(url).then(res => res.json());",
+      "question": "What happens?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Fetch runs on every render",
+          "isCorrect": true,
+          "explanation": "Correct. Causes multiple requests."
+        },
+        {
+          "id": "b",
+          "text": "Fetch won't work",
+          "isCorrect": false,
+          "explanation": "Fetch works but is misused."
+        }
+      ],
+      "lesson": "Always fetch inside useEffect."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "🧾 Fetch Posts",
+      "description": "Fetch posts and show titles.",
+      "requirements": [
+        "Use useEffect",
+        "Use useState",
+        "Display loading text"
+      ],
+      "starterCode": "import { useState, useEffect } from 'react';\n\nfunction Posts() {\n  return <div />;\n}\n\nexport default Posts;",
+      "solution": "import { useState, useEffect } from 'react';\n\nfunction Posts() {\n  const [posts, setPosts] = useState([]);\n  const [loading, setLoading] = useState(true);\n\n  useEffect(() => {\n    fetch('https://jsonplaceholder.typicode.com/posts')\n      .then(res => res.json())\n      .then(data => {\n        setPosts(data);\n        setLoading(false);\n      });\n  }, []);\n\n  if (loading) return <p>Loading...</p>;\n\n  return (\n    <ul>\n      {posts.slice(0, 5).map(post => (\n        <li key={post.id}>{post.title}</li>\n      ))}\n    </ul>\n  );\n}\n\nexport default Posts;"
+    },
+
+    "error": {
+      "type": "markdown",
+      "title": "Error Handling",
+      "content": "Always expect failure.\n\n```js\n.catch(err => setError(true))\n```"
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Fetch Match",
+      "pairs": [
+        { "concept": "fetch()", "code": "Get data" },
+        { "concept": "useEffect", "code": "Run once" },
+        { "concept": "loading", "code": "Waiting state" },
+        { "concept": "key", "code": "List identity" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Where should fetch live?",
+          "options": [
+            "JSX",
+            "useEffect",
+            "Outside component",
+            "useState"
+          ],
+          "correct": 1
+        },
+        {
+          "question": "Why loading state?",
+          "options": [
+            "For styling",
+            "For waiting UI",
+            "For routing",
+            "For CSS"
+          ],
+          "correct": 1
+        }
+      ],
+      "waves": 2
+    }
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "id": "react-010-events",
+  "title": "Event Handling",
+  "description": "Learn how React responds to user actions like clicks and typing",
+  "duration": 7,
+  "difficulty": "beginner",
+  "tags": ["react", "events", "interaction"],
+  "prerequisites": ["react-009-lists-keys"],
+  "unlocks": ["react-011-usestate"],
+  "xp": 70,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "🖱️ Control the App",
+      "story": "A button is useless unless it reacts. Your job is to bring it to life.",
+      "preview": "Clicks, typing, and actions start here."
+    },
+
+    "refresher": {
+      "type": "markdown",
+      "title": "🚪 Real-Life Story: Door Bell",
+      "content": "# Door Bell Logic\n\nYou press the bell 🔔\n\n➡️ Sound plays\n\nNo press = No sound\n\n---\n\n## Same in React\n\nUser action ➜ React responds\n\nThis is called **event handling**."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "🧠 What is an Event?",
+      "content": "An event is **something the user does**.\n\nExamples:\n- Click button\n- Type in input\n- Hover mouse\n\nReact listens using:\n\n```\nonClick\nonChange\nonSubmit\n```"
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "✅ Button Click Event",
+      "description": "Click the button to see the action.",
+      "code": "function ClickDemo() {\n  function handleClick() {\n    alert('Button clicked');\n  }\n\n  return (\n    <button\n      onClick={handleClick}\n      className=\"px-4 py-2 bg-blue-600 text-white rounded\"\n    >\n      Click Me\n    </button>\n  );\n}\n\nexport default ClickDemo;",
+      "showPreview": true,
+      "explanation": "React calls `handleClick()` only when the user clicks."
+    },
+
+    "concept2": {
+      "type": "markdown",
+      "title": "⚠️ Common Rule",
+      "content": "## ❌ Wrong Way\n\n```\nonClick={handleClick()}\n```\n\nThis runs immediately.\n\n---\n\n## ✅ Correct Way\n\n```\nonClick={handleClick}\n```\n\nPass the function, don't call it."
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "🐛 Immediate Execution Bug",
+      "description": "Why is alert showing without click?",
+      "code": "<button onClick={handleClick()}>Click</button>",
+      "question": "What is the mistake?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Function is being called immediately",
+          "isCorrect": true,
+          "explanation": "Correct. Parentheses cause immediate execution."
+        },
+        {
+          "id": "b",
+          "text": "Button syntax is wrong",
+          "isCorrect": false,
+          "explanation": "Button syntax is fine."
+        }
+      ],
+      "lesson": "Always pass function reference to event handlers."
+    },
+
+    "positive2": {
+      "type": "interactive-code",
+      "title": "✅ Input Change Event",
+      "description": "Typing triggers an event.",
+      "code": "function InputDemo() {\n  function handleChange(e) {\n    console.log(e.target.value);\n  }\n\n  return (\n    <input\n      type=\"text\"\n      onChange={handleChange}\n      placeholder=\"Type here\"\n      className=\"border px-3 py-2\"\n    />\n  );\n}\n\nexport default InputDemo;",
+      "showPreview": true,
+      "explanation": "onChange fires every time user types."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "🛠️ Click Counter (No State Yet)",
+      "description": "Show message when button is clicked.",
+      "requirements": [
+        "Create a button",
+        "Handle click event",
+        "Show alert message"
+      ],
+      "starterCode": "function ButtonTask() {\n  // handle click\n\n  return (\n    <button>Press</button>\n  );\n}\n\nexport default ButtonTask;",
+      "solution": "function ButtonTask() {\n  function showMessage() {\n    alert('Button pressed');\n  }\n\n  return (\n    <button onClick={showMessage}>Press</button>\n  );\n}\n\nexport default ButtonTask;",
+      "hints": [
+        "Create function",
+        "Pass function to onClick"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "🏆 Challenge: Event Logger",
+      "description": "Log user actions.",
+      "requirements": [
+        "Button click logs message",
+        "Input typing logs value"
+      ],
+      "solution": "function Logger() {\n  function handleClick() {\n    console.log('Button clicked');\n  }\n\n  function handleChange(e) {\n    console.log(e.target.value);\n  }\n\n  return (\n    <div>\n      <button onClick={handleClick}>Click</button>\n      <input onChange={handleChange} />\n    </div>\n  );\n}\n\nexport default Logger;"
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Event Memory",
+      "pairs": [
+        { "concept": "onClick", "code": "Button pressed" },
+        { "concept": "onChange", "code": "Input typing" },
+        { "concept": "event", "code": "User action" },
+        { "concept": "handler", "code": "Function executed" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Which event handles button click?",
+          "options": ["onChange", "onClick", "onHover", "onPress"],
+          "correct": 1
+        },
+        {
+          "question": "How to pass handler?",
+          "options": [
+            "onClick={fn()}",
+            "onClick={fn}",
+            "onClick='fn'",
+            "onClick={call fn}"
+          ],
+          "correct": 1
+        }
+      ],
+      "waves": 3
+    }
+  }
+}
