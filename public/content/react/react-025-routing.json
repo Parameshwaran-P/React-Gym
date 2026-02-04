@@ -1,0 +1,154 @@
+{
+  "id": "react-025-routing",
+  "title": "Routing in React",
+  "description": "Navigate between pages without reloading the browser",
+  "duration": 10,
+  "difficulty": "intermediate",
+  "tags": ["react", "routing", "react-router"],
+  "prerequisites": ["react-024-suspense"],
+  "unlocks": ["react-026-protected-routes"],
+  "xp": 130,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "Moving Between Pages",
+      "story": "A real website has many pages. React needs a way to move between them.",
+      "preview": "Home, About, Profile without page refresh."
+    },
+
+    "refresher": {
+      "type": "markdown",
+      "title": "The Problem",
+      "content": "In normal websites:\n- Clicking a link reloads the page\n- App state is lost\n- User experience feels slow\n\nSingle Page Apps avoid this."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "What is Routing?",
+      "content": "Routing means:\n- Showing different components\n- Based on the URL\n- Without reloading the page\n\nReact uses **react-router-dom**."
+    },
+
+    "setup": {
+      "type": "markdown",
+      "title": "Install React Router",
+      "content": "```\nnpm install react-router-dom\n```"
+    },
+
+    "concept2": {
+      "type": "markdown",
+      "title": "Core Components",
+      "content": "- BrowserRouter: Wraps the app\n- Routes: Holds all routes\n- Route: Single path\n- Link: Navigation without reload"
+    },
+
+    "syntax": {
+      "type": "markdown",
+      "title": "Basic Routing Syntax",
+      "content": "```\n<BrowserRouter>\n  <Routes>\n    <Route path=\"/\" element={<Home />} />\n    <Route path=\"/about\" element={<About />} />\n  </Routes>\n</BrowserRouter>\n```"
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "Simple Routing Example",
+      "description": "Navigate between Home and About.",
+      "code": "import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';\n\nfunction Home() {\n  return <h2>Home Page</h2>;\n}\n\nfunction About() {\n  return <h2>About Page</h2>;\n}\n\nfunction App() {\n  return (\n    <BrowserRouter>\n      <nav>\n        <Link to=\"/\">Home</Link> | <Link to=\"/about\">About</Link>\n      </nav>\n      <Routes>\n        <Route path=\"/\" element={<Home />} />\n        <Route path=\"/about\" element={<About />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}\n\nexport default App;",
+      "showPreview": false,
+      "explanation": "URL changes but page does not reload."
+    },
+
+    "concept3": {
+      "type": "markdown",
+      "title": "Why Use Link?",
+      "content": "`Link` prevents full page reload.\n\nNever use `<a href>` inside React Router apps."
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "Navigation Problem",
+      "description": "App reloads when clicking menu.",
+      "code": "<a href=\"/about\">About</a>",
+      "question": "What is wrong?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Using anchor tag instead of Link",
+          "isCorrect": true,
+          "explanation": "Anchor tags reload the page."
+        },
+        {
+          "id": "b",
+          "text": "Route path is wrong",
+          "isCorrect": false,
+          "explanation": "Path is fine."
+        }
+      ],
+      "lesson": "Always use Link for navigation."
+    },
+
+    "positive2": {
+      "type": "interactive-code",
+      "title": "Correct Navigation",
+      "description": "Smooth navigation using Link.",
+      "code": "import { Link } from 'react-router-dom';\n\n<Link to=\"/about\">About</Link>",
+      "showPreview": false,
+      "explanation": "No page refresh occurs."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "Add Contact Page",
+      "description": "Create a new Contact route.",
+      "requirements": [
+        "Create Contact component",
+        "Add Route",
+        "Add Link"
+      ],
+      "starterCode": "function App() {\n  return null;\n}\n\nexport default App;",
+      "solution": "function Contact() {\n  return <h2>Contact Page</h2>;\n}\n\n<Route path=\"/contact\" element={<Contact />} />",
+      "hints": [
+        "Add Route inside Routes",
+        "Use Link to navigate"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "Multi Page Layout",
+      "description": "Create Home, About, and Contact pages.",
+      "requirements": [
+        "Three routes",
+        "Navigation menu",
+        "Each page unique content"
+      ],
+      "solution": "Use BrowserRouter with three Route components."
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Routing Memory",
+      "pairs": [
+        { "concept": "BrowserRouter", "code": "Wraps app" },
+        { "concept": "Route", "code": "Defines path" },
+        { "concept": "Routes", "code": "Holds routes" },
+        { "concept": "Link", "code": "Navigation" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Which avoids page reload?",
+          "options": ["a tag", "Link", "button", "form"],
+          "correct": 1
+        },
+        {
+          "question": "Routes must be inside?",
+          "options": ["App", "BrowserRouter", "Link", "Fragment"],
+          "correct": 1
+        }
+      ],
+      "waves": 3
+    }
+  }
+}

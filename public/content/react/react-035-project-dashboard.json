@@ -1,0 +1,139 @@
+{
+  "id": "react-035-project-dashboard",
+  "title": "Dashboard Project",
+  "description": "Build a multi-page dashboard application using real-world patterns",
+  "duration": 14,
+  "difficulty": "intermediate",
+  "tags": ["react", "dashboard", "routing", "charts"],
+  "prerequisites": ["react-034-project-mini"],
+  "unlocks": ["react-036-project-full"],
+  "xp": 240,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "From App to System",
+      "story": "You are now building something that looks like a real company product.",
+      "preview": "Multiple pages, shared layout, reusable components."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "Project Overview",
+      "content": "You will build a **Dashboard Application**.\n\nFeatures:\n- Sidebar navigation\n- Multiple pages\n- Shared layout\n- Data-driven UI"
+    },
+
+    "concept2": {
+      "type": "markdown",
+      "title": "Pages in the Dashboard",
+      "content": "- Login (mock)\n- Dashboard Home\n- Users List\n- User Details\n- Settings"
+    },
+
+    "architecture": {
+      "type": "markdown",
+      "title": "Folder Structure",
+      "content": "src/\n- components/\n- pages/\n- layouts/\n- services/\n- hooks/\n- utils/"
+    },
+
+    "concept3": {
+      "type": "markdown",
+      "title": "Layout Pattern",
+      "content": "Dashboard apps reuse the same layout.\n\nSidebar and header stay the same.\nOnly page content changes."
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "Dashboard Layout",
+      "description": "Shared layout component.",
+      "code": "import { Outlet } from 'react-router-dom';\n\nfunction DashboardLayout() {\n  return (\n    <div className=\"dashboard\">\n      <aside>Sidebar</aside>\n      <main>\n        <Outlet />\n      </main>\n    </div>\n  );\n}\n\nexport default DashboardLayout;",
+      "showPreview": false,
+      "explanation": "Outlet renders the active page inside the layout."
+    },
+
+    "concept4": {
+      "type": "markdown",
+      "title": "Routing Strategy",
+      "content": "Use nested routes.\n\nDashboardLayout wraps all dashboard pages.\nEach page becomes a child route."
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "Dashboard Routing Issue",
+      "description": "Sidebar disappears on navigation.",
+      "code": "<Route path=\"/dashboard\" element={<Dashboard />} />",
+      "question": "What is missing?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Shared layout with nested routes",
+          "isCorrect": true,
+          "explanation": "Without a layout, UI is replaced instead of shared."
+        },
+        {
+          "id": "b",
+          "text": "More pages",
+          "isCorrect": false,
+          "explanation": "Pages are not the issue."
+        }
+      ],
+      "lesson": "Dashboards rely on layout-based routing."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "Create Sidebar Navigation",
+      "description": "Build sidebar with navigation links.",
+      "requirements": [
+        "Use NavLink",
+        "Highlight active route",
+        "Reusable Sidebar component"
+      ],
+      "starterCode": "function Sidebar() {\n  return <nav></nav>;\n}",
+      "solution": "Use NavLink from react-router-dom",
+      "hints": [
+        "NavLink provides active state",
+        "Keep links data-driven"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "Users Page",
+      "description": "Display list of users and navigate to details page.",
+      "requirements": [
+        "Fetch users from mock API",
+        "List users",
+        "Navigate using dynamic route"
+      ],
+      "solution": "Use useEffect for fetching and useParams for user id"
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Dashboard Concepts",
+      "pairs": [
+        { "concept": "layout", "code": "Shared UI" },
+        { "concept": "nested routes", "code": "Page inside layout" },
+        { "concept": "NavLink", "code": "Active navigation" },
+        { "concept": "Outlet", "code": "Render child route" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "What keeps sidebar visible?",
+          "options": ["State", "Layout", "Props", "Context"],
+          "correct": 1
+        },
+        {
+          "question": "Which component renders child routes?",
+          "options": ["Link", "Outlet", "Route", "Switch"],
+          "correct": 1
+        }
+      ],
+      "waves": 3
+    }
+  }
+}

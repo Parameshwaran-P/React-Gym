@@ -1,0 +1,147 @@
+{
+  "id": "react-024-suspense",
+  "title": "Suspense & Lazy Loading",
+  "description": "Load components only when needed and show fallback UI while waiting",
+  "duration": 8,
+  "difficulty": "intermediate",
+  "tags": ["react", "suspense", "lazy-loading", "performance"],
+  "prerequisites": ["react-023-error-boundaries"],
+  "unlocks": ["react-025-routing"],
+  "xp": 120,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "Loading Smartly",
+      "story": "Why load everything at once when the user may not need it?",
+      "preview": "Show loading screen while React prepares content."
+    },
+
+    "refresher": {
+      "type": "markdown",
+      "title": "The Problem",
+      "content": "Large apps load **slowly** because:\n- All components load at once\n- Big bundle size\n- User waits even for unused pages\n\nThis hurts performance."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "What is Suspense?",
+      "content": "Suspense lets React:\n- Pause rendering\n- Show fallback UI\n- Continue when ready\n\nIt improves **user experience**."
+    },
+
+    "concept2": {
+      "type": "markdown",
+      "title": "Lazy Loading",
+      "content": "Lazy loading means:\n- Load code **only when needed**\n- Faster initial load\n- Smaller bundle size\n\nReact provides `React.lazy()`."
+    },
+
+    "syntax": {
+      "type": "markdown",
+      "title": "Basic Syntax",
+      "content": "```\nconst Page = React.lazy(() => import('./Page'));\n\n<Suspense fallback={<p>Loading...</p>}>\n  <Page />\n</Suspense>\n```"
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "Lazy Component Example",
+      "description": "Component loads only when rendered.",
+      "code": "import React, { Suspense } from 'react';\n\nconst Profile = React.lazy(() => import('./Profile'));\n\nfunction App() {\n  return (\n    <Suspense fallback={<p>Loading profile...</p>}>\n      <Profile />\n    </Suspense>\n  );\n}\n\nexport default App;",
+      "showPreview": false,
+      "explanation": "Fallback UI is shown until component loads."
+    },
+
+    "concept3": {
+      "type": "markdown",
+      "title": "Where Suspense is Used",
+      "content": "Common use cases:\n- Page level components\n- Route based loading\n- Heavy dashboards\n- Charts and reports"
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "Why Error Occurred?",
+      "description": "Lazy component crashes app.",
+      "code": "const Page = React.lazy(() => import('./Page'));\n\nfunction App() {\n  return <Page />;\n}",
+      "question": "What is missing?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Suspense wrapper",
+          "isCorrect": true,
+          "explanation": "Lazy components must be wrapped in Suspense."
+        },
+        {
+          "id": "b",
+          "text": "useEffect",
+          "isCorrect": false,
+          "explanation": "Hooks do not fix this issue."
+        }
+      ],
+      "lesson": "Suspense is mandatory for lazy components."
+    },
+
+    "positive2": {
+      "type": "interactive-code",
+      "title": "Correct Usage",
+      "description": "Wrap lazy component safely.",
+      "code": "function App() {\n  return (\n    <Suspense fallback={<p>Loading...</p>}>\n      <Page />\n    </Suspense>\n  );\n}",
+      "showPreview": false,
+      "explanation": "App stays stable while loading."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "Lazy Load Dashboard",
+      "description": "Load dashboard only when needed.",
+      "requirements": [
+        "Use React.lazy",
+        "Wrap with Suspense",
+        "Show loading text"
+      ],
+      "starterCode": "function App() {\n  return <Dashboard />;\n}\n\nexport default App;",
+      "solution": "const Dashboard = React.lazy(() => import('./Dashboard'));\n\nfunction App() {\n  return (\n    <Suspense fallback={<p>Loading dashboard...</p>}>\n      <Dashboard />\n    </Suspense>\n  );\n}\n\nexport default App;",
+      "hints": [
+        "Use React.lazy",
+        "Suspense is required"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "Multiple Lazy Components",
+      "description": "Load different pages lazily.",
+      "requirements": [
+        "Create two lazy components",
+        "Wrap both in Suspense"
+      ],
+      "solution": "const Home = React.lazy(() => import('./Home'));\nconst About = React.lazy(() => import('./About'));\n\n<Suspense fallback={<p>Loading page...</p>}>\n  <Home />\n  <About />\n</Suspense>"
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Suspense Memory",
+      "pairs": [
+        { "concept": "Suspense", "code": "Pause rendering" },
+        { "concept": "React.lazy", "code": "Load on demand" },
+        { "concept": "Fallback", "code": "Loading UI" },
+        { "concept": "Performance", "code": "Faster load" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Suspense is used for?",
+          "options": ["Styling", "Lazy loading", "Forms", "State"],
+          "correct": 1
+        },
+        {
+          "question": "Lazy components need?",
+          "options": ["Context", "Suspense", "Redux", "useState"],
+          "correct": 1
+        }
+      ],
+      "waves": 3
+    }
+  }
+}

@@ -1,72 +1,141 @@
 {
   "id": "react-022-portals",
-  "title": "Portals",
-  "description": "Render components outside the main DOM hierarchy, like modals or tooltips.",
-  "duration": 5,
+  "title": "React Portals",
+  "description": "Render components outside the normal DOM hierarchy",
+  "duration": 8,
   "difficulty": "intermediate",
-  "tags": ["portals", "modals", "tooltips", "DOM"],
+  "tags": ["react", "portals", "dom"],
   "prerequisites": ["react-021-refs"],
   "unlocks": ["react-023-error-boundaries"],
-  "xp": 100,
+  "xp": 120,
 
   "steps": {
     "intro": {
       "type": "game-intro",
-      "title": "Portal Magic",
-      "story": "You can open windows to other worlds! Render content anywhere without moving the main app.",
-      "preview": "Modals, tooltips, floating menus are your magic portals."
+      "title": "Escape the DOM Tree",
+      "story": "Some UI elements break layout rules. Let's learn how to teleport them.",
+      "preview": "Modals, tooltips, and overlays without CSS hacks."
     },
 
-    "story": {
+    "refresher": {
       "type": "markdown",
-      "title": "Real Life Story: Secret Window",
-      "content": "Imagine you have a secret window in your house.\n\nYou can show a message outside your room without disturbing other rooms.\n\nReact Portals work similarly—they let components appear elsewhere in the DOM."
-    },
-
-    "problem": {
-      "type": "markdown",
-      "title": "The Problem",
-      "content": "Normal React rendering keeps components inside their parent.\n\nExample: A modal inside a deeply nested div may get hidden or styled incorrectly.\n\nWe need a way to render outside the parent."
+      "title": "The DOM Problem",
+      "content": "Normally, React renders components **inside their parent DOM node**.\n\nThis causes issues for:\n- Modals\n- Tooltips\n- Dropdowns\n- Popups\n\nThey get **clipped**, **hidden**, or **misaligned** due to parent styles."
     },
 
     "concept": {
       "type": "markdown",
       "title": "What is a Portal?",
-      "content": "ReactDOM.createPortal(children, container) allows you to render **children** into a **DOM node outside the parent**."
+      "content": "A **Portal** lets React render a component **outside its parent DOM hierarchy**.\n\nThe component still behaves like a normal React child:\n- Props work\n- State works\n- Events bubble correctly"
     },
 
     "syntax": {
       "type": "markdown",
-      "title": "Basic Syntax",
-      "content": "```javascript\nimport ReactDOM from 'react-dom';\n\nReactDOM.createPortal(\n  <div>Modal Content</div>,\n  document.getElementById('modal-root')\n);\n```"
+      "title": "Portal Syntax",
+      "content": "```\nReactDOM.createPortal(element, container)\n```\n\n- `element` → what to render\n- `container` → where in the DOM"
     },
 
-    "example": {
+    "positive": {
       "type": "interactive-code",
-      "title": "Simple Modal Using Portal",
-      "description": "Open a modal anywhere in the DOM",
-      "code": "import ReactDOM from 'react-dom';\nimport { useState } from 'react';\n\nfunction Modal({ isOpen, onClose }) {\n  if (!isOpen) return null;\n  return ReactDOM.createPortal(\n    <div style={{position: 'fixed', top:0, left:0, right:0, bottom:0, background:'rgba(0,0,0,0.5)'}}>\n      <div style={{background:'white', padding:'20px', margin:'50px auto', width:'200px'}}>\n        <p>This is a modal!</p>\n        <button onClick={onClose}>Close</button>\n      </div>\n    </div>,\n    document.getElementById('modal-root')\n  );\n}\n\nfunction App() {\n  const [open, setOpen] = useState(false);\n  return (\n    <div>\n      <button onClick={() => setOpen(true)}>Open Modal</button>\n      <Modal isOpen={open} onClose={() => setOpen(false)} />\n    </div>\n  );\n}\n\nexport default App;",
+      "title": "Simple Portal Example",
+      "description": "Render modal into a separate DOM node.",
+      "code": "import ReactDOM from 'react-dom';\n\nfunction Modal({ children }) {\n  return ReactDOM.createPortal(\n    <div className=\"modal\">{children}</div>,\n    document.getElementById('modal-root')\n  );\n}\n\nexport default Modal;",
       "showPreview": true,
-      "explanation": "The modal is rendered outside the main app div, preventing CSS issues and keeping UI isolated."
+      "explanation": "The modal renders outside the parent DOM tree."
+    },
+
+    "concept2": {
+      "type": "markdown",
+      "title": "Why Not Just CSS?",
+      "content": "CSS `position: fixed` is **not enough**.\n\nProblems without portals:\n- `overflow: hidden`\n- `z-index` conflicts\n- Nested stacking contexts\n\nPortals solve this cleanly."
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "Why Modal Is Hidden?",
+      "description": "Modal renders but is not visible.",
+      "code": "function App() {\n  return (\n    <div style={{ overflow: 'hidden' }}>\n      <Modal />\n    </div>\n  );\n}",
+      "question": "Best solution?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Increase z-index",
+          "isCorrect": false,
+          "explanation": "Z-index won't escape parent overflow."
+        },
+        {
+          "id": "b",
+          "text": "Use React Portal",
+          "isCorrect": true,
+          "explanation": "Portal renders outside overflow container."
+        }
+      ],
+      "lesson": "Portals bypass DOM layout limitations."
+    },
+
+    "positive2": {
+      "type": "interactive-code",
+      "title": "Portal with Overlay",
+      "description": "Create a full-screen overlay modal.",
+      "code": "import ReactDOM from 'react-dom';\n\nfunction Overlay({ onClose }) {\n  return ReactDOM.createPortal(\n    <div className=\"overlay\" onClick={onClose}>\n      <div className=\"content\">Hello Portal</div>\n    </div>,\n    document.body\n  );\n}\n\nexport default Overlay;",
+      "showPreview": true,
+      "explanation": "Overlay renders directly into document body."
     },
 
     "task": {
       "type": "coding-task",
-      "title": "Build a Tooltip Portal",
-      "description": "Show a tooltip above a button using a portal.",
+      "title": "Create Modal Portal",
+      "description": "Render modal content using portal.",
       "requirements": [
         "Use createPortal",
-        "Tooltip should appear outside main hierarchy",
-        "Hide tooltip when mouse leaves button"
+        "Render outside parent",
+        "Close on click"
       ],
-      "starterCode": "function Tooltip({ text }) {\n  return <div>{text}</div>;\n}\n\nfunction App() {\n  return <button>Hover me</button>;\n}",
-      "solution": "import ReactDOM from 'react-dom';\nimport { useState } from 'react';\n\nfunction Tooltip({ text }) {\n  return ReactDOM.createPortal(\n    <div style={{position:'absolute', background:'yellow', padding:'5px'}}>{text}</div>,\n    document.getElementById('tooltip-root')\n  );\n}\n\nfunction App() {\n  const [show, setShow] = useState(false);\n  return (\n    <div>\n      <button onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)}>\n        Hover me\n      </button>\n      {show && <Tooltip text=\"I am a portal tooltip!\" />}\n    </div>\n  );\n}\n\nexport default App;"
+      "starterCode": "function Modal() {\n  return <div>Modal</div>;\n}\n\nexport default Modal;",
+      "solution": "import ReactDOM from 'react-dom';\n\nfunction Modal({ onClose }) {\n  return ReactDOM.createPortal(\n    <div onClick={onClose}>Modal</div>,\n    document.body\n  );\n}\n\nexport default Modal;",
+      "hints": [
+        "Use ReactDOM.createPortal",
+        "Target document.body"
+      ]
     },
 
-    "realuse": {
-      "type": "markdown",
-      "title": "Real World Usage",
-      "content": "• Modals\n• Tooltips\n• Popovers\n• Dropdown menus\n• Floating notifications"
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "Advanced Modal",
+      "description": "Prevent background click from closing modal.",
+      "requirements": [
+        "Overlay click closes modal",
+        "Content click does not"
+      ],
+      "solution": "import ReactDOM from 'react-dom';\n\nfunction Modal({ onClose }) {\n  return ReactDOM.createPortal(\n    <div className=\"overlay\" onClick={onClose}>\n      <div className=\"content\" onClick={e => e.stopPropagation()}>\n        Modal Content\n      </div>\n    </div>,\n    document.body\n  );\n}\n\nexport default Modal;"
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Portal Memory",
+      "pairs": [
+        { "concept": "Portal", "code": "Render outside DOM tree" },
+        { "concept": "createPortal", "code": "Teleport UI" },
+        { "concept": "Modal", "code": "Common use case" },
+        { "concept": "Events", "code": "Bubble normally" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Portals are used to?",
+          "options": ["Share props", "Escape DOM tree", "Optimize state", "Handle API"],
+          "correct": 1
+        },
+        {
+          "question": "Where can portals render?",
+          "options": ["Only root", "Any DOM node", "Only parent", "Only fragment"],
+          "correct": 1
+        }
+      ],
+      "waves": 3
     }
   }
 }

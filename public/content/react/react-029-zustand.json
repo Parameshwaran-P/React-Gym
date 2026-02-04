@@ -1,0 +1,141 @@
+{
+  "id": "react-029-zustand",
+  "title": "Zustand State Management",
+  "description": "Simple and minimal global state management for React",
+  "duration": 8,
+  "difficulty": "intermediate",
+  "tags": ["react", "zustand", "state-management"],
+  "prerequisites": ["react-028-redux"],
+  "unlocks": ["react-030-performance"],
+  "xp": 140,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "Less Boilerplate",
+      "story": "You want global state without complex setup. Zustand helps.",
+      "preview": "Store, actions, and selectors in one place."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "What is Zustand?",
+      "content": "Zustand is a small state management library.\n- No reducers\n- No providers\n- Simple API\n\nIt is great for medium-sized apps."
+    },
+
+    "concept2": {
+      "type": "markdown",
+      "title": "When to Use Zustand",
+      "content": "- You want global state\n- Redux feels heavy\n- Context causes re-renders\n\nZustand keeps things simple."
+    },
+
+    "syntax": {
+      "type": "markdown",
+      "title": "Installation",
+      "content": "```\nnpm install zustand\n```"
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "Creating a Store",
+      "description": "Counter store using Zustand.",
+      "code": "import { create } from 'zustand';\n\nconst useCounterStore = create((set) => ({\n  count: 0,\n  increment: () => set((state) => ({ count: state.count + 1 })),\n  reset: () => set({ count: 0 })\n}));\n\nexport default useCounterStore;",
+      "showPreview": false,
+      "explanation": "State and actions live together."
+    },
+
+    "positive2": {
+      "type": "interactive-code",
+      "title": "Using Store in Component",
+      "description": "Read and update state.",
+      "code": "import useCounterStore from './counterStore';\n\nfunction Counter() {\n  const count = useCounterStore(state => state.count);\n  const increment = useCounterStore(state => state.increment);\n\n  return (\n    <div>\n      <p>{count}</p>\n      <button onClick={increment}>Add</button>\n    </div>\n  );\n}\n\nexport default Counter;",
+      "showPreview": false,
+      "explanation": "No provider needed."
+    },
+
+    "concept3": {
+      "type": "markdown",
+      "title": "Why Zustand is Fast",
+      "content": "- Components subscribe only to needed state\n- No unnecessary re-renders\n- Very small bundle size"
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "Incorrect Zustand Usage",
+      "description": "Spot the mistake.",
+      "code": "useCounterStore.count = 5",
+      "question": "What is wrong?",
+      "options": [
+        {
+          "id": "a",
+          "text": "State mutated directly",
+          "isCorrect": true,
+          "explanation": "Zustand state must be updated using set."
+        },
+        {
+          "id": "b",
+          "text": "Zustand does not support numbers",
+          "isCorrect": false,
+          "explanation": "Numbers are supported."
+        }
+      ],
+      "lesson": "Always update state using set function."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "Theme Store",
+      "description": "Manage light and dark theme.",
+      "requirements": [
+        "Initial theme light",
+        "Toggle theme",
+        "Use in component"
+      ],
+      "starterCode": "create((set) => ({ theme: 'light' }))",
+      "solution": "Use toggle function to switch theme.",
+      "hints": [
+        "Store string or boolean",
+        "Use set with callback"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "Todo Store",
+      "description": "Build todo global store.",
+      "requirements": [
+        "Add todo",
+        "Remove todo",
+        "Mark completed"
+      ],
+      "solution": "Use array state and actions inside store."
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Zustand Memory",
+      "pairs": [
+        { "concept": "Store", "code": "create()" },
+        { "concept": "set", "code": "Update state" },
+        { "concept": "Selector", "code": "Pick state" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Does Zustand need Provider?",
+          "options": ["Yes", "No"],
+          "correct": 1
+        },
+        {
+          "question": "Best use case?",
+          "options": ["Huge enterprise app", "Medium app", "No state app"],
+          "correct": 1
+        }
+      ],
+      "waves": 2
+    }
+  }
+}

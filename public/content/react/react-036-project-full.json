@@ -1,0 +1,140 @@
+{
+  "id": "react-036-project-full",
+  "title": "Full React Application",
+  "description": "Build a complete production-style React application from scratch",
+  "duration": 18,
+  "difficulty": "advanced",
+  "tags": ["react", "architecture", "api", "auth"],
+  "prerequisites": ["react-035-project-dashboard"],
+  "unlocks": ["react-037-best-practices"],
+  "xp": 320,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "Think Like a Product Team",
+      "story": "You are no longer building features. You are building a product.",
+      "preview": "Architecture, scalability, and real workflows."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "What Is a Full React App?",
+      "content": "A full React application includes:\n\n- Authentication\n- API integration\n- Global state\n- Routing\n- Error handling\n- Deployment readiness"
+    },
+
+    "concept2": {
+      "type": "markdown",
+      "title": "Application Features",
+      "content": "- Login and logout\n- Protected pages\n- CRUD operations\n- API error handling\n- Loading states"
+    },
+
+    "architecture": {
+      "type": "markdown",
+      "title": "Project Architecture",
+      "content": "src/\n- api/\n- components/\n- pages/\n- layouts/\n- hooks/\n- store/\n- utils/\n- routes/"
+    },
+
+    "concept3": {
+      "type": "markdown",
+      "title": "Data Flow",
+      "content": "User action → Component → State → API → UI update\n\nThis predictable flow keeps apps maintainable."
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "API Service Layer",
+      "description": "Separate API logic from UI.",
+      "code": "export async function getUsers() {\n  const res = await fetch('/api/users');\n  if (!res.ok) throw new Error('Failed');\n  return res.json();\n}",
+      "showPreview": false,
+      "explanation": "Keeping API logic isolated makes components clean."
+    },
+
+    "concept4": {
+      "type": "markdown",
+      "title": "Authentication Flow",
+      "content": "1. User logs in\n2. Token stored\n3. Protected routes unlocked\n4. Logout clears session"
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "Auth Bug",
+      "description": "User can access protected page after logout.",
+      "code": "if (isLoggedIn) return <Dashboard />;",
+      "question": "What is missing?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Auth state reset on logout",
+          "isCorrect": true,
+          "explanation": "Logout must clear auth state."
+        },
+        {
+          "id": "b",
+          "text": "More routes",
+          "isCorrect": false,
+          "explanation": "Routing is not the root cause."
+        }
+      ],
+      "lesson": "Security depends on correct state management."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "Build Login Flow",
+      "description": "Create login and logout flow.",
+      "requirements": [
+        "Login page",
+        "Store auth state",
+        "Protect dashboard route"
+      ],
+      "starterCode": "function Login() {\n  return <div />;\n}",
+      "solution": "Use context or global store for auth",
+      "hints": [
+        "Centralize auth state",
+        "Protect routes"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "CRUD Module",
+      "description": "Build a full CRUD feature.",
+      "requirements": [
+        "Create item",
+        "Read list",
+        "Update item",
+        "Delete item"
+      ],
+      "solution": "Use REST APIs with loading and error states"
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Full App Concepts",
+      "pairs": [
+        { "concept": "service layer", "code": "API abstraction" },
+        { "concept": "auth state", "code": "User session" },
+        { "concept": "protected route", "code": "Access control" },
+        { "concept": "crud", "code": "Create Read Update Delete" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Where should API logic live?",
+          "options": ["component", "service layer", "css", "router"],
+          "correct": 1
+        },
+        {
+          "question": "What controls page access?",
+          "options": ["props", "auth state", "html", "styles"],
+          "correct": 1
+        }
+      ],
+      "waves": 3
+    }
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "id": "react-032-env",
+  "title": "Environment Variables",
+  "description": "Learn how to safely manage configuration values like API URLs and keys",
+  "duration": 6,
+  "difficulty": "intermediate",
+  "tags": ["react", "env", "configuration"],
+  "prerequisites": ["react-031-testing"],
+  "unlocks": ["react-033-build"],
+  "xp": 120,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "Different Environments",
+      "story": "Your app behaves differently in development and production.",
+      "preview": "Environment variables help control this safely."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "What are Environment Variables?",
+      "content": "Environment variables are **external values** used by your app.\n\nExamples:\n- API base URL\n- Feature flags\n- App mode (development / production)\n\nThey help avoid hardcoding values in code."
+    },
+
+    "concept2": {
+      "type": "markdown",
+      "title": "Why We Need Them",
+      "content": "- Same code, different environments\n- Better security\n- Easy configuration changes\n\nNever store secrets directly in code."
+    },
+
+    "concept3": {
+      "type": "markdown",
+      "title": "Environment Variables in React",
+      "content": "In Vite-based React apps:\n\n- Variables must start with `VITE_`\n- Stored in `.env` files\n\nExample:\n```\nVITE_API_URL=https://api.example.com\n```"
+    },
+
+    "syntax": {
+      "type": "markdown",
+      "title": "Accessing Variables",
+      "content": "```\nconst apiUrl = import.meta.env.VITE_API_URL;\n```"
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "Using API URL",
+      "description": "Fetch data using environment variable.",
+      "code": "const API_URL = import.meta.env.VITE_API_URL;\n\nfetch(`${API_URL}/users`)\n  .then(res => res.json())\n  .then(data => console.log(data));",
+      "showPreview": false,
+      "explanation": "URL can change without changing code."
+    },
+
+    "concept4": {
+      "type": "markdown",
+      "title": "Different .env Files",
+      "content": "- `.env` → default\n- `.env.development` → development only\n- `.env.production` → production only\n\nBuild tools load the correct file automatically."
+    },
+
+    "concept5": {
+      "type": "markdown",
+      "title": "Important Rules",
+      "content": "- Restart dev server after change\n- Do not store secrets\n- Frontend env variables are public\n\nBackend secrets must stay on server."
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "Why Undefined?",
+      "description": "Environment variable is undefined.",
+      "code": "console.log(import.meta.env.API_URL);",
+      "question": "What is wrong?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Missing VITE_ prefix",
+          "isCorrect": true,
+          "explanation": "Vite only exposes variables with VITE_ prefix."
+        },
+        {
+          "id": "b",
+          "text": "Wrong console usage",
+          "isCorrect": false,
+          "explanation": "Console is fine."
+        }
+      ],
+      "lesson": "Prefix is mandatory in frontend."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "Create API Config",
+      "description": "Use env variable for base URL.",
+      "requirements": [
+        "Create .env file",
+        "Add VITE_API_URL",
+        "Use it in fetch"
+      ],
+      "starterCode": "fetch('/users');",
+      "solution": "Use import.meta.env.VITE_API_URL",
+      "hints": [
+        "Restart server",
+        "Check variable name"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "Multi-Environment Setup",
+      "description": "Create separate configs.",
+      "requirements": [
+        "Development API URL",
+        "Production API URL",
+        "No code change"
+      ],
+      "solution": "Use .env.development and .env.production"
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Env Memory",
+      "pairs": [
+        { "concept": "VITE_", "code": "Public variable prefix" },
+        { "concept": ".env", "code": "Config file" },
+        { "concept": "import.meta.env", "code": "Access values" },
+        { "concept": "Restart", "code": "Apply changes" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Which variable is exposed?",
+          "options": ["API_URL", "VITE_API_URL", "SECRET_KEY", "DB_PASSWORD"],
+          "correct": 1
+        },
+        {
+          "question": "Frontend env variables are?",
+          "options": ["Private", "Encrypted", "Public", "Hidden"],
+          "correct": 2
+        }
+      ],
+      "waves": 3
+    }
+  }
+}

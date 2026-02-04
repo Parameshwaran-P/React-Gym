@@ -1,0 +1,141 @@
+{
+  "id": "react-023-error-boundaries",
+  "title": "Error Boundaries",
+  "description": "Handle runtime errors gracefully without breaking the entire app",
+  "duration": 7,
+  "difficulty": "intermediate",
+  "tags": ["react", "error-handling", "stability"],
+  "prerequisites": ["react-022-portals"],
+  "unlocks": ["react-024-suspense"],
+  "xp": 110,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "Protect the App",
+      "story": "One small error crashes the whole screen. Let's build a safety net.",
+      "preview": "Show fallback UI instead of a blank screen."
+    },
+
+    "refresher": {
+      "type": "markdown",
+      "title": "The Problem",
+      "content": "In React, **one runtime error** can break the **entire UI**.\n\nExamples:\n- Undefined data\n- Component crash\n- Unexpected null values\n\nUsers see a **white screen**."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "What is an Error Boundary?",
+      "content": "An **Error Boundary** is a React component that:\n\n- Catches JavaScript errors\n- Shows fallback UI\n- Prevents app crash\n\nIt works like a **try-catch for UI**."
+    },
+
+    "syntax": {
+      "type": "markdown",
+      "title": "Basic Rules",
+      "content": "Error Boundaries:\n- Must be **class components**\n- Use `componentDidCatch`\n- Use `getDerivedStateFromError`\n\nHooks cannot catch render errors."
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "Simple Error Boundary",
+      "description": "Wrap risky components safely.",
+      "code": "import React from 'react';\n\nclass ErrorBoundary extends React.Component {\n  state = { hasError: false };\n\n  static getDerivedStateFromError() {\n    return { hasError: true };\n  }\n\n  componentDidCatch(error, info) {\n    console.log(error, info);\n  }\n\n  render() {\n    if (this.state.hasError) {\n      return <h2>Something went wrong.</h2>;\n    }\n    return this.props.children;\n  }\n}\n\nexport default ErrorBoundary;",
+      "showPreview": false,
+      "explanation": "If child crashes, fallback UI is shown."
+    },
+
+    "concept2": {
+      "type": "markdown",
+      "title": "Where Error Boundaries Work",
+      "content": "They catch errors in:\n- Rendering\n- Lifecycle methods\n- Constructors\n\nThey DO NOT catch:\n- Event handlers\n- Async code\n- Server-side errors"
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "Why App Crashed?",
+      "description": "Component throws error and screen goes blank.",
+      "code": "function Buggy() {\n  throw new Error('Crash');\n}\n\nexport default Buggy;",
+      "question": "What is missing?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Error Boundary wrapper",
+          "isCorrect": true,
+          "explanation": "Without boundary, error crashes app."
+        },
+        {
+          "id": "b",
+          "text": "useEffect",
+          "isCorrect": false,
+          "explanation": "Hooks don't prevent crashes."
+        }
+      ],
+      "lesson": "Error boundaries isolate failures."
+    },
+
+    "positive2": {
+      "type": "interactive-code",
+      "title": "Using Error Boundary",
+      "description": "Wrap risky component.",
+      "code": "function Buggy() {\n  throw new Error('Crash');\n}\n\n<ErrorBoundary>\n  <Buggy />\n</ErrorBoundary>",
+      "showPreview": false,
+      "explanation": "Only Buggy fails, app survives."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "Add Error Protection",
+      "description": "Protect a crashing component.",
+      "requirements": [
+        "Create ErrorBoundary",
+        "Wrap child component",
+        "Show fallback message"
+      ],
+      "starterCode": "function App() {\n  return <Buggy />;\n}\n\nexport default App;",
+      "solution": "function App() {\n  return (\n    <ErrorBoundary>\n      <Buggy />\n    </ErrorBoundary>\n  );\n}\n\nexport default App;",
+      "hints": [
+        "Use class component",
+        "Wrap only risky parts"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "Custom Fallback UI",
+      "description": "Show retry button on error.",
+      "requirements": [
+        "Show error message",
+        "Add reload button"
+      ],
+      "solution": "if (this.state.hasError) {\n  return (\n    <div>\n      <p>Something broke</p>\n      <button onClick={() => window.location.reload()}>Retry</button>\n    </div>\n  );\n}"
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Error Boundary Memory",
+      "pairs": [
+        { "concept": "Error Boundary", "code": "UI safety net" },
+        { "concept": "Fallback UI", "code": "Shown on error" },
+        { "concept": "Class Component", "code": "Required" },
+        { "concept": "Isolation", "code": "App survives" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "What do Error Boundaries catch?",
+          "options": ["Events", "Render errors", "API errors", "Promises"],
+          "correct": 1
+        },
+        {
+          "question": "Hooks can replace Error Boundaries?",
+          "options": ["Yes", "No"],
+          "correct": 1
+        }
+      ],
+      "waves": 3
+    }
+  }
+}

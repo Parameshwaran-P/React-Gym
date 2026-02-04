@@ -1,0 +1,154 @@
+{
+  "id": "react-031-testing",
+  "title": "Testing React Applications",
+  "description": "Learn how to test React components to ensure reliability and prevent bugs",
+  "duration": 9,
+  "difficulty": "intermediate",
+  "tags": ["react", "testing", "jest", "rtl"],
+  "prerequisites": ["react-030-performance"],
+  "unlocks": ["react-032-env"],
+  "xp": 150,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "Trust Your Code",
+      "story": "Your app works today. Will it work tomorrow?",
+      "preview": "Testing helps you catch bugs before users do."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "What is Testing?",
+      "content": "Testing means **checking your code automatically**.\n\nIt helps to:\n- Avoid breaking features\n- Improve confidence\n- Make refactoring safe"
+    },
+
+    "concept2": {
+      "type": "markdown",
+      "title": "Types of Tests",
+      "content": "- Unit Test: Tests a small part\n- Integration Test: Tests multiple parts together\n- End-to-End Test: Tests full user flow\n\nIn React, we mostly use **unit** and **integration** tests."
+    },
+
+    "concept3": {
+      "type": "markdown",
+      "title": "Tools We Use",
+      "content": "- Jest: Test runner\n- React Testing Library: Tests UI like a real user\n\nRule: **Test behavior, not implementation**."
+    },
+
+    "syntax": {
+      "type": "markdown",
+      "title": "Basic Test Structure",
+      "content": "```\nimport { render, screen } from '@testing-library/react';\n\ntest('renders text', () => {\n  render(<App />);\n  expect(screen.getByText('Hello')).toBeInTheDocument();\n});\n```"
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "Testing a Component",
+      "description": "Check if button text appears.",
+      "code": "function Button() {\n  return <button>Click Me</button>;\n}\n\n// test\nrender(<Button />);\nexpect(screen.getByText('Click Me')).toBeInTheDocument();",
+      "showPreview": false,
+      "explanation": "The test passes if text exists in DOM."
+    },
+
+    "concept4": {
+      "type": "markdown",
+      "title": "Testing User Interaction",
+      "content": "```\nimport userEvent from '@testing-library/user-event';\n\nuserEvent.click(button);\nexpect(screen.getByText('Clicked')).toBeInTheDocument();\n```"
+    },
+
+    "positive2": {
+      "type": "interactive-code",
+      "title": "Click Event Test",
+      "description": "Button click updates UI.",
+      "code": "function Counter() {\n  const [count, setCount] = useState(0);\n  return <button onClick={() => setCount(count + 1)}>{count}</button>;\n}\n\nrender(<Counter />);\nuserEvent.click(screen.getByRole('button'));\nexpect(screen.getByText('1')).toBeInTheDocument();",
+      "showPreview": false,
+      "explanation": "Simulates real user behavior."
+    },
+
+    "concept5": {
+      "type": "markdown",
+      "title": "What Not to Test",
+      "content": "- Internal state\n- Implementation details\n- Library code\n\nFocus on **what user sees and does**."
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "Bad Test",
+      "description": "Test fails after refactor.",
+      "code": "expect(component.state.count).toBe(1);",
+      "question": "Why is this wrong?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Tests internal state",
+          "isCorrect": true,
+          "explanation": "Users cannot see state directly."
+        },
+        {
+          "id": "b",
+          "text": "Syntax error",
+          "isCorrect": false,
+          "explanation": "Syntax is valid but logic is wrong."
+        }
+      ],
+      "lesson": "Test UI behavior, not internals."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "Test a Form",
+      "description": "Ensure input updates text.",
+      "requirements": [
+        "Render component",
+        "Type into input",
+        "Assert text change"
+      ],
+      "starterCode": "function Name() {\n  const [name, setName] = useState('');\n  return (\n    <input onChange={e => setName(e.target.value)} />\n  );\n}",
+      "solution": "Use userEvent.type and screen queries.",
+      "hints": [
+        "Use userEvent",
+        "Query by role or placeholder"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "Counter Test Suite",
+      "description": "Write multiple tests.",
+      "requirements": [
+        "Initial value test",
+        "Click increment test",
+        "Multiple clicks test"
+      ],
+      "solution": "Create separate tests using render and userEvent."
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Testing Memory",
+      "pairs": [
+        { "concept": "Jest", "code": "Test runner" },
+        { "concept": "RTL", "code": "User-focused testing" },
+        { "concept": "userEvent", "code": "Simulate user" },
+        { "concept": "Assertion", "code": "Expected result" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Best query method?",
+          "options": ["getByText", "getById", "querySelector", "innerHTML"],
+          "correct": 0
+        },
+        {
+          "question": "What should tests focus on?",
+          "options": ["State", "UI behavior", "Hooks", "Libraries"],
+          "correct": 1
+        }
+      ],
+      "waves": 3
+    }
+  }
+}

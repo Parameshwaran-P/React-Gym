@@ -1,0 +1,163 @@
+{
+  "id": "react-028-redux",
+  "title": "Redux Toolkit",
+  "description": "Manage global state in a predictable and scalable way",
+  "duration": 12,
+  "difficulty": "intermediate",
+  "tags": ["react", "redux", "state-management"],
+  "prerequisites": ["react-027-state-management"],
+  "unlocks": ["react-029-zustand"],
+  "xp": 180,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "One Central Store",
+      "story": "Your app data is scattered everywhere. Let's put it in one safe place.",
+      "preview": "Store, actions, reducers, and Redux Toolkit."
+    },
+
+    "refresher": {
+      "type": "markdown",
+      "title": "Why Redux?",
+      "content": "In large apps:\n- Many components need same data\n- Prop drilling becomes complex\n- Context becomes hard to manage\n\nRedux solves this with a single source of truth."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "What is Redux?",
+      "content": "Redux is a state management library where:\n- State lives in one store\n- State is read-only\n- Changes happen in a controlled way"
+    },
+
+    "concept2": {
+      "type": "markdown",
+      "title": "Real World Example",
+      "content": "Think of a bank:\n- One central database\n- Everyone reads from it\n- Updates happen through official requests\n\nRedux store works the same way."
+    },
+
+    "concept3": {
+      "type": "markdown",
+      "title": "Redux Core Parts",
+      "content": "1. Store – where data lives\n2. Slice – part of the store\n3. Reducer – updates data\n4. Action – describes what happened"
+    },
+
+    "syntax": {
+      "type": "markdown",
+      "title": "Redux Toolkit Setup",
+      "content": "```\nnpm install @reduxjs/toolkit react-redux\n```"
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "Creating a Slice",
+      "description": "Counter slice example.",
+      "code": "import { createSlice } from '@reduxjs/toolkit';\n\nconst counterSlice = createSlice({\n  name: 'counter',\n  initialState: { value: 0 },\n  reducers: {\n    increment: (state) => {\n      state.value += 1;\n    },\n    reset: (state) => {\n      state.value = 0;\n    }\n  }\n});\n\nexport const { increment, reset } = counterSlice.actions;\nexport default counterSlice.reducer;",
+      "showPreview": false,
+      "explanation": "Reducers describe how state changes."
+    },
+
+    "positive2": {
+      "type": "interactive-code",
+      "title": "Store Configuration",
+      "description": "Combining slices into a store.",
+      "code": "import { configureStore } from '@reduxjs/toolkit';\nimport counterReducer from './counterSlice';\n\nexport const store = configureStore({\n  reducer: {\n    counter: counterReducer\n  }\n});",
+      "showPreview": false,
+      "explanation": "Store holds all global state."
+    },
+
+    "positive3": {
+      "type": "interactive-code",
+      "title": "Using Redux in Component",
+      "description": "Reading and updating state.",
+      "code": "import { useDispatch, useSelector } from 'react-redux';\nimport { increment } from './counterSlice';\n\nfunction Counter() {\n  const count = useSelector(state => state.counter.value);\n  const dispatch = useDispatch();\n\n  return (\n    <div>\n      <p>{count}</p>\n      <button onClick={() => dispatch(increment())}>Add</button>\n    </div>\n  );\n}\n\nexport default Counter;",
+      "showPreview": false,
+      "explanation": "Components read from store and dispatch actions."
+    },
+
+    "concept4": {
+      "type": "markdown",
+      "title": "Important Rules",
+      "content": "- Never change state directly\n- Reducers must be predictable\n- UI only dispatches actions"
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "Wrong Redux Usage",
+      "description": "This breaks Redux rules.",
+      "code": "state.value = state.value + 5; outside reducer",
+      "question": "What is wrong?",
+      "options": [
+        {
+          "id": "a",
+          "text": "State mutated outside reducer",
+          "isCorrect": true,
+          "explanation": "State must change only inside reducers."
+        },
+        {
+          "id": "b",
+          "text": "Redux does not support numbers",
+          "isCorrect": false,
+          "explanation": "Redux supports all data types."
+        }
+      ],
+      "lesson": "Reducers are the only place to update state."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "Create Theme Slice",
+      "description": "Manage dark and light mode.",
+      "requirements": [
+        "Initial theme: light",
+        "Toggle theme action",
+        "Use in component"
+      ],
+      "starterCode": "createSlice({ name: 'theme' })",
+      "solution": "Create slice with toggle reducer and use useSelector + useDispatch.",
+      "hints": [
+        "Use boolean state",
+        "Toggle with !state"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "Cart Management",
+      "description": "Build cart using Redux.",
+      "requirements": [
+        "Add item",
+        "Remove item",
+        "Clear cart"
+      ],
+      "solution": "Use array state and reducers for add/remove/clear."
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Redux Memory",
+      "pairs": [
+        { "concept": "Store", "code": "Global state" },
+        { "concept": "Slice", "code": "State + reducers" },
+        { "concept": "Action", "code": "What happened" },
+        { "concept": "Reducer", "code": "How state changes" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Where does Redux state live?",
+          "options": ["Component", "Store", "Props", "Hook"],
+          "correct": 1
+        },
+        {
+          "question": "How do components update state?",
+          "options": ["Direct change", "Dispatch action", "setState", "useEffect"],
+          "correct": 1
+        }
+      ],
+      "waves": 3
+    }
+  }
+}

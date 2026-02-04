@@ -1,0 +1,148 @@
+{
+  "id": "react-026-protected-routes",
+  "title": "Protected Routes",
+  "description": "Restrict access to pages based on authentication",
+  "duration": 9,
+  "difficulty": "intermediate",
+  "tags": ["react", "routing", "authentication"],
+  "prerequisites": ["react-025-routing"],
+  "unlocks": ["react-027-state-management"],
+  "xp": 140,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "Who Can Enter?",
+      "story": "Some pages should be visible only to logged-in users.",
+      "preview": "Dashboard access, login checks, redirects."
+    },
+
+    "refresher": {
+      "type": "markdown",
+      "title": "The Problem",
+      "content": "In many apps:\n- Anyone can open any URL\n- Even private pages\n\nThis is not safe."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "What is a Protected Route?",
+      "content": "A protected route:\n- Checks if user is authenticated\n- Allows access if true\n- Redirects if false"
+    },
+
+    "concept2": {
+      "type": "markdown",
+      "title": "Real World Example",
+      "content": "Think of an office building:\n- Security checks ID\n- Employees enter\n- Visitors are redirected to reception"
+    },
+
+    "syntax": {
+      "type": "markdown",
+      "title": "Basic Idea",
+      "content": "```\nif (loggedIn) {\n  show page\n} else {\n  redirect to login\n}\n```"
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "Protected Route Component",
+      "description": "A reusable route guard.",
+      "code": "import { Navigate } from 'react-router-dom';\n\nfunction ProtectedRoute({ isAuth, children }) {\n  if (!isAuth) {\n    return <Navigate to=\"/login\" />;\n  }\n  return children;\n}\n\nexport default ProtectedRoute;",
+      "showPreview": false,
+      "explanation": "If user is not authenticated, redirect happens."
+    },
+
+    "positive2": {
+      "type": "interactive-code",
+      "title": "Using Protected Route",
+      "description": "Protecting dashboard page.",
+      "code": "import ProtectedRoute from './ProtectedRoute';\n\n<Route\n  path=\"/dashboard\"\n  element={\n    <ProtectedRoute isAuth={isLoggedIn}>\n      <Dashboard />\n    </ProtectedRoute>\n  }\n/>",
+      "showPreview": false,
+      "explanation": "Dashboard is accessible only when logged in."
+    },
+
+    "concept3": {
+      "type": "markdown",
+      "title": "Navigate Component",
+      "content": "`Navigate` replaces the current page and redirects the user.\n\nUsed for login redirects."
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "Security Issue",
+      "description": "Anyone can access dashboard.",
+      "code": "<Route path=\"/dashboard\" element={<Dashboard />} />",
+      "question": "What is missing?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Authentication check",
+          "isCorrect": true,
+          "explanation": "Route is not protected."
+        },
+        {
+          "id": "b",
+          "text": "BrowserRouter",
+          "isCorrect": false,
+          "explanation": "Router setup is fine."
+        }
+      ],
+      "lesson": "Private pages must be wrapped with protection."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "Protect Profile Page",
+      "description": "Only logged-in users can view profile.",
+      "requirements": [
+        "Create ProtectedRoute",
+        "Wrap Profile route",
+        "Redirect to login"
+      ],
+      "starterCode": "<Route path=\"/profile\" element={<Profile />} />",
+      "solution": "<Route path=\"/profile\" element={<ProtectedRoute isAuth={isLoggedIn}><Profile /></ProtectedRoute>} />",
+      "hints": [
+        "Use Navigate",
+        "Pass children"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "Multiple Protected Pages",
+      "description": "Protect dashboard and settings pages.",
+      "requirements": [
+        "Reuse ProtectedRoute",
+        "One login state",
+        "Redirect unauthenticated users"
+      ],
+      "solution": "Wrap all private routes using the same ProtectedRoute component."
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Protection Memory",
+      "pairs": [
+        { "concept": "ProtectedRoute", "code": "Route guard" },
+        { "concept": "Navigate", "code": "Redirect user" },
+        { "concept": "isAuth", "code": "Login check" },
+        { "concept": "children", "code": "Wrapped component" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Which component redirects users?",
+          "options": ["Route", "Link", "Navigate", "Outlet"],
+          "correct": 2
+        },
+        {
+          "question": "Protected routes depend on?",
+          "options": ["CSS", "State", "Props", "Hooks"],
+          "correct": 1
+        }
+      ],
+      "waves": 3
+    }
+  }
+}

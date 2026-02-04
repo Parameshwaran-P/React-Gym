@@ -1,0 +1,145 @@
+{
+  "id": "react-033-build",
+  "title": "Build & Deployment",
+  "description": "Understand how React apps are converted into production-ready files",
+  "duration": 7,
+  "difficulty": "intermediate",
+  "tags": ["react", "build", "deployment"],
+  "prerequisites": ["react-032-env"],
+  "unlocks": ["react-034-project-mini"],
+  "xp": 140,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "From Code to Website",
+      "story": "Your app works on localhost. Now it must work for everyone.",
+      "preview": "Build process turns React code into fast static files."
+    },
+
+    "concept": {
+      "type": "markdown",
+      "title": "What is a Build?",
+      "content": "A build converts:\n- JSX into JavaScript\n- Modern JS into browser-compatible JS\n- Multiple files into optimized bundles\n\nThe result is a `dist` folder."
+    },
+
+    "concept2": {
+      "type": "markdown",
+      "title": "Why Build is Needed",
+      "content": "- Browsers do not understand JSX\n- Smaller files load faster\n- Dead code is removed\n\nBuild = performance + compatibility."
+    },
+
+    "concept3": {
+      "type": "markdown",
+      "title": "Build in Vite",
+      "content": "Run the command:\n```\nnpm run build\n```\n\nThis creates a `dist/` folder with:\n- HTML\n- CSS\n- JavaScript assets"
+    },
+
+    "concept4": {
+      "type": "markdown",
+      "title": "Preview Production Build",
+      "content": "Before deploying, test the build locally:\n```\nnpm run preview\n```\n\nThis simulates a real production environment."
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "Build Output Structure",
+      "description": "Typical build folder.",
+      "code": "dist/\n ├─ index.html\n ├─ assets/\n │   ├─ index.js\n │   └─ index.css",
+      "showPreview": false,
+      "explanation": "These files are deployed to hosting services."
+    },
+
+    "concept5": {
+      "type": "markdown",
+      "title": "Common Hosting Platforms",
+      "content": "- Vercel\n- Netlify\n- GitHub Pages\n- AWS S3\n\nThey serve static files efficiently."
+    },
+
+    "concept6": {
+      "type": "markdown",
+      "title": "Deployment Flow",
+      "content": "1. Push code to GitHub\n2. Hosting platform pulls code\n3. Runs build command\n4. Serves dist folder"
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "White Screen After Deploy",
+      "description": "App works locally but not in production.",
+      "code": "Uncaught SyntaxError or 404 errors",
+      "question": "What is a common cause?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Wrong base path",
+          "isCorrect": true,
+          "explanation": "Incorrect base path breaks asset loading."
+        },
+        {
+          "id": "b",
+          "text": "React version issue",
+          "isCorrect": false,
+          "explanation": "React version usually not the issue."
+        }
+      ],
+      "lesson": "Production paths must be configured correctly."
+    },
+
+    "task": {
+      "type": "coding-task",
+      "title": "Create Production Build",
+      "description": "Generate and preview build.",
+      "requirements": [
+        "Run build command",
+        "Preview production output",
+        "Verify app works"
+      ],
+      "starterCode": "npm run dev",
+      "solution": "npm run build && npm run preview",
+      "hints": [
+        "Check dist folder",
+        "Use preview command"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "Deploy to Hosting",
+      "description": "Make app live.",
+      "requirements": [
+        "Push to GitHub",
+        "Deploy using Vercel or Netlify",
+        "Access live URL"
+      ],
+      "solution": "Connect repository and deploy dist output"
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Build Memory",
+      "pairs": [
+        { "concept": "build", "code": "Production files" },
+        { "concept": "dist", "code": "Output folder" },
+        { "concept": "preview", "code": "Test production" },
+        { "concept": "deploy", "code": "Make live" }
+      ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Which folder is deployed?",
+          "options": ["src", "public", "dist", "node_modules"],
+          "correct": 2
+        },
+        {
+          "question": "Build converts JSX into?",
+          "options": ["HTML", "JavaScript", "CSS", "JSON"],
+          "correct": 1
+        }
+      ],
+      "waves": 3
+    }
+  }
+}

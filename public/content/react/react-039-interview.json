@@ -1,0 +1,109 @@
+{
+  "id": "react-039-interview",
+  "title": "React Interview Preparation",
+  "description": "Prepare for React interviews with concepts, questions, and real-world thinking",
+  "duration": 8,
+  "difficulty": "advanced",
+  "tags": ["react", "interview", "career"],
+  "prerequisites": ["react-038-common-mistakes"],
+  "unlocks": [],
+  "xp": 180,
+
+  "steps": {
+    "intro": {
+      "type": "game-intro",
+      "title": "Interview Mindset",
+      "story": "Interviews are not exams. They test how you think, not how much you memorize.",
+      "preview": "Concepts, questions, and how to answer confidently."
+    },
+
+    "section1": {
+      "type": "markdown",
+      "title": "Core React Questions",
+      "content": "- What is React?\n- Virtual DOM vs Real DOM\n- State vs Props\n- Controlled vs Uncontrolled components\n- Keys and reconciliation"
+    },
+
+    "section2": {
+      "type": "markdown",
+      "title": "Hooks Interview Questions",
+      "content": "- Why hooks were introduced\n- useState vs useReducer\n- useEffect lifecycle behavior\n- useMemo vs useCallback\n- Custom hooks"
+    },
+
+    "quiz1": {
+      "type": "mcq",
+      "title": "Interview Question",
+      "question": "Why should we not mutate state directly?",
+      "options": [
+        {
+          "id": "a",
+          "text": "React does not detect changes",
+          "isCorrect": true,
+          "explanation": "React relies on reference changes."
+        },
+        {
+          "id": "b",
+          "text": "JavaScript blocks it",
+          "isCorrect": false,
+          "explanation": "JavaScript allows mutation."
+        }
+      ]
+    },
+
+    "section3": {
+      "type": "markdown",
+      "title": "Performance Questions",
+      "content": "- How to reduce re-renders\n- React.memo usage\n- Lazy loading\n- Code splitting"
+    },
+
+    "quiz2": {
+      "type": "debug-quiz",
+      "title": "Explain This",
+      "code": "const MemoComp = React.memo(Component);",
+      "question": "What problem does this solve?",
+      "answer": "Prevents unnecessary re-renders when props do not change"
+    },
+
+    "section4": {
+      "type": "markdown",
+      "title": "State Management Questions",
+      "content": "- When to use Context\n- Redux vs Zustand\n- Local vs Global state decisions"
+    },
+
+    "task": {
+      "type": "speaking-task",
+      "title": "Explain Like a Child",
+      "description": "Explain useState to a 10-year-old.",
+      "hint": "Use real-life examples, not definitions.",
+      "sampleAnswer": "State is like a box where a component keeps its changing values."
+    },
+
+    "challenge": {
+      "type": "mock-interview",
+      "title": "Mini Mock Interview",
+      "questions": [
+        "Explain React lifecycle",
+        "How does useEffect work?",
+        "What is reconciliation?",
+        "How do you handle large apps?"
+      ],
+      "evaluation": "Clarity, confidence, and correctness"
+    },
+
+    "memory": {
+      "type": "memory-game",
+      "title": "Interview Keywords",
+      "pairs": [
+        { "concept": "Virtual DOM", "explanation": "In-memory UI representation" },
+        { "concept": "Hooks", "explanation": "Functions for state and lifecycle" },
+        { "concept": "Keys", "explanation": "Help React track elements" },
+        { "concept": "Memoization", "explanation": "Performance optimization" }
+      ]
+    },
+
+    "final": {
+      "type": "final-message",
+      "title": "You Are Interview Ready",
+      "message": "You now think like a React developer, not just someone who uses React."
+    }
+  }
+}
