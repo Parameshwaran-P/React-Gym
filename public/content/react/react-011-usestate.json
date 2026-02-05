@@ -6,7 +6,7 @@
   "difficulty": "beginner",
   "tags": ["react", "hooks", "state"],
   "prerequisites": ["react-010-events"],
-  "unlocks": ["react-012-conditional-rendering"],
+  "unlocks": ["react-012-forms"],
   "xp": 90,
 
   "steps": {

@@ -1,11 +1,9 @@
 // src/features/learning/utils/fileNormalizer.ts
+// COMPLETE VERSION WITH HTML FIX
 
-import type { SandpackTemplate, SupportedLanguage, EditorFile } from '../types/editor.types';
+import type { SandpackTemplate, SupportedLanguage } from '../types/editor.types';
 import type { SandpackFiles } from '@codesandbox/sandpack-react';
 
-/**
- * Maps our language types to Sandpack templates
- */
 export function getTemplateForLanguage(language: SupportedLanguage): SandpackTemplate {
   const mapping: Record<SupportedLanguage, SandpackTemplate> = {
     html: 'vanilla',
@@ -18,16 +16,10 @@ export function getTemplateForLanguage(language: SupportedLanguage): SandpackTem
   return mapping[language];
 }
 
-/**
- * Determines if language needs preview or just console
- */
 export function needsPreview(language: SupportedLanguage): boolean {
   return ['html', 'css', 'javascript', 'react', 'nextjs'].includes(language);
 }
 
-/**
- * Converts simple string files to Sandpack file format
- */
 export function normalizeSandpackFiles(
   files: Record<string, string>,
   activeFile?: string,
@@ -46,27 +38,16 @@ export function normalizeSandpackFiles(
   return normalized;
 }
 
-/**
- * Creates default file structure for each language
- * Used when user provides minimal config
- */
 export function getDefaultFilesForLanguage(
   language: SupportedLanguage,
   userFiles: Record<string, string>
 ): Record<string, string> {
   
-  // If user provides complete file structure, use it
-  const hasCompleteStructure = validateFileStructure(language, userFiles);
-  if (hasCompleteStructure) {
-    return userFiles;
-  }
-
-  // Otherwise, create proper structure with user code
   switch (language) {
     case 'html':
     case 'css':
     case 'javascript':
-      return normalizeVanillaFiles(userFiles);
+      return normalizeVanillaFiles(userFiles, language);
     
     case 'react':
       return normalizeReactFiles(userFiles);
@@ -82,75 +63,82 @@ export function getDefaultFilesForLanguage(
   }
 }
 
-/**
- * Validates if user provided all required files
- */
-function validateFileStructure(
-  language: SupportedLanguage,
-  files: Record<string, string>
-): boolean {
-  const requiredFiles: Record<SupportedLanguage, string[]> = {
-    html: ['/index.html'],
-    css: ['/index.html', '/styles.css'],
-    javascript: ['/index.html', '/index.js'],
-    react: ['/App.js'],
-    nextjs: ['/pages/index.js'],
-    nodejs: ['/index.js'],
-  };
-
-  const required = requiredFiles[language] || [];
-  return required.every(file => file in files);
-}
-
-/**
- * HTML/CSS/JS (Vanilla) normalization
- */
-function normalizeVanillaFiles(userFiles: Record<string, string>): Record<string, string> {
+// ============================================
+// 🔧 CRITICAL FIX: This function prevents the error
+// ============================================
+function normalizeVanillaFiles(
+  userFiles: Record<string, string>, 
+  language: SupportedLanguage
+): Record<string, string> {
   const normalized: Record<string, string> = {};
 
-  // If user provided index.html, use it; otherwise create wrapper
-  if (userFiles['/index.html']) {
-    normalized['/index.html'] = userFiles['/index.html'];
+  // Get the HTML code from user
+  const htmlCode = userFiles['/index.html'] || '';
+  
+  // Check if it's a complete HTML document
+  const isCompleteHTML = 
+    htmlCode.includes('<html') || 
+    htmlCode.includes('<!DOCTYPE') ||
+    htmlCode.includes('<body>');
+
+  console.log('🔍 HTML Detection:', {
+    isCompleteHTML,
+    hasHtmlTag: htmlCode.includes('<html'),
+    hasDoctype: htmlCode.includes('<!DOCTYPE'),
+    hasBody: htmlCode.includes('<body>')
+  });
+
+  if (isCompleteHTML) {
+    // ✅ CRITICAL: User provided complete HTML
+    // Use their HTML as-is and create EMPTY JS file
+    normalized['/index.html'] = htmlCode;
+    
+    // ✅ THIS IS THE FIX: Empty JS prevents Sandpack's default code
+    normalized['/index.js'] = '// Your JavaScript code here\n';
+    
+    // Empty CSS
+    normalized['/styles.css'] = userFiles['/styles.css'] || '';
+    
+    console.log('✅ Complete HTML detected - using empty JS file');
+    
   } else {
-    // Create HTML wrapper that imports CSS and JS
+    // HTML snippet - wrap it
     normalized['/index.html'] = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Practice</title>
+  <title>Preview</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="root"></div>
+${htmlCode}
   <script src="index.js"></script>
 </body>
 </html>`;
-  }
 
-  // Add CSS
-  normalized['/styles.css'] = userFiles['/styles.css'] || userFiles['/style.css'] || `
+    normalized['/styles.css'] = userFiles['/styles.css'] || `
 body {
   font-family: sans-serif;
   padding: 20px;
 }
 `.trim();
 
-  // Add JS
-  normalized['/index.js'] = userFiles['/index.js'] || userFiles['/script.js'] || `
-console.log('JavaScript is working!');
+    normalized['/index.js'] = userFiles['/index.js'] || `
+console.log('Page loaded');
 `.trim();
 
+    console.log('📦 HTML snippet detected - wrapping in document');
+  }
+
+  console.log('📁 Final files:', Object.keys(normalized));
+  
   return normalized;
 }
 
-/**
- * React normalization
- */
 function normalizeReactFiles(userFiles: Record<string, string>): Record<string, string> {
   const normalized: Record<string, string> = {};
 
-  // Main App component
   normalized['/App.js'] = userFiles['/App.js'] || userFiles['/App.jsx'] || `
 export default function App() {
   return (
@@ -161,12 +149,10 @@ export default function App() {
 }
 `.trim();
 
-  // Optional: Add styles if provided
   if (userFiles['/styles.css'] || userFiles['/App.css']) {
     normalized['/styles.css'] = userFiles['/styles.css'] || userFiles['/App.css'];
   }
 
-  // Optional: Add additional components
   Object.entries(userFiles).forEach(([path, code]) => {
     if (path !== '/App.js' && path !== '/App.jsx' && !normalized[path]) {
       normalized[path] = code;
@@ -176,13 +162,9 @@ export default function App() {
   return normalized;
 }
 
-/**
- * Next.js normalization
- */
 function normalizeNextFiles(userFiles: Record<string, string>): Record<string, string> {
   const normalized: Record<string, string> = {};
 
-  // Main page
   normalized['/pages/index.js'] = userFiles['/pages/index.js'] || userFiles['/index.js'] || `
 export default function Home() {
   return (
@@ -193,17 +175,14 @@ export default function Home() {
 }
 `.trim();
 
-  // Optional: Custom _app.js
   if (userFiles['/pages/_app.js'] || userFiles['/_app.js']) {
     normalized['/pages/_app.js'] = userFiles['/pages/_app.js'] || userFiles['/_app.js'];
   }
 
-  // Optional: Add styles
   if (userFiles['/styles.css'] || userFiles['/styles/globals.css']) {
     normalized['/styles/globals.css'] = userFiles['/styles.css'] || userFiles['/styles/globals.css'];
   }
 
-  // Add any other user files
   Object.entries(userFiles).forEach(([path, code]) => {
     if (!normalized[path] && !path.includes('index.js') && !path.includes('_app.js')) {
       normalized[path] = code;
@@ -213,18 +192,13 @@ export default function Home() {
   return normalized;
 }
 
-/**
- * Node.js normalization
- */
 function normalizeNodeFiles(userFiles: Record<string, string>): Record<string, string> {
   const normalized: Record<string, string> = {};
 
-  // Main entry file
   normalized['/index.js'] = userFiles['/index.js'] || `
 console.log('Node.js is working!');
 `.trim();
 
-  // Package.json (minimal)
   normalized['/package.json'] = userFiles['/package.json'] || `
 {
   "name": "nodejs-practice",
@@ -233,7 +207,6 @@ console.log('Node.js is working!');
 }
 `.trim();
 
-  // Add any other user files
   Object.entries(userFiles).forEach(([path, code]) => {
     if (!normalized[path]) {
       normalized[path] = code;
@@ -243,9 +216,6 @@ console.log('Node.js is working!');
   return normalized;
 }
 
-/**
- * Gets the default active file for each language
- */
 export function getDefaultActiveFile(language: SupportedLanguage): string {
   const defaults: Record<SupportedLanguage, string> = {
     html: '/index.html',
@@ -258,17 +228,14 @@ export function getDefaultActiveFile(language: SupportedLanguage): string {
   return defaults[language];
 }
 
-/**
- * Gets files that should be hidden from tabs
- */
 export function getDefaultHiddenFiles(language: SupportedLanguage): string[] {
   const hidden: Record<SupportedLanguage, string[]> = {
-    html: [],
+    html: ['/index.js', '/styles.css'], // Hide empty files
     css: [],
     javascript: [],
-    react: ['/public/index.html'], // Hide React boilerplate
-    nextjs: ['/pages/_app.js', '/pages/_document.js'], // Hide Next.js boilerplate
-    nodejs: ['/package.json'], // Hide package.json for simplicity
+    react: [],
+    nextjs: [],
+    nodejs: ['/package.json'],
   };
   return hidden[language] || [];
 }

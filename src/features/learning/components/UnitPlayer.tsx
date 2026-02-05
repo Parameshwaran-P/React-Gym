@@ -708,14 +708,39 @@ function VideoPlayerEmbedded({
 
 function PositiveCaseStep({ stepData }: { stepData: any }) {
   // Detect language from code content or use default
-  const detectLanguage = (code: string): 'html' | 'react' | 'javascript' => {
-    if (code.includes('import React') || code.includes('export default') || 
-        (code.includes('function') && code.includes('return ('))) {
-      return 'react';
-    }
-    if (code.includes('<!DOCTYPE') || code.includes('<html>')) {
+ const detectLanguage = (code: string): 'html' | 'react' | 'javascript' => {
+    const trimmedCode = code.trim();
+    
+    // Check for HTML first (most specific)
+    if (
+      trimmedCode.includes('<!DOCTYPE') || 
+      trimmedCode.includes('<html>') ||
+      trimmedCode.includes('<head>') ||
+      trimmedCode.includes('<body>') ||
+      // Check if it starts with HTML tags (not JSX)
+      (/^<(h1|h2|h3|h4|h5|h6|div|p|span|button|input|form|table|ul|ol|li|a|img)/i.test(trimmedCode) && 
+       !trimmedCode.includes('import') && 
+       !trimmedCode.includes('export') &&
+       !trimmedCode.includes('function') &&
+       !trimmedCode.includes('const ') &&
+       !trimmedCode.includes('let ') &&
+       !trimmedCode.includes('var '))
+    ) {
       return 'html';
     }
+    
+    // Check for React/JSX
+    if (
+      code.includes('import React') || 
+      code.includes('export default') || 
+      code.includes('useState') ||
+      code.includes('useEffect') ||
+      (code.includes('function') && code.includes('return ('))
+    ) {
+      return 'react';
+    }
+    
+    // Default to JavaScript
     return 'javascript';
   };
 

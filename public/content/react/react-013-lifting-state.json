@@ -6,7 +6,7 @@
   "difficulty": "beginner",
   "tags": ["react", "state", "props", "architecture"],
   "prerequisites": ["react-012-forms"],
-  "unlocks": ["react-014-context"],
+  "unlocks": ["react-014-useeffect"],
   "xp": 90,
 
   "steps": {
