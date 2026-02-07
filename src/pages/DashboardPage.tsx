@@ -42,7 +42,7 @@ export default function DashboardPage() {
   const displayUnits = roadmap?.map((roadmapUnit) => {
     const meta = unitMetadata[roadmapUnit.id] || {};
     const order = roadmap.indexOf(roadmapUnit) + 1;
-
+    console.log("meta for unit", roadmapUnit.id, meta);
     return {
       id: roadmapUnit.id,
       num: order,

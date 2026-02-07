@@ -1,10 +1,10 @@
 {
   "id": "react-037-best-practices",
-  "title": "Best Practices & Architecture",
-  "description": "Write clean, scalable, and maintainable React code",
-  "duration": 8,
+  "title": "React Best Practices",
+  "description": "Learn industry-approved best practices to write clean, scalable, and maintainable React code",
+  "duration": 16,
   "difficulty": "advanced",
-  "tags": ["react", "architecture", "clean-code"],
+  "tags": ["react", "best-practices", "clean-code", "architecture"],
   "prerequisites": ["react-036-project-full"],
   "unlocks": ["react-038-common-mistakes"],
   "xp": 160,
@@ -12,104 +12,128 @@
   "steps": {
     "intro": {
       "type": "game-intro",
-      "title": "Code That Survives",
-      "story": "Good code works today. Great code works for years.",
-      "preview": "Structure, patterns, and habits used by professionals."
+      "title": "Write Code Like a Professional",
+      "story": "Now you know React. Next step is writing React the right way.",
+      "preview": "Clean code survives. Messy code dies."
+    },
+
+    "refresher": {
+      "type": "markdown",
+      "title": "Why Best Practices Matter",
+      "content": "# Real World Reality\n\nYour code will be:\n\n- Read by teammates\n- Modified after months\n- Debugged under pressure\n\n---\n\nBest practices reduce bugs and stress."
     },
 
     "concept": {
       "type": "markdown",
-      "title": "Why Best Practices Matter",
-      "content": "Projects grow.\n\nWithout structure:\n- Bugs increase\n- Features slow down\n- Teams struggle\n\nBest practices prevent this."
+      "title": "Single Responsibility Components",
+      "content": "Each component should:\n\n- Do one job\n- Be easy to test\n- Be easy to reuse\n\nBad: One component does everything\n\nGood: Small focused components"
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "Clean Component Example",
+      "description": "Component with one responsibility.",
+      "code": "function UserName({ name }) {\n  return <h2>{name}</h2>;\n}\n\nexport default UserName;",
+      "showPreview": false,
+      "explanation": "Simple, reusable, and readable."
     },
 
     "concept2": {
       "type": "markdown",
-      "title": "Component Design Rules",
-      "content": "- One responsibility per component\n- Keep components small\n- Prefer composition over inheritance\n- Avoid deeply nested props"
-    },
-
-    "architecture": {
-      "type": "markdown",
-      "title": "Folder Organization",
-      "content": "Group by feature, not by type.\n\nExample:\n- user/\n  - UserPage.jsx\n  - userService.js\n  - useUser.js"
+      "title": "Folder Structure",
+      "content": "Recommended:\n\n- components/\n- pages/\n- hooks/\n- services/\n- utils/\n- assets/\n\nClear structure helps teams scale."
     },
 
     "concept3": {
       "type": "markdown",
       "title": "State Management Rules",
-      "content": "- Local state stays local\n- Global state only when shared\n- Avoid unnecessary state\n- Derive values when possible"
-    },
-
-    "positive": {
-      "type": "interactive-code",
-      "title": "Good Component Example",
-      "description": "Small and focused component.",
-      "code": "function UserName({ name }) {\n  return <p>{name}</p>;\n}\n\nexport default UserName;",
-      "showPreview": false,
-      "explanation": "This component has a single responsibility."
+      "content": "- Keep state as local as possible\n- Lift state only when needed\n- Avoid unnecessary global state\n- Server is the source of truth"
     },
 
     "negative": {
       "type": "debug-quiz",
-      "title": "Bad Practice Example",
-      "description": "One component doing too much.",
-      "code": "function UserPage() {\n  // fetch user\n  // handle auth\n  // render UI\n  // manage modal\n}",
+      "title": "Bad State Placement",
+      "description": "Everything stored globally.",
+      "code": "const [value, setValue] = useContext(AppContext);",
       "question": "What is the issue?",
       "options": [
         {
           "id": "a",
-          "text": "Too many responsibilities",
+          "text": "Overusing global state",
           "isCorrect": true,
-          "explanation": "Large components are hard to maintain."
+          "explanation": "Global state increases complexity."
         },
         {
           "id": "b",
-          "text": "Missing CSS",
+          "text": "Context is slow",
           "isCorrect": false,
-          "explanation": "Styling is not the core issue."
+          "explanation": "Misuse is the problem."
         }
       ],
-      "lesson": "Split logic into reusable parts."
+      "lesson": "Local state is always the first choice."
+    },
+
+    "concept4": {
+      "type": "markdown",
+      "title": "Reusable Logic with Hooks",
+      "content": "If logic is used in multiple places:\n\n- Extract it into a custom hook\n- Avoid copy-paste\n\nHooks = reusable behavior"
+    },
+
+    "positive2": {
+      "type": "interactive-code",
+      "title": "Custom Hook Example",
+      "description": "Encapsulate logic.",
+      "code": "function useToggle() {\n  const [value, setValue] = useState(false);\n  const toggle = () => setValue(v => !v);\n  return [value, toggle];\n}\n\nexport default useToggle;",
+      "showPreview": false,
+      "explanation": "Clean logic reuse."
+    },
+
+    "concept5": {
+      "type": "markdown",
+      "title": "Performance Awareness",
+      "content": "- Avoid unnecessary re-renders\n- Use memoization only when needed\n- Measure before optimizing"
+    },
+
+    "concept6": {
+      "type": "markdown",
+      "title": "Naming Conventions",
+      "content": "- Components: PascalCase\n- Hooks: useSomething\n- Handlers: handleClick\n- Files match component name"
     },
 
     "task": {
       "type": "coding-task",
-      "title": "Refactor Component",
-      "description": "Split a large component into smaller ones.",
+      "title": "Refactor a Component",
+      "description": "Improve readability and structure.",
       "requirements": [
-        "Extract UI components",
+        "Split responsibilities",
+        "Improve naming",
         "Move logic to hooks",
-        "Reuse shared logic"
+        "Clean folder structure"
       ],
-      "starterCode": "function BigComponent() {\n  // everything here\n}",
-      "solution": "Break into smaller components and hooks",
-      "hints": [
-        "Look for repeated logic",
-        "Move data fetching out"
-      ]
+      "starterCode": "function MessyComponent() {\n  return null;\n}",
+      "solution": "Apply best practices learned."
     },
 
     "challenge": {
       "type": "coding-challenge",
-      "title": "Feature-Based Structure",
-      "description": "Reorganize project structure.",
+      "title": "Code Review Simulation",
+      "description": "Review a teammate's code.",
       "requirements": [
-        "Group files by feature",
-        "Remove unused code",
-        "Simplify imports"
+        "Identify bad practices",
+        "Suggest improvements",
+        "Explain reasoning"
       ],
-      "solution": "Each feature owns its files"
+      "solution": "Think like a senior developer."
     },
 
     "memory": {
       "type": "memory-game",
       "title": "Best Practices Memory",
       "pairs": [
-        { "concept": "single responsibility", "code": "one job" },
-        { "concept": "feature folders", "code": "group by feature" },
-        { "concept": "local state", "code": "keep it close" },
-        { "concept": "global state", "code": "share carefully" }
+        { "concept": "Single Responsibility", "code": "one job per component" },
+        { "concept": "Custom Hooks", "code": "reuse logic" },
+        { "concept": "Local State", "code": "keep it close" },
+        { "concept": "Structure", "code": "scalable folders" }
       ]
     },
 
@@ -117,14 +141,19 @@
       "type": "tower-defense",
       "concepts": [
         {
-          "question": "Best component size?",
-          "options": ["Very large", "Small and focused", "One file app", "Depends on CSS"],
-          "correct": 1
+          "question": "Best default state location?",
+          "options": ["global", "redux", "local", "context"],
+          "correct": 2
         },
         {
-          "question": "Best folder strategy?",
-          "options": ["By file type", "By feature", "Random", "Single folder"],
-          "correct": 1
+          "question": "Clean code means?",
+          "options": [
+            "short code",
+            "clever tricks",
+            "readable and maintainable",
+            "less files"
+          ],
+          "correct": 2
         }
       ],
       "waves": 3

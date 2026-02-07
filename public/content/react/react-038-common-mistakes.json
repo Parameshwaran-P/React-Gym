@@ -1,10 +1,10 @@
 {
   "id": "react-038-common-mistakes",
   "title": "Common React Mistakes",
-  "description": "Avoid the most frequent errors developers make in React projects",
-  "duration": 7,
+  "description": "Identify, understand, and avoid the most common mistakes React developers make in real projects",
+  "duration": 14,
   "difficulty": "advanced",
-  "tags": ["react", "mistakes", "debugging"],
+  "tags": ["react", "mistakes", "debugging", "best-practices"],
   "prerequisites": ["react-037-best-practices"],
   "unlocks": ["react-039-interview"],
   "xp": 150,
@@ -12,96 +12,142 @@
   "steps": {
     "intro": {
       "type": "game-intro",
-      "title": "Learning From Mistakes",
-      "story": "Every bug teaches a lesson. Smart developers learn faster.",
-      "preview": "Real mistakes seen in real projects."
+      "title": "Why Good Apps Fail",
+      "story": "Most bugs are not advanced problems. They are small mistakes repeated everywhere.",
+      "preview": "Learn to spot mistakes before they reach production."
     },
 
-    "mistake1": {
+    "refresher": {
       "type": "markdown",
-      "title": "Mutating State Directly",
-      "content": "React state must be treated as immutable.\n\nWrong:\nstate.count++\n\nRight:\nsetCount(prev => prev + 1)"
+      "title": "Reality of Real Projects",
+      "content": "# Industry Truth\n\nMost production issues come from:\n\n- Wrong state placement\n- Bad component structure\n- Ignoring performance\n- Poor error handling\n\n---\n\nAvoiding mistakes is a senior skill."
     },
 
-    "mistake2": {
+    "concept": {
       "type": "markdown",
-      "title": "Missing Dependency Array",
-      "content": "useEffect without dependencies can cause infinite loops or missed updates."
+      "title": "Mistake 1: Overusing State",
+      "content": "Common error:\n\n- Storing derived values in state\n- Updating state unnecessarily\n\nRule:\nIf value can be calculated, do not store it."
     },
 
-    "quiz1": {
+    "negative": {
       "type": "debug-quiz",
-      "title": "Find the Bug",
-      "description": "Why is this code problematic?",
-      "code": "useEffect(() => {\n  fetchData();\n});",
-      "question": "What is wrong?",
+      "title": "Derived State Bug",
+      "description": "Unnecessary state usage.",
+      "code": "const [total, setTotal] = useState(price * qty);",
+      "question": "What is wrong here?",
+      "options": [
+        {
+          "id": "a",
+          "text": "Derived value stored in state",
+          "isCorrect": true,
+          "explanation": "Derived values should be calculated directly."
+        },
+        {
+          "id": "b",
+          "text": "useState is slow",
+          "isCorrect": false,
+          "explanation": "The issue is misuse, not performance."
+        }
+      ],
+      "lesson": "State should store source of truth only."
+    },
+
+    "concept2": {
+      "type": "markdown",
+      "title": "Mistake 2: Props Drilling Everywhere",
+      "content": "Symptoms:\n\n- Passing props through many layers\n- Components depend on unrelated data\n\nFix:\n- Lift state wisely\n- Use context or store when needed"
+    },
+
+    "concept3": {
+      "type": "markdown",
+      "title": "Mistake 3: Large Components",
+      "content": "Large components usually:\n\n- Handle UI\n- Handle logic\n- Handle API\n- Handle state\n\nThis makes debugging painful."
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "Smaller Components",
+      "description": "Split responsibilities.",
+      "code": "function UserProfile({ user }) {\n  return (\n    <div>\n      <Avatar user={user} />\n      <UserDetails user={user} />\n    </div>\n  );\n}\n\nexport default UserProfile;",
+      "showPreview": false,
+      "explanation": "Small components are easier to test and reuse."
+    },
+
+    "concept4": {
+      "type": "markdown",
+      "title": "Mistake 4: useEffect Abuse",
+      "content": "Common misuse:\n\n- Using useEffect for everything\n- Missing dependency array\n- Infinite loops\n\nRule:\nuseEffect is not a replacement for logic."
+    },
+
+    "negative2": {
+      "type": "debug-quiz",
+      "title": "Infinite Loop",
+      "description": "Effect runs endlessly.",
+      "code": "useEffect(() => {\n  setCount(count + 1);\n});",
+      "question": "Why does this loop?",
       "options": [
         {
           "id": "a",
           "text": "Missing dependency array",
           "isCorrect": true,
-          "explanation": "Effect runs on every render."
+          "explanation": "Effect runs after every render."
         },
         {
           "id": "b",
-          "text": "fetchData cannot be async",
+          "text": "setState is broken",
           "isCorrect": false,
-          "explanation": "Async functions are allowed."
+          "explanation": "Logic error causes the loop."
         }
-      ]
+      ],
+      "lesson": "Always understand effect dependencies."
     },
 
-    "mistake3": {
+    "concept5": {
       "type": "markdown",
-      "title": "Using Index as Key",
-      "content": "Using array index as key breaks reconciliation when items change."
+      "title": "Mistake 5: Ignoring Keys",
+      "content": "Using index as key causes:\n\n- Wrong UI updates\n- Unexpected bugs\n\nKeys must be stable and unique."
     },
 
-    "mistake4": {
+    "concept6": {
       "type": "markdown",
-      "title": "Overusing Global State",
-      "content": "Not everything belongs in Redux or Context."
-    },
-
-    "mistake5": {
-      "type": "markdown",
-      "title": "Unnecessary Re-renders",
-      "content": "Inline functions and objects can trigger re-renders."
+      "title": "Mistake 6: Premature Optimization",
+      "content": "Using memo, useCallback everywhere:\n\n- Increases complexity\n- Adds bugs\n\nOptimize only when needed."
     },
 
     "task": {
       "type": "coding-task",
-      "title": "Fix the Mistakes",
-      "description": "Correct common React issues.",
+      "title": "Fix the Component",
+      "description": "Refactor a buggy component.",
       "requirements": [
-        "Avoid state mutation",
-        "Fix useEffect dependencies",
-        "Use stable keys"
+        "Remove unnecessary state",
+        "Fix useEffect",
+        "Split components",
+        "Improve keys"
       ],
-      "starterCode": "items.map((item, index) => <Item key={index} />)",
-      "solution": "Use unique IDs instead of index"
+      "starterCode": "function BuggyComponent() {\n  return null;\n}",
+      "solution": "Apply correct patterns learned."
     },
 
     "challenge": {
       "type": "coding-challenge",
-      "title": "Performance Cleanup",
-      "description": "Reduce unnecessary re-renders.",
+      "title": "Mistake Spotting",
+      "description": "Review a React file.",
       "requirements": [
-        "Use React.memo",
-        "Use useCallback",
-        "Avoid inline objects"
+        "Identify at least 5 mistakes",
+        "Explain why they are mistakes",
+        "Suggest correct approach"
       ],
-      "solution": "Memoize components and functions"
+      "solution": "Think like a code reviewer."
     },
 
     "memory": {
       "type": "memory-game",
-      "title": "Mistake Patterns",
+      "title": "Mistakes Memory",
       "pairs": [
-        { "concept": "state mutation", "fix": "immutable updates" },
-        { "concept": "useEffect bug", "fix": "dependency array" },
-        { "concept": "index key", "fix": "unique id" },
-        { "concept": "global state abuse", "fix": "local state" }
+        { "concept": "Derived State", "code": "do not store" },
+        { "concept": "Props Drilling", "code": "avoid deep passing" },
+        { "concept": "useEffect", "code": "not for everything" },
+        { "concept": "Keys", "code": "stable and unique" }
       ]
     },
 
@@ -109,24 +155,19 @@
       "type": "tower-defense",
       "concepts": [
         {
-          "question": "Why not mutate state?",
-          "options": [
-            "React ignores it",
-            "Breaks rendering",
-            "Slows CSS",
-            "No reason"
-          ],
+          "question": "Most common React bug?",
+          "options": ["syntax error", "state misuse", "css issue", "routing"],
           "correct": 1
         },
         {
-          "question": "Best key choice?",
+          "question": "Best fix for large components?",
           "options": [
-            "Index",
-            "Random",
-            "Unique id",
-            "Component name"
+            "add comments",
+            "split responsibilities",
+            "use memo",
+            "move to redux"
           ],
-          "correct": 2
+          "correct": 1
         }
       ],
       "waves": 3

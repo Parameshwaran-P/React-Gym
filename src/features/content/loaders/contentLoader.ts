@@ -220,7 +220,7 @@ export async function loadContentRoadmap(contentId: string) {
 export async function loadUnit(contentId: string, unitId: string) {
   try {
     const url = `/content/${contentId}/${unitId}.json`;
-    
+    console.log(`Loading unit from ${url}`);
     const response = await fetchWithRetry(url);
     
     if (!response.ok) {

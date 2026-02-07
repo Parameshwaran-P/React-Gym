@@ -1,119 +1,141 @@
 {
   "id": "react-012-forms",
-  "title": "Forms & Controlled Components",
-  "description": "Handle user input safely and correctly in React",
-  "duration": 10,
+  "title": "Forms in React",
+  "description": "Learn how to handle forms, inputs, and submissions in React",
+  "duration": 9,
   "difficulty": "beginner",
-  "tags": ["react", "forms", "input", "controlled-components"],
+  "tags": ["react", "forms", "inputs"],
   "prerequisites": ["react-011-usestate"],
   "unlocks": ["react-013-lifting-state"],
-  "xp": 100,
+  "xp": 90,
 
   "steps": {
     "intro": {
       "type": "game-intro",
-      "title": "Talking to the App",
-      "story": "User talks to app using forms. App must listen carefully.",
-      "preview": "Learn how React listens to input."
+      "title": "Form Power",
+      "story": "Forms collect data. React controls how that data flows.",
+      "preview": "Inputs, submit, and control."
     },
 
-    "story": {
+    "refresher": {
       "type": "markdown",
-      "title": "Real Life Example: Order Slip",
-      "content": "When you fill an order slip:\n\n• You write your name\n• Shop reads it\n• Shop stores it\n\nReact forms work the same way.\nInput ➜ State ➜ UI"
+      "title": "Real-Life Example",
+      "content": "# Login Form\n\nYou type:\n- Username\n- Password\n\nClick Submit\n\n➡️ Data is sent\n\n---\n\n## In React\n\nInput ➜ State ➜ Submit handler"
     },
 
     "concept": {
       "type": "markdown",
-      "title": "What is a Controlled Component?",
-      "content": "A controlled component means:\n\n• React **controls the input value**\n• Value comes from **state**\n• Changes happen using **onChange**"
-    },
-
-    "syntax": {
-      "type": "markdown",
-      "title": "Basic Form Pattern",
-      "content": "```\nconst [value, setValue] = useState('');\n\n<input value={value} onChange={(e) => setValue(e.target.value)} />\n```"
+      "title": "What is a Form?",
+      "content": "A form is a group of inputs that collect user data.\n\nCommon elements:\n- input\n- textarea\n- select\n- button\n\nReact handles forms using **state**."
     },
 
     "positive": {
       "type": "interactive-code",
-      "title": "Name Input",
-      "description": "Simple controlled input example.",
-      "code": "import { useState } from 'react';\n\nfunction NameForm() {\n  const [name, setName] = useState('');\n\n  return (\n    <div>\n      <input\n        value={name}\n        onChange={(e) => setName(e.target.value)}\n        placeholder=\"Enter name\"\n      />\n      <p>Hello {name}</p>\n    </div>\n  );\n}\n\nexport default NameForm;",
+      "title": "Basic Form Structure",
+      "description": "Simple form with submit handler.",
+      "code": "function SimpleForm() {\n  function handleSubmit(e) {\n    e.preventDefault();\n    alert('Form submitted');\n  }\n\n  return (\n    <form onSubmit={handleSubmit}>\n      <button type=\"submit\">Submit</button>\n    </form>\n  );\n}\n\nexport default SimpleForm;",
       "showPreview": true,
-      "explanation": "Input value is controlled by React state."
+      "explanation": "e.preventDefault() stops page reload."
     },
 
     "concept2": {
       "type": "markdown",
-      "title": "Form Submit Handling",
-      "content": "React prevents page reload using `preventDefault()`.\n\n```\nfunction handleSubmit(e) {\n  e.preventDefault();\n}\n```"
+      "title": "Controlled Inputs",
+      "content": "In React, inputs are usually **controlled**.\n\nThat means:\n- Value comes from state\n- Changes update state\n\nThis gives full control over form data."
     },
 
     "positive2": {
       "type": "interactive-code",
-      "title": "Login Form",
-      "description": "Handle submit event.",
-      "code": "import { useState } from 'react';\n\nfunction Login() {\n  const [email, setEmail] = useState('');\n\n  function handleSubmit(e) {\n    e.preventDefault();\n    alert(email);\n  }\n\n  return (\n    <form onSubmit={handleSubmit}>\n      <input value={email} onChange={(e) => setEmail(e.target.value)} />\n      <button>Submit</button>\n    </form>\n  );\n}\n\nexport default Login;",
+      "title": "Controlled Input Example",
+      "description": "Input value is controlled by state.",
+      "code": "import { useState } from 'react';\n\nfunction NameForm() {\n  const [name, setName] = useState('');\n\n  function handleChange(e) {\n    setName(e.target.value);\n  }\n\n  function handleSubmit(e) {\n    e.preventDefault();\n    alert(name);\n  }\n\n  return (\n    <form onSubmit={handleSubmit}>\n      <input value={name} onChange={handleChange} />\n      <button type=\"submit\">Send</button>\n    </form>\n  );\n}\n\nexport default NameForm;",
       "showPreview": true,
-      "explanation": "Form submits without page refresh."
+      "explanation": "State always holds the input value."
     },
 
     "negative": {
       "type": "debug-quiz",
-      "title": "Why is this wrong?",
-      "description": "Input is not controlled.",
-      "code": "<input onChange={(e) => console.log(e.target.value)} />",
+      "title": "Form Reload Bug",
+      "description": "Page reloads on submit.",
+      "code": "<form onSubmit={handleSubmit}>...</form>",
       "question": "What is missing?",
       "options": [
         {
           "id": "a",
-          "text": "value attribute",
+          "text": "e.preventDefault()",
           "isCorrect": true,
-          "explanation": "Without value, React is not controlling input."
+          "explanation": "Correct. It prevents browser reload."
         },
         {
           "id": "b",
-          "text": "button",
+          "text": "useEffect",
           "isCorrect": false,
-          "explanation": "Button is optional."
+          "explanation": "useEffect is not needed here."
         }
       ],
-      "lesson": "Controlled input needs both value and onChange."
+      "lesson": "Always prevent default form submission."
     },
 
     "task": {
       "type": "coding-task",
-      "title": "Email Form",
-      "description": "Create a controlled email input.",
+      "title": "Create Login Form",
+      "description": "Build a simple login form.",
       "requirements": [
-        "Use useState",
-        "Show typed email below"
+        "Username input",
+        "Password input",
+        "Submit handler"
       ],
-      "starterCode": "function Email() {\n  return <input />;\n}\n\nexport default Email;",
-      "solution": "import { useState } from 'react';\n\nfunction Email() {\n  const [email, setEmail] = useState('');\n\n  return (\n    <div>\n      <input value={email} onChange={(e) => setEmail(e.target.value)} />\n      <p>{email}</p>\n    </div>\n  );\n}\n\nexport default Email;"
+      "starterCode": "function LoginForm() {\n  return (\n    <form>\n      <input placeholder=\"Username\" />\n      <input type=\"password\" placeholder=\"Password\" />\n      <button>Login</button>\n    </form>\n  );\n}\n\nexport default LoginForm;",
+      "solution": "import { useState } from 'react';\n\nfunction LoginForm() {\n  const [user, setUser] = useState('');\n  const [pass, setPass] = useState('');\n\n  function handleSubmit(e) {\n    e.preventDefault();\n    console.log(user, pass);\n  }\n\n  return (\n    <form onSubmit={handleSubmit}>\n      <input value={user} onChange={e => setUser(e.target.value)} />\n      <input type=\"password\" value={pass} onChange={e => setPass(e.target.value)} />\n      <button type=\"submit\">Login</button>\n    </form>\n  );\n}\n\nexport default LoginForm;",
+      "hints": [
+        "Use two states",
+        "Prevent default submit"
+      ]
     },
 
     "challenge": {
       "type": "coding-challenge",
-      "title": "Registration Form",
-      "description": "Collect name and age.",
+      "title": "Signup Form",
+      "description": "Collect and log user data.",
       "requirements": [
-        "Two inputs",
-        "Submit button",
-        "Alert values"
+        "Name input",
+        "Email input",
+        "Submit logs all values"
       ],
-      "solution": "import { useState } from 'react';\n\nfunction Register() {\n  const [name, setName] = useState('');\n  const [age, setAge] = useState('');\n\n  function submit(e) {\n    e.preventDefault();\n    alert(name + ' ' + age);\n  }\n\n  return (\n    <form onSubmit={submit}>\n      <input value={name} onChange={(e) => setName(e.target.value)} />\n      <input value={age} onChange={(e) => setAge(e.target.value)} />\n      <button>Register</button>\n    </form>\n  );\n}\n\nexport default Register;"
+      "solution": "import { useState } from 'react';\n\nfunction Signup() {\n  const [name, setName] = useState('');\n  const [email, setEmail] = useState('');\n\n  function submit(e) {\n    e.preventDefault();\n    console.log({ name, email });\n  }\n\n  return (\n    <form onSubmit={submit}>\n      <input onChange={e => setName(e.target.value)} />\n      <input onChange={e => setEmail(e.target.value)} />\n      <button>Submit</button>\n    </form>\n  );\n}\n\nexport default Signup;"
     },
 
     "memory": {
       "type": "memory-game",
-      "title": "Form Match",
+      "title": "Form Memory",
       "pairs": [
-        { "concept": "value", "code": "state" },
-        { "concept": "onChange", "code": "update state" },
-        { "concept": "preventDefault", "code": "no reload" }
+        { "concept": "form", "code": "Collect data" },
+        { "concept": "controlled input", "code": "State driven" },
+        { "concept": "onSubmit", "code": "Handle submit" },
+        { "concept": "preventDefault", "code": "Stop reload" }
       ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Which event handles form submit?",
+          "options": ["onClick", "onSubmit", "onChange", "onLoad"],
+          "correct": 1
+        },
+        {
+          "question": "Controlled input means?",
+          "options": [
+            "DOM handles value",
+            "State controls value",
+            "CSS controls input",
+            "Browser controls form"
+          ],
+          "correct": 1
+        }
+      ],
+      "waves": 3
     }
   }
 }

@@ -1,127 +1,123 @@
 {
   "id": "react-033-build",
-  "title": "Build & Deployment",
-  "description": "Understand how React apps are converted into production-ready files",
-  "duration": 7,
+  "title": "Production Build in React",
+  "description": "Learn how React apps are optimized and prepared for production deployment",
+  "duration": 8,
   "difficulty": "intermediate",
-  "tags": ["react", "build", "deployment"],
+  "tags": ["react", "build", "production", "optimization"],
   "prerequisites": ["react-032-env"],
   "unlocks": ["react-034-project-mini"],
-  "xp": 140,
+  "xp": 100,
 
   "steps": {
     "intro": {
       "type": "game-intro",
-      "title": "From Code to Website",
-      "story": "Your app works on localhost. Now it must work for everyone.",
-      "preview": "Build process turns React code into fast static files."
+      "title": "Ready for Production",
+      "story": "Your app works locally, but users will access it worldwide.",
+      "preview": "Learn how React prepares your app for real users."
+    },
+
+    "refresher": {
+      "type": "markdown",
+      "title": "Real-Life Example",
+      "content": "# Packing a Product\n\nYou clean it\n\nRemove extra parts\n\nPack tightly\n\n---\n\nProduction build removes unnecessary code and optimizes performance."
     },
 
     "concept": {
       "type": "markdown",
       "title": "What is a Build?",
-      "content": "A build converts:\n- JSX into JavaScript\n- Modern JS into browser-compatible JS\n- Multiple files into optimized bundles\n\nThe result is a `dist` folder."
+      "content": "A build is:\n- Optimized version of your app\n- Minified code\n- Ready for deployment\n\nUsers never see source code."
     },
 
     "concept2": {
       "type": "markdown",
-      "title": "Why Build is Needed",
-      "content": "- Browsers do not understand JSX\n- Smaller files load faster\n- Dead code is removed\n\nBuild = performance + compatibility."
+      "title": "What Happens During Build?",
+      "content": "React build process:\n- Removes dev-only code\n- Minifies JS and CSS\n- Bundles files\n- Optimizes assets\n- Improves performance"
     },
 
     "concept3": {
       "type": "markdown",
-      "title": "Build in Vite",
-      "content": "Run the command:\n```\nnpm run build\n```\n\nThis creates a `dist/` folder with:\n- HTML\n- CSS\n- JavaScript assets"
+      "title": "Vite Build Command",
+      "content": "```\nnpm run build\n```\n\nThis creates a `dist` folder."
     },
 
-    "concept4": {
+    "syntax": {
       "type": "markdown",
-      "title": "Preview Production Build",
-      "content": "Before deploying, test the build locally:\n```\nnpm run preview\n```\n\nThis simulates a real production environment."
+      "title": "Build Output",
+      "content": "```\ndist/\n ├─ index.html\n ├─ assets/\n │   ├─ app.js\n │   └─ style.css\n```"
     },
 
     "positive": {
       "type": "interactive-code",
-      "title": "Build Output Structure",
-      "description": "Typical build folder.",
-      "code": "dist/\n ├─ index.html\n ├─ assets/\n │   ├─ index.js\n │   └─ index.css",
+      "title": "Preview Production Build",
+      "description": "Test build locally.",
+      "code": "npm run build\nnpm run preview",
       "showPreview": false,
-      "explanation": "These files are deployed to hosting services."
+      "explanation": "Preview shows exactly what users will see."
     },
 
-    "concept5": {
+    "concept4": {
       "type": "markdown",
-      "title": "Common Hosting Platforms",
-      "content": "- Vercel\n- Netlify\n- GitHub Pages\n- AWS S3\n\nThey serve static files efficiently."
-    },
-
-    "concept6": {
-      "type": "markdown",
-      "title": "Deployment Flow",
-      "content": "1. Push code to GitHub\n2. Hosting platform pulls code\n3. Runs build command\n4. Serves dist folder"
+      "title": "Why Preview Matters",
+      "content": "Preview helps you:\n- Catch build errors\n- Verify env variables\n- Test routing\n- Check performance"
     },
 
     "negative": {
       "type": "debug-quiz",
-      "title": "White Screen After Deploy",
-      "description": "App works locally but not in production.",
-      "code": "Uncaught SyntaxError or 404 errors",
-      "question": "What is a common cause?",
+      "title": "Build Failed",
+      "description": "Build works locally but fails in production.",
+      "code": "ReferenceError: process is not defined",
+      "question": "What is the issue?",
       "options": [
         {
           "id": "a",
-          "text": "Wrong base path",
+          "text": "Using Node-specific code in frontend",
           "isCorrect": true,
-          "explanation": "Incorrect base path breaks asset loading."
+          "explanation": "Browser does not support Node globals."
         },
         {
           "id": "b",
-          "text": "React version issue",
+          "text": "React bug",
           "isCorrect": false,
-          "explanation": "React version usually not the issue."
+          "explanation": "React is not the issue."
         }
       ],
-      "lesson": "Production paths must be configured correctly."
+      "lesson": "Frontend builds must use browser-safe APIs."
     },
 
     "task": {
       "type": "coding-task",
       "title": "Create Production Build",
-      "description": "Generate and preview build.",
+      "description": "Generate and verify build output.",
       "requirements": [
         "Run build command",
-        "Preview production output",
-        "Verify app works"
+        "Locate dist folder",
+        "Preview build"
       ],
       "starterCode": "npm run dev",
-      "solution": "npm run build && npm run preview",
-      "hints": [
-        "Check dist folder",
-        "Use preview command"
-      ]
+      "solution": "npm run build\nnpm run preview"
     },
 
     "challenge": {
       "type": "coding-challenge",
-      "title": "Deploy to Hosting",
-      "description": "Make app live.",
+      "title": "Build Check",
+      "description": "Ensure app is production ready.",
       "requirements": [
-        "Push to GitHub",
-        "Deploy using Vercel or Netlify",
-        "Access live URL"
+        "No console errors",
+        "Env variables working",
+        "Routing works after refresh"
       ],
-      "solution": "Connect repository and deploy dist output"
+      "solution": "Verify using production preview before deployment."
     },
 
     "memory": {
       "type": "memory-game",
       "title": "Build Memory",
       "pairs": [
-        { "concept": "build", "code": "Production files" },
-        { "concept": "dist", "code": "Output folder" },
-        { "concept": "preview", "code": "Test production" },
-        { "concept": "deploy", "code": "Make live" }
+        { "concept": "build", "code": "optimized app" },
+        { "concept": "dist", "code": "output folder" },
+        { "concept": "minify", "code": "reduce size" },
+        { "concept": "preview", "code": "test production" }
       ]
     },
 
@@ -134,8 +130,13 @@
           "correct": 2
         },
         {
-          "question": "Build converts JSX into?",
-          "options": ["HTML", "JavaScript", "CSS", "JSON"],
+          "question": "Why preview build?",
+          "options": [
+            "faster dev",
+            "test production",
+            "install packages",
+            "debug JSX"
+          ],
           "correct": 1
         }
       ],

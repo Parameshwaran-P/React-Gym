@@ -1,123 +1,126 @@
 {
   "id": "react-029-zustand",
   "title": "Zustand State Management",
-  "description": "Simple and minimal global state management for React",
-  "duration": 8,
+  "description": "Manage global state with minimal boilerplate using Zustand",
+  "duration": 11,
   "difficulty": "intermediate",
-  "tags": ["react", "zustand", "state-management"],
-  "prerequisites": ["react-028-redux"],
+  "tags": ["react", "zustand", "state-management", "global-state"],
+  "prerequisites": ["react-027-state-management"],
   "unlocks": ["react-030-performance"],
-  "xp": 140,
+  "xp": 120,
 
   "steps": {
     "intro": {
       "type": "game-intro",
-      "title": "Less Boilerplate",
-      "story": "You want global state without complex setup. Zustand helps.",
-      "preview": "Store, actions, and selectors in one place."
+      "title": "Simple Global State",
+      "story": "You want global state without reducers, actions, or providers.",
+      "preview": "Learn Zustand: small, fast, and simple."
+    },
+
+    "refresher": {
+      "type": "markdown",
+      "title": "Real-Life Example",
+      "content": "# Shared Notebook\n\nEveryone writes in one notebook\n\nAnyone can read or update\n\nNo middle person\n\n---\n\nZustand works like a shared store."
     },
 
     "concept": {
       "type": "markdown",
       "title": "What is Zustand?",
-      "content": "Zustand is a small state management library.\n- No reducers\n- No providers\n- Simple API\n\nIt is great for medium-sized apps."
+      "content": "Zustand is a **lightweight state management library**.\n\nFeatures:\n- No provider needed\n- Simple API\n- Global state\n- Fast performance"
     },
 
     "concept2": {
       "type": "markdown",
-      "title": "When to Use Zustand",
-      "content": "- You want global state\n- Redux feels heavy\n- Context causes re-renders\n\nZustand keeps things simple."
+      "title": "When to Use Zustand?",
+      "content": "Use Zustand when:\n- Props drilling becomes messy\n- Context feels heavy\n- Redux is overkill\n- You want simple global state"
     },
 
     "syntax": {
       "type": "markdown",
-      "title": "Installation",
-      "content": "```\nnpm install zustand\n```"
+      "title": "Basic Store Syntax",
+      "content": "```\nimport { create } from 'zustand';\n\nconst useStore = create((set) => ({\n  count: 0,\n  increase: () => set((state) => ({ count: state.count + 1 }))\n}));\n```"
     },
 
     "positive": {
       "type": "interactive-code",
-      "title": "Creating a Store",
-      "description": "Counter store using Zustand.",
-      "code": "import { create } from 'zustand';\n\nconst useCounterStore = create((set) => ({\n  count: 0,\n  increment: () => set((state) => ({ count: state.count + 1 })),\n  reset: () => set({ count: 0 })\n}));\n\nexport default useCounterStore;",
-      "showPreview": false,
-      "explanation": "State and actions live together."
-    },
-
-    "positive2": {
-      "type": "interactive-code",
-      "title": "Using Store in Component",
-      "description": "Read and update state.",
-      "code": "import useCounterStore from './counterStore';\n\nfunction Counter() {\n  const count = useCounterStore(state => state.count);\n  const increment = useCounterStore(state => state.increment);\n\n  return (\n    <div>\n      <p>{count}</p>\n      <button onClick={increment}>Add</button>\n    </div>\n  );\n}\n\nexport default Counter;",
-      "showPreview": false,
-      "explanation": "No provider needed."
+      "title": "Counter Store",
+      "description": "Global counter using Zustand.",
+      "code": "import { create } from 'zustand';\n\nconst useCounterStore = create((set) => ({\n  count: 0,\n  add: () => set((state) => ({ count: state.count + 1 })),\n  remove: () => set((state) => ({ count: state.count - 1 }))\n}));\n\nfunction Counter() {\n  const { count, add, remove } = useCounterStore();\n\n  return (\n    <div>\n      <p>{count}</p>\n      <button onClick={add}>Add</button>\n      <button onClick={remove}>Remove</button>\n    </div>\n  );\n}\n\nexport default Counter;",
+      "showPreview": true,
+      "explanation": "State is shared without props or providers."
     },
 
     "concept3": {
       "type": "markdown",
-      "title": "Why Zustand is Fast",
-      "content": "- Components subscribe only to needed state\n- No unnecessary re-renders\n- Very small bundle size"
+      "title": "Zustand vs Redux",
+      "content": "Zustand:\n- Less boilerplate\n- No reducers\n- Direct updates\n\nRedux:\n- Strict pattern\n- Reducers and actions\n- Better for large teams"
+    },
+
+    "positive2": {
+      "type": "interactive-code",
+      "title": "Selective State Usage",
+      "description": "Subscribe to only needed data.",
+      "code": "function DisplayCount() {\n  const count = useCounterStore((state) => state.count);\n  return <p>{count}</p>;\n}\n\nexport default DisplayCount;",
+      "showPreview": true,
+      "explanation": "Component re-renders only when selected state changes."
     },
 
     "negative": {
       "type": "debug-quiz",
-      "title": "Incorrect Zustand Usage",
-      "description": "Spot the mistake.",
-      "code": "useCounterStore.count = 5",
-      "question": "What is wrong?",
+      "title": "Unnecessary Re-renders",
+      "description": "Component re-renders too often.",
+      "code": "const state = useCounterStore();",
+      "question": "What is the issue?",
       "options": [
         {
           "id": "a",
-          "text": "State mutated directly",
+          "text": "Subscribing to full store",
           "isCorrect": true,
-          "explanation": "Zustand state must be updated using set."
+          "explanation": "Selecting entire store causes extra re-renders."
         },
         {
           "id": "b",
-          "text": "Zustand does not support numbers",
+          "text": "Zustand is slow",
           "isCorrect": false,
-          "explanation": "Numbers are supported."
+          "explanation": "Zustand is optimized."
         }
       ],
-      "lesson": "Always update state using set function."
+      "lesson": "Select only the state you need."
     },
 
     "task": {
       "type": "coding-task",
       "title": "Theme Store",
-      "description": "Manage light and dark theme.",
+      "description": "Toggle light and dark mode globally.",
       "requirements": [
-        "Initial theme light",
-        "Toggle theme",
-        "Use in component"
+        "Create store",
+        "Boolean state",
+        "Toggle action"
       ],
-      "starterCode": "create((set) => ({ theme: 'light' }))",
-      "solution": "Use toggle function to switch theme.",
-      "hints": [
-        "Store string or boolean",
-        "Use set with callback"
-      ]
+      "starterCode": "function Theme() {\n  return null;\n}\n\nexport default Theme;",
+      "solution": "import { create } from 'zustand';\n\nconst useThemeStore = create((set) => ({\n  dark: false,\n  toggle: () => set((state) => ({ dark: !state.dark }))\n}));\n\nfunction Theme() {\n  const { dark, toggle } = useThemeStore();\n\n  return (\n    <button onClick={toggle}>\n      {dark ? 'Dark' : 'Light'}\n    </button>\n  );\n}\n\nexport default Theme;"
     },
 
     "challenge": {
       "type": "coding-challenge",
-      "title": "Todo Store",
-      "description": "Build todo global store.",
+      "title": "Cart Store",
+      "description": "Manage cart quantity globally.",
       "requirements": [
-        "Add todo",
-        "Remove todo",
-        "Mark completed"
+        "Global cart count",
+        "Add and remove actions",
+        "Use in multiple components"
       ],
-      "solution": "Use array state and actions inside store."
+      "solution": "import { create } from 'zustand';\n\nconst useCartStore = create((set) => ({\n  qty: 0,\n  add: () => set((s) => ({ qty: s.qty + 1 })),\n  remove: () => set((s) => ({ qty: s.qty - 1 }))\n}));\n\nfunction Cart() {\n  const qty = useCartStore((s) => s.qty);\n  const add = useCartStore((s) => s.add);\n  const remove = useCartStore((s) => s.remove);\n\n  return (\n    <div>\n      <p>{qty}</p>\n      <button onClick={add}>Add</button>\n      <button onClick={remove}>Remove</button>\n    </div>\n  );\n}\n\nexport default Cart;"
     },
 
     "memory": {
       "type": "memory-game",
       "title": "Zustand Memory",
       "pairs": [
-        { "concept": "Store", "code": "create()" },
-        { "concept": "set", "code": "Update state" },
-        { "concept": "Selector", "code": "Pick state" }
+        { "concept": "create", "code": "store creation" },
+        { "concept": "set", "code": "update state" },
+        { "concept": "selector", "code": "reduce re-render" },
+        { "concept": "no provider", "code": "simple setup" }
       ]
     },
 
@@ -125,17 +128,22 @@
       "type": "tower-defense",
       "concepts": [
         {
-          "question": "Does Zustand need Provider?",
-          "options": ["Yes", "No"],
+          "question": "Zustand requires Provider?",
+          "options": ["yes", "no", "sometimes", "only for redux"],
           "correct": 1
         },
         {
-          "question": "Best use case?",
-          "options": ["Huge enterprise app", "Medium app", "No state app"],
+          "question": "Best practice for performance?",
+          "options": [
+            "subscribe full store",
+            "use selector",
+            "use props",
+            "use context"
+          ],
           "correct": 1
         }
       ],
-      "waves": 2
+      "waves": 3
     }
   }
 }

@@ -1,114 +1,125 @@
 {
   "id": "react-034-project-mini",
-  "title": "Mini Project",
-  "description": "Apply core React concepts by building a small real-world application",
-  "duration": 10,
+  "title": "Mini Project: React Essentials",
+  "description": "Build a small real-world React app using core concepts",
+  "duration": 15,
   "difficulty": "intermediate",
-  "tags": ["react", "project", "practice"],
+  "tags": ["react", "project", "hands-on", "practice"],
   "prerequisites": ["react-033-build"],
   "unlocks": ["react-035-project-dashboard"],
-  "xp": 180,
+  "xp": 150,
 
   "steps": {
     "intro": {
       "type": "game-intro",
-      "title": "Your First Real App",
-      "story": "You know the concepts. Now it’s time to build something useful.",
-      "preview": "State, events, effects, and structure come together."
+      "title": "Build Something Real",
+      "story": "You’ve learned the tools. Now it’s time to build.",
+      "preview": "Create a mini React project using real concepts."
+    },
+
+    "refresher": {
+      "type": "markdown",
+      "title": "Project Goal",
+      "content": "# Mini Project\n\nBuild a **Task Tracker App**\n\nFeatures:\n- Add task\n- Mark complete\n- Delete task\n\n---\n\nThis project combines multiple React concepts."
     },
 
     "concept": {
       "type": "markdown",
-      "title": "Project Overview",
-      "content": "You will build a **Todo Manager App**.\n\nFeatures:\n- Add todos\n- Mark complete\n- Delete items\n- Persist data using localStorage"
+      "title": "Concepts You Will Use",
+      "content": "- Components\n- useState\n- Events\n- Lists & keys\n- Conditional rendering\n- Controlled inputs"
     },
 
     "concept2": {
       "type": "markdown",
-      "title": "What You Will Practice",
-      "content": "- Component structure\n- useState for data\n- useEffect for side effects\n- Conditional rendering\n- List rendering with keys"
+      "title": "Project Structure",
+      "content": "```\nsrc/\n ├─ components/\n │   ├─ TaskForm.jsx\n │   ├─ TaskItem.jsx\n │   └─ TaskList.jsx\n ├─ App.jsx\n └─ main.jsx\n```"
     },
 
-    "architecture": {
+    "syntax": {
       "type": "markdown",
-      "title": "Component Breakdown",
-      "content": "App\n- Header\n- TodoInput\n- TodoList\n- TodoItem\n\nEach component has a single responsibility."
+      "title": "Task Data Shape",
+      "content": "```\n{\n  id: number,\n  text: string,\n  completed: boolean\n}\n```"
     },
 
     "positive": {
       "type": "interactive-code",
-      "title": "Base App Structure",
-      "description": "Main App component.",
-      "code": "import { useState } from 'react';\n\nfunction App() {\n  const [todos, setTodos] = useState([]);\n\n  return (\n    <div>\n      <h1>Todo App</h1>\n    </div>\n  );\n}\n\nexport default App;",
+      "title": "Add Task Logic",
+      "description": "Manage tasks using state.",
+      "code": "import { useState } from 'react';\n\nfunction App() {\n  const [tasks, setTasks] = useState([]);\n\n  function addTask(text) {\n    setTasks([...tasks, { id: Date.now(), text, completed: false }]);\n  }\n\n  return null;\n}\n\nexport default App;",
       "showPreview": false,
-      "explanation": "This is the root container of the project."
+      "explanation": "State holds all tasks."
     },
 
     "concept3": {
       "type": "markdown",
-      "title": "State Design",
-      "content": "Each todo item contains:\n- id\n- text\n- completed (boolean)\n\nState should represent the UI clearly."
+      "title": "Rendering Task List",
+      "content": "Use `.map()` to render tasks.\n\nAlways add a unique `key`."
+    },
+
+    "positive2": {
+      "type": "interactive-code",
+      "title": "Task Item",
+      "description": "Display single task.",
+      "code": "function TaskItem({ task, toggle, remove }) {\n  return (\n    <li>\n      <span\n        style={{ textDecoration: task.completed ? 'line-through' : 'none' }}\n        onClick={() => toggle(task.id)}\n      >\n        {task.text}\n      </span>\n      <button onClick={() => remove(task.id)}>X</button>\n    </li>\n  );\n}\n\nexport default TaskItem;",
+      "showPreview": false,
+      "explanation": "Conditional rendering shows completion."
     },
 
     "negative": {
       "type": "debug-quiz",
-      "title": "Common Project Mistake",
-      "description": "App re-renders but data is lost.",
-      "code": "const todos = [];",
-      "question": "Why is this wrong?",
+      "title": "Tasks Not Updating",
+      "description": "Clicking does nothing.",
+      "code": "tasks.push(newTask);",
+      "question": "What is the mistake?",
       "options": [
         {
           "id": "a",
-          "text": "Not using useState",
+          "text": "State is mutated directly",
           "isCorrect": true,
-          "explanation": "Local variables do not persist between renders."
+          "explanation": "React state must be updated immutably."
         },
         {
           "id": "b",
-          "text": "Array syntax is wrong",
+          "text": "useState is wrong",
           "isCorrect": false,
-          "explanation": "Array syntax is correct."
+          "explanation": "Hook usage is correct."
         }
       ],
-      "lesson": "Application data must live in state."
+      "lesson": "Never mutate React state directly."
     },
 
     "task": {
       "type": "coding-task",
-      "title": "Add Todo Feature",
-      "description": "Create input and button to add new todos.",
+      "title": "Complete Task Toggle",
+      "description": "Mark tasks as completed.",
       "requirements": [
-        "Controlled input",
-        "Add todo to list",
-        "Clear input after add"
+        "Toggle completed state",
+        "Update state immutably"
       ],
-      "starterCode": "function TodoInput() {\n  return <input />;\n}",
-      "solution": "Use useState for input value and update todos list",
-      "hints": [
-        "Use onChange",
-        "Use setTodos([...todos, newTodo])"
-      ]
+      "starterCode": "function toggleTask(id) {\n  // logic here\n}",
+      "solution": "function toggleTask(id) {\n  setTasks(tasks.map(t =>\n    t.id === id ? { ...t, completed: !t.completed } : t\n  ));\n}"
     },
 
     "challenge": {
       "type": "coding-challenge",
-      "title": "Persist Data",
-      "description": "Save todos in localStorage.",
+      "title": "Project Enhancement",
+      "description": "Improve your mini project.",
       "requirements": [
-        "Load todos on page load",
-        "Save todos on change"
+        "Task counter",
+        "Clear completed tasks",
+        "Persist tasks using localStorage"
       ],
-      "solution": "Use useEffect with localStorage.getItem and setItem"
+      "solution": "Use useEffect with localStorage for persistence."
     },
 
     "memory": {
       "type": "memory-game",
       "title": "Project Memory",
       "pairs": [
-        { "concept": "component", "code": "Reusable UI" },
-        { "concept": "state", "code": "App data" },
-        { "concept": "props", "code": "Data flow" },
-        { "concept": "effect", "code": "Side effect" }
+        { "concept": "useState", "code": "store tasks" },
+        { "concept": "map", "code": "render list" },
+        { "concept": "props", "code": "pass data" },
+        { "concept": "key", "code": "list identity" }
       ]
     },
 
@@ -116,14 +127,19 @@
       "type": "tower-defense",
       "concepts": [
         {
-          "question": "Where should todos state live?",
-          "options": ["TodoItem", "TodoList", "App", "Header"],
-          "correct": 2
+          "question": "Best way to update array state?",
+          "options": ["push()", "map()", "mutate", "assign"],
+          "correct": 1
         },
         {
-          "question": "Which hook handles localStorage sync?",
-          "options": ["useState", "useEffect", "useMemo", "useRef"],
-          "correct": 1
+          "question": "Where should state live?",
+          "options": [
+            "deep child",
+            "global always",
+            "common parent",
+            "outside React"
+          ],
+          "correct": 2
         }
       ],
       "waves": 3

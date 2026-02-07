@@ -1,109 +1,159 @@
 {
   "id": "react-039-interview",
   "title": "React Interview Preparation",
-  "description": "Prepare for React interviews with concepts, questions, and real-world thinking",
-  "duration": 8,
+  "description": "Prepare for real-world React interviews with concepts, questions, answers, and thinking patterns",
+  "duration": 16,
   "difficulty": "advanced",
-  "tags": ["react", "interview", "career"],
+  "tags": ["react", "interview", "career", "questions"],
   "prerequisites": ["react-038-common-mistakes"],
   "unlocks": [],
-  "xp": 180,
+  "xp": 200,
 
   "steps": {
     "intro": {
       "type": "game-intro",
-      "title": "Interview Mindset",
-      "story": "Interviews are not exams. They test how you think, not how much you memorize.",
-      "preview": "Concepts, questions, and how to answer confidently."
+      "title": "Interview Is Not About Syntax",
+      "story": "Many developers know React but fail interviews.",
+      "preview": "Learn how interviewers think and how you should answer."
     },
 
-    "section1": {
+    "refresher": {
       "type": "markdown",
-      "title": "Core React Questions",
-      "content": "- What is React?\n- Virtual DOM vs Real DOM\n- State vs Props\n- Controlled vs Uncontrolled components\n- Keys and reconciliation"
+      "title": "How Interviews Really Work",
+      "content": "# Interview Reality\n\nInterviewers test:\n\n- How you think\n- How you explain\n- How you debug\n- How you design\n\n---\n\nThey already know you can write code."
     },
 
-    "section2": {
+    "concept": {
       "type": "markdown",
-      "title": "Hooks Interview Questions",
-      "content": "- Why hooks were introduced\n- useState vs useReducer\n- useEffect lifecycle behavior\n- useMemo vs useCallback\n- Custom hooks"
+      "title": "Common Interview Levels",
+      "content": "Most interviews move like this:\n\n1. Basics (JS + React)\n2. Hooks understanding\n3. State management\n4. Performance\n5. Architecture\n6. Real project discussion"
     },
 
-    "quiz1": {
-      "type": "mcq",
-      "title": "Interview Question",
-      "question": "Why should we not mutate state directly?",
+    "concept2": {
+      "type": "markdown",
+      "title": "Basic Questions You Must Nail",
+      "content": "Examples:\n\n- What is React?\n- Why hooks?\n- Difference between state and props?\n- Why keys are important?\n\nRule:\nAnswer clearly. Do not overtalk."
+    },
+
+    "positive": {
+      "type": "interactive-code",
+      "title": "Interview Answer Style",
+      "description": "How to answer clearly.",
+      "code": "Question: What is state?\n\nAnswer:\nState is data managed inside a component.\nWhen state changes, React re-renders the UI.\nState represents dynamic information.",
+      "showPreview": false,
+      "explanation": "Short, correct, and confident answers score higher."
+    },
+
+    "concept3": {
+      "type": "markdown",
+      "title": "Hooks Questions",
+      "content": "Frequently asked:\n\n- useState vs useReducer\n- useEffect dependencies\n- Custom hooks\n- useMemo vs useCallback\n\nAlways explain:\n- Why\n- When\n- Trade-offs"
+    },
+
+    "concept4": {
+      "type": "markdown",
+      "title": "State Management Questions",
+      "content": "Interviewers may ask:\n\n- Context vs Redux vs Zustand\n- When not to use global state\n- How to avoid prop drilling\n\nFocus on decision-making, not tools."
+    },
+
+    "concept5": {
+      "type": "markdown",
+      "title": "Performance Questions",
+      "content": "Common topics:\n\n- Re-renders\n- Memoization\n- Keys\n- Large lists\n\nGood answer includes:\n- Problem\n- Cause\n- Solution"
+    },
+
+    "negative": {
+      "type": "debug-quiz",
+      "title": "Weak Answer",
+      "description": "Identify the issue.",
+      "code": "I use useEffect because React needs it.",
+      "question": "Why is this a bad answer?",
       "options": [
         {
           "id": "a",
-          "text": "React does not detect changes",
+          "text": "No reasoning or clarity",
           "isCorrect": true,
-          "explanation": "React relies on reference changes."
+          "explanation": "Interviewers expect understanding, not vague statements."
         },
         {
           "id": "b",
-          "text": "JavaScript blocks it",
+          "text": "Grammar issue",
           "isCorrect": false,
-          "explanation": "JavaScript allows mutation."
+          "explanation": "Language is not the main problem."
         }
-      ]
+      ],
+      "lesson": "Always explain the reason behind choices."
     },
 
-    "section3": {
+    "concept6": {
       "type": "markdown",
-      "title": "Performance Questions",
-      "content": "- How to reduce re-renders\n- React.memo usage\n- Lazy loading\n- Code splitting"
+      "title": "Project Discussion",
+      "content": "Be ready to explain:\n\n- Why this project?\n- Architecture decisions\n- Challenges faced\n- Bugs fixed\n- What you would improve"
     },
 
-    "quiz2": {
-      "type": "debug-quiz",
-      "title": "Explain This",
-      "code": "const MemoComp = React.memo(Component);",
-      "question": "What problem does this solve?",
-      "answer": "Prevents unnecessary re-renders when props do not change"
-    },
-
-    "section4": {
+    "concept7": {
       "type": "markdown",
-      "title": "State Management Questions",
-      "content": "- When to use Context\n- Redux vs Zustand\n- Local vs Global state decisions"
+      "title": "System Thinking (Senior Signal)",
+      "content": "Interviewers like when you talk about:\n\n- Folder structure\n- Separation of concerns\n- Scalability\n- Maintainability\n\nThis shows maturity."
     },
 
     "task": {
-      "type": "speaking-task",
-      "title": "Explain Like a Child",
-      "description": "Explain useState to a 10-year-old.",
-      "hint": "Use real-life examples, not definitions.",
-      "sampleAnswer": "State is like a box where a component keeps its changing values."
+      "type": "coding-task",
+      "title": "Explain Your Code",
+      "description": "Practice verbal explanation.",
+      "requirements": [
+        "Explain component purpose",
+        "Explain state flow",
+        "Explain why hooks are used"
+      ],
+      "starterCode": "function Component() {\n  return null;\n}",
+      "solution": "Focus on explanation, not code."
     },
 
     "challenge": {
-      "type": "mock-interview",
-      "title": "Mini Mock Interview",
-      "questions": [
-        "Explain React lifecycle",
-        "How does useEffect work?",
-        "What is reconciliation?",
-        "How do you handle large apps?"
+      "type": "coding-challenge",
+      "title": "Mock Interview",
+      "description": "Simulate a real interview.",
+      "requirements": [
+        "Answer 5 React questions",
+        "Explain one project",
+        "Debug a small issue",
+        "Suggest improvement"
       ],
-      "evaluation": "Clarity, confidence, and correctness"
+      "solution": "Think aloud like a professional developer."
     },
 
     "memory": {
       "type": "memory-game",
-      "title": "Interview Keywords",
+      "title": "Interview Memory",
       "pairs": [
-        { "concept": "Virtual DOM", "explanation": "In-memory UI representation" },
-        { "concept": "Hooks", "explanation": "Functions for state and lifecycle" },
-        { "concept": "Keys", "explanation": "Help React track elements" },
-        { "concept": "Memoization", "explanation": "Performance optimization" }
+        { "concept": "State", "code": "dynamic data" },
+        { "concept": "Props", "code": "input data" },
+        { "concept": "Hooks", "code": "logic reuse" },
+        { "concept": "Performance", "code": "render control" }
       ]
     },
 
-    "final": {
-      "type": "final-message",
-      "title": "You Are Interview Ready",
-      "message": "You now think like a React developer, not just someone who uses React."
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "Best interview answer style?",
+          "options": ["long explanation", "short and clear", "code only", "definitions"],
+          "correct": 1
+        },
+        {
+          "question": "What impresses interviewers most?",
+          "options": [
+            "using many libraries",
+            "clear thinking",
+            "fast typing",
+            "complex code"
+          ],
+          "correct": 1
+        }
+      ],
+      "waves": 3
     }
   }
 }

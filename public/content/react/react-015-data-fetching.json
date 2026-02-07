@@ -1,105 +1,124 @@
 {
   "id": "react-015-data-fetching",
-  "title": "Data Fetching with React",
-  "description": "Learn how to fetch data from APIs using useEffect",
-  "duration": 10,
+  "title": "Data Fetching with useEffect",
+  "description": "Learn how to get data from an API and show it in React",
+  "duration": 11,
   "difficulty": "beginner",
   "tags": ["react", "api", "fetch", "useeffect"],
   "prerequisites": ["react-014-useeffect"],
   "unlocks": ["react-016-custom-hooks"],
-  "xp": 120,
+  "xp": 110,
 
   "steps": {
     "intro": {
       "type": "game-intro",
-      "title": "📡 Data Town",
-      "story": "Your app is empty. It needs data from outside world.",
+      "title": "Bringing Data from Outside",
+      "story": "Your app needs information from the outside world.",
       "preview": "Learn how React talks to servers."
     },
 
-    "story": {
+    "refresher": {
       "type": "markdown",
-      "title": "Real Life Story: Ordering Food",
-      "content": "You open a food app.\n\nSteps:\n• You place order\n• App waits\n• Food arrives\n• UI updates\n\n👉 Data comes **after some time**.\n\nThat’s async data."
+      "title": "Real-Life Example",
+      "content": "# Ordering Food\n\nYou order food\n\nRestaurant prepares it\n\nFood arrives after some time\n\n---\n\n## Same in React\n\nRequest ➜ Wait ➜ Data arrives"
     },
 
     "concept": {
       "type": "markdown",
       "title": "What is Data Fetching?",
-      "content": "Getting data from a server.\n\nExamples:\n• Users list\n• Products\n• Posts\n• Weather\n\nReact itself doesn't fetch.\n\n👉 JavaScript does."
+      "content": "Data fetching means **getting data from a server**.\n\nExamples:\n- User list\n- Products\n- Posts\n\nReact uses:\n- fetch()\n- useEffect()\n- state"
     },
 
     "syntax": {
       "type": "markdown",
       "title": "Basic Pattern",
-      "content": "```js\nuseEffect(() => {\n  fetch(url)\n    .then(res => res.json())\n    .then(data => setData(data));\n}, []);\n```"
+      "content": "```\nuseEffect(() => {\n  fetch(url)\n    .then(res => res.json())\n    .then(data => setData(data));\n}, []);\n```"
     },
 
     "positive": {
       "type": "interactive-code",
-      "title": "Correct Example: User List",
-      "description": "Fetch users and display them.",
-      "code": "import { useEffect, useState } from 'react';\n\nfunction Users() {\n  const [users, setUsers] = useState([]);\n\n  useEffect(() => {\n    fetch('https://jsonplaceholder.typicode.com/users')\n      .then(res => res.json())\n      .then(data => setUsers(data));\n  }, []);\n\n  return (\n    <ul>\n      {users.map(user => (\n        <li key={user.id}>{user.name}</li>\n      ))}\n    </ul>\n  );\n}\n\nexport default Users;",
+      "title": "Fetch Posts",
+      "description": "Get data after component loads.",
+      "code": "import { useEffect, useState } from 'react';\n\nfunction Posts() {\n  const [posts, setPosts] = useState([]);\n\n  useEffect(() => {\n    fetch('https://jsonplaceholder.typicode.com/posts?_limit=3')\n      .then(res => res.json())\n      .then(data => setPosts(data));\n  }, []);\n\n  return (\n    <ul>\n      {posts.map(post => (\n        <li key={post.id}>{post.title}</li>\n      ))}\n    </ul>\n  );\n}\n\nexport default Posts;",
       "showPreview": true,
-      "explanation": "Fetch once → store data → render list."
+      "explanation": "Data is fetched once after first render."
     },
 
-    "loading": {
+    "concept2": {
       "type": "markdown",
-      "title": "Loading State",
-      "content": "User must wait.\n\nAlways show loading.\n\n```js\nconst [loading, setLoading] = useState(true);\n```"
+      "title": "Why useEffect?",
+      "content": "Fetching data during render causes problems.\n\nuseEffect ensures:\n- Fetch runs after UI loads\n- No infinite loops\n- Clean lifecycle handling"
     },
 
     "negative": {
       "type": "debug-quiz",
-      "title": "🐛 Missing useEffect",
-      "description": "Why is this wrong?",
-      "code": "fetch(url).then(res => res.json());",
-      "question": "What happens?",
+      "title": "Infinite Fetch Bug",
+      "description": "Why is API called again and again?",
+      "code": "useEffect(() => {\n  fetch(url).then(r => r.json()).then(setData);\n});",
+      "question": "What is missing?",
       "options": [
         {
           "id": "a",
-          "text": "Fetch runs on every render",
+          "text": "Dependency array",
           "isCorrect": true,
-          "explanation": "Correct. Causes multiple requests."
+          "explanation": "Without it, effect runs on every render."
         },
         {
           "id": "b",
-          "text": "Fetch won't work",
+          "text": "useState",
           "isCorrect": false,
-          "explanation": "Fetch works but is misused."
+          "explanation": "State is already present."
         }
       ],
-      "lesson": "Always fetch inside useEffect."
+      "lesson": "Always control when effects run."
+    },
+
+    "positive2": {
+      "type": "interactive-code",
+      "title": "Fetch User",
+      "description": "Display user name.",
+      "code": "import { useEffect, useState } from 'react';\n\nfunction User() {\n  const [user, setUser] = useState(null);\n\n  useEffect(() => {\n    fetch('https://jsonplaceholder.typicode.com/users/1')\n      .then(res => res.json())\n      .then(data => setUser(data));\n  }, []);\n\n  return <p>{user ? user.name : 'Loading...'}</p>;\n}\n\nexport default User;",
+      "showPreview": true,
+      "explanation": "UI updates when data arrives."
     },
 
     "task": {
       "type": "coding-task",
-      "title": "🧾 Fetch Posts",
-      "description": "Fetch posts and show titles.",
+      "title": "Fetch Todo",
+      "description": "Show a todo title.",
       "requirements": [
-        "Use useEffect",
-        "Use useState",
-        "Display loading text"
+        "useEffect",
+        "fetch API",
+        "Display title"
       ],
-      "starterCode": "import { useState, useEffect } from 'react';\n\nfunction Posts() {\n  return <div />;\n}\n\nexport default Posts;",
-      "solution": "import { useState, useEffect } from 'react';\n\nfunction Posts() {\n  const [posts, setPosts] = useState([]);\n  const [loading, setLoading] = useState(true);\n\n  useEffect(() => {\n    fetch('https://jsonplaceholder.typicode.com/posts')\n      .then(res => res.json())\n      .then(data => {\n        setPosts(data);\n        setLoading(false);\n      });\n  }, []);\n\n  if (loading) return <p>Loading...</p>;\n\n  return (\n    <ul>\n      {posts.slice(0, 5).map(post => (\n        <li key={post.id}>{post.title}</li>\n      ))}\n    </ul>\n  );\n}\n\nexport default Posts;"
+      "starterCode": "function Todo() {\n  return <p>Todo</p>;\n}\n\nexport default Todo;",
+      "solution": "import { useEffect, useState } from 'react';\n\nfunction Todo() {\n  const [todo, setTodo] = useState(null);\n\n  useEffect(() => {\n    fetch('https://jsonplaceholder.typicode.com/todos/1')\n      .then(res => res.json())\n      .then(data => setTodo(data));\n  }, []);\n\n  return <p>{todo ? todo.title : 'Loading...'}</p>;\n}\n\nexport default Todo;",
+      "hints": [
+        "useEffect runs once",
+        "Use empty dependency array"
+      ]
     },
 
-    "error": {
-      "type": "markdown",
-      "title": "Error Handling",
-      "content": "Always expect failure.\n\n```js\n.catch(err => setError(true))\n```"
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "User List",
+      "description": "Show first 5 users.",
+      "requirements": [
+        "Fetch users",
+        "Use map",
+        "Add key"
+      ],
+      "solution": "import { useEffect, useState } from 'react';\n\nfunction Users() {\n  const [users, setUsers] = useState([]);\n\n  useEffect(() => {\n    fetch('https://jsonplaceholder.typicode.com/users?_limit=5')\n      .then(res => res.json())\n      .then(data => setUsers(data));\n  }, []);\n\n  return (\n    <ul>\n      {users.map(user => (\n        <li key={user.id}>{user.name}</li>\n      ))}\n    </ul>\n  );\n}\n\nexport default Users;"
     },
 
     "memory": {
       "type": "memory-game",
-      "title": "Fetch Match",
+      "title": "Data Fetch Memory",
       "pairs": [
-        { "concept": "fetch()", "code": "Get data" },
-        { "concept": "useEffect", "code": "Run once" },
-        { "concept": "loading", "code": "Waiting state" },
-        { "concept": "key", "code": "List identity" }
+        { "concept": "fetch", "code": "get data" },
+        { "concept": "useEffect", "code": "after render" },
+        { "concept": "state", "code": "store data" },
+        { "concept": "dependency array", "code": "control runs" }
       ]
     },
 
@@ -107,27 +126,27 @@
       "type": "tower-defense",
       "concepts": [
         {
-          "question": "Where should fetch live?",
+          "question": "Where should API calls go?",
           "options": [
             "JSX",
             "useEffect",
-            "Outside component",
-            "useState"
+            "render",
+            "props"
           ],
           "correct": 1
         },
         {
-          "question": "Why loading state?",
+          "question": "Empty dependency array means?",
           "options": [
-            "For styling",
-            "For waiting UI",
-            "For routing",
-            "For CSS"
+            "Run always",
+            "Run once",
+            "Never run",
+            "Run before render"
           ],
           "correct": 1
         }
       ],
-      "waves": 2
+      "waves": 3
     }
   }
 }

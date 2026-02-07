@@ -1,113 +1,126 @@
 {
-  "id": "react-017-context",
+  "id": "react-017-context-api",
   "title": "Context API",
-  "description": "Share data globally without prop drilling",
-  "duration": 8,
-  "difficulty": "intermediate",
-  "tags": ["react", "context", "state-management", "props"],
+  "description": "Share data globally without passing props again and again",
+  "duration": 11,
+  "difficulty": "beginner",
+  "tags": ["react", "context", "state-sharing"],
   "prerequisites": ["react-016-custom-hooks"],
   "unlocks": ["react-018-usereducer"],
-  "xp": 120,
+  "xp": 110,
 
   "steps": {
     "intro": {
       "type": "game-intro",
-      "title": "The Data Tunnel",
-      "story": "Your app is growing. Props are getting tired.",
-      "preview": "Time to create a direct data tunnel."
+      "title": "Stop Passing Props",
+      "story": "Data is passed through many components and becomes messy.",
+      "preview": "Learn how to share data directly."
     },
 
-    "story": {
+    "refresher": {
       "type": "markdown",
-      "title": "Real Life Story: Water Tank",
-      "content": "Imagine a building.\n\n• One water tank on top\n• All houses need water\n\nWould you pass water bucket by bucket?\n\nNo.\n\nYou create pipes.\n\nContext = Data Pipe"
-    },
-
-    "problem": {
-      "type": "markdown",
-      "title": "What Problem Does Context Solve?",
-      "content": "Passing data like this:\n\nApp → A → B → C → D\n\nThis is called **prop drilling**.\n\nContext removes the middle steps."
+      "title": "Real-Life Example",
+      "content": "# School Notice Board\n\nTeacher writes notice once\n\nAll students read it\n\n---\n\n## Same in React\n\nData stored once ➜ used by many components"
     },
 
     "concept": {
       "type": "markdown",
       "title": "What is Context?",
-      "content": "Context lets you:\n• Store global data\n• Access it anywhere\n• Avoid prop drilling"
+      "content": "Context is used to:\n\n- Share data globally\n- Avoid prop drilling\n- Keep code clean\n\nExamples:\n- Theme (dark/light)\n- User login info\n- Language"
     },
 
-    "steps-basic": {
+    "concept2": {
       "type": "markdown",
-      "title": "3 Steps to Use Context",
-      "content": "1. Create Context\n2. Provide Context\n3. Consume Context"
+      "title": "What is Prop Drilling?",
+      "content": "Prop drilling means:\n\nParent ➜ Child ➜ Grandchild ➜ Deep child\n\nEven if middle components don't need the data."
+    },
+
+    "syntax": {
+      "type": "markdown",
+      "title": "Context Creation Steps",
+      "content": "```\n1. createContext()\n2. Provider\n3. Consume data\n```"
     },
 
     "positive": {
       "type": "interactive-code",
-      "title": "Create Theme Context",
-      "description": "A global theme provider.",
-      "code": "import { createContext, useState } from 'react';\n\nexport const ThemeContext = createContext();\n\nexport function ThemeProvider({ children }) {\n  const [theme, setTheme] = useState('light');\n\n  return (\n    <ThemeContext.Provider value={{ theme, setTheme }}>\n      {children}\n    </ThemeContext.Provider>\n  );\n}",
+      "title": "Create Context",
+      "description": "Create a simple context.",
+      "code": "import { createContext } from 'react';\n\nconst ThemeContext = createContext('light');\n\nexport default ThemeContext;",
       "showPreview": false,
-      "explanation": "One source of truth for theme."
+      "explanation": "Context is created with a default value."
     },
 
-    "usage": {
+    "positive2": {
       "type": "interactive-code",
-      "title": "Consume Context",
-      "description": "Use data without props.",
-      "code": "import { useContext } from 'react';\nimport { ThemeContext } from './ThemeContext';\n\nfunction Button() {\n  const { theme, setTheme } = useContext(ThemeContext);\n\n  return (\n    <button onClick={() => setTheme('dark')}>\n      Current: {theme}\n    </button>\n  );\n}\n\nexport default Button;",
-      "showPreview": false
+      "title": "Provide Context",
+      "description": "Wrap app with provider.",
+      "code": "import ThemeContext from './ThemeContext';\n\nfunction App() {\n  return (\n    <ThemeContext.Provider value=\"dark\">\n      <Home />\n    </ThemeContext.Provider>\n  );\n}\n\nexport default App;",
+      "showPreview": false,
+      "explanation": "Provider sends data to all children."
+    },
+
+    "concept3": {
+      "type": "markdown",
+      "title": "Important Rule",
+      "content": "Only components **inside Provider** can access context value."
     },
 
     "negative": {
       "type": "debug-quiz",
-      "title": "Common Mistake",
-      "description": "Why does this crash?",
-      "code": "const value = useContext(ThemeContext);",
+      "title": "Context Not Working",
+      "description": "Why is value undefined?",
+      "code": "<Component />",
       "question": "What is missing?",
       "options": [
         {
           "id": "a",
-          "text": "Context Provider",
+          "text": "Component is not wrapped with Provider",
           "isCorrect": true,
-          "explanation": "Context must be wrapped with Provider."
+          "explanation": "Context works only inside Provider."
         },
         {
           "id": "b",
-          "text": "useState",
+          "text": "Context name is wrong",
           "isCorrect": false,
-          "explanation": "State is optional."
+          "explanation": "Name is not the main issue here."
         }
       ],
-      "lesson": "Always wrap components inside Provider."
+      "lesson": "Always wrap components with Provider."
     },
 
     "task": {
       "type": "coding-task",
-      "title": "Build User Context",
-      "description": "Store user name globally.",
+      "title": "Create User Context",
+      "description": "Create a context to store username.",
       "requirements": [
-        "Create UserContext",
-        "Provide username",
-        "Read username in child"
+        "createContext",
+        "export context",
+        "default value"
       ],
-      "starterCode": "import { createContext } from 'react';\n\nexport const UserContext = createContext();",
-      "solution": "import { createContext, useState } from 'react';\n\nexport const UserContext = createContext();\n\nexport function UserProvider({ children }) {\n  const [user, setUser] = useState('Guest');\n\n  return (\n    <UserContext.Provider value={{ user, setUser }}>\n      {children}\n    </UserContext.Provider>\n  );\n}"
+      "starterCode": "import { createContext } from 'react';\n\n// create user context",
+      "solution": "import { createContext } from 'react';\n\nconst UserContext = createContext(null);\n\nexport default UserContext;"
     },
 
-    "realuse": {
-      "type": "markdown",
-      "title": "Where Context Is Used",
-      "content": "• Theme\n• Auth\n• Language\n• App settings"
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "Theme Context Setup",
+      "description": "Set up theme context for app.",
+      "requirements": [
+        "Create context",
+        "Wrap App",
+        "Pass theme value"
+      ],
+      "solution": "import { createContext } from 'react';\n\nexport const ThemeContext = createContext('light');\n\nfunction App() {\n  return (\n    <ThemeContext.Provider value=\"dark\">\n      <Dashboard />\n    </ThemeContext.Provider>\n  );\n}\n\nexport default App;"
     },
 
     "memory": {
       "type": "memory-game",
-      "title": "Context Match",
+      "title": "Context Memory",
       "pairs": [
-        { "concept": "Provider", "code": "Gives data" },
-        { "concept": "useContext", "code": "Consumes data" },
-        { "concept": "Prop drilling", "code": "Problem" },
-        { "concept": "Global state", "code": "Use case" }
+        { "concept": "context", "code": "global data" },
+        { "concept": "provider", "code": "sends value" },
+        { "concept": "prop drilling", "code": "passing too deep" },
+        { "concept": "children", "code": "receive data" }
       ]
     },
 
@@ -115,27 +128,22 @@
       "type": "tower-defense",
       "concepts": [
         {
-          "question": "Context is mainly used to?",
-          "options": [
-            "Style components",
-            "Share global data",
-            "Handle routes",
-            "Fetch APIs"
-          ],
+          "question": "Context is used to?",
+          "options": ["style UI", "share data", "handle events", "fetch data"],
           "correct": 1
         },
         {
-          "question": "Which hook reads context?",
+          "question": "Who can access context?",
           "options": [
-            "useState",
-            "useEffect",
-            "useContext",
-            "useRef"
+            "Any component",
+            "Only Provider",
+            "Only children inside Provider",
+            "Only parent"
           ],
           "correct": 2
         }
       ],
-      "waves": 2
+      "waves": 3
     }
   }
 }

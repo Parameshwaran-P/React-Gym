@@ -1,118 +1,124 @@
 {
   "id": "react-021-refs",
-  "title": "Refs & useRef",
-  "description": "Access DOM elements and store values without re-render",
-  "duration": 6,
+  "title": "Refs in React",
+  "description": "Access DOM elements and persist values without re-rendering",
+  "duration": 9,
   "difficulty": "intermediate",
-  "tags": ["useRef", "dom", "performance"],
+  "tags": ["react", "refs", "useRef", "dom"],
   "prerequisites": ["react-020-react-memo"],
-  "unlocks": ["react-022-portals"],
-  "xp": 110,
+  "unlocks": ["react-022-forward-ref"],
+  "xp": 105,
 
   "steps": {
     "intro": {
       "type": "game-intro",
-      "title": "The Silent Notebook",
-      "story": "Some things are remembered quietly.",
-      "preview": "Change values without disturbing the UI."
+      "title": "Touch the DOM Safely",
+      "story": "Sometimes React state is not the right tool. You need direct access.",
+      "preview": "Learn how to use refs without breaking React rules."
     },
 
-    "story": {
+    "refresher": {
       "type": "markdown",
-      "title": "Real Life Story: Teacher's Notes",
-      "content": "A teacher writes notes in a notebook.\n\nStudents don't stand up every time the teacher writes.\n\nuseRef works the same way.\n\nIt stores values quietly without re-rendering the class."
-    },
-
-    "problem": {
-      "type": "markdown",
-      "title": "The Problem",
-      "content": "Sometimes we need:\n• Direct access to input fields\n• Store previous values\n• Count renders\n\nuseState causes re-render.\nWe don’t want that."
+      "title": "Real-Life Example",
+      "content": "# Remote Control\n\nYou press a button\n\nTV reacts immediately\n\nNo memory change\n\n---\n\nRefs work instantly\nwithout triggering re-render."
     },
 
     "concept": {
       "type": "markdown",
-      "title": "What is useRef?",
-      "content": "useRef is a hook.\n\nIt gives an object with:\n• a .current property\n• value stays between renders\n• updating it does NOT re-render"
+      "title": "What is a Ref?",
+      "content": "A ref is a **reference to something**.\n\nIn React, refs are used to:\n- Access DOM elements\n- Store values without re-render\n- Focus inputs or trigger actions"
+    },
+
+    "concept2": {
+      "type": "markdown",
+      "title": "useRef Hook",
+      "content": "useRef returns an object:\n\n- `.current` holds the value\n- Value persists between renders\n- Updating it does NOT re-render UI"
     },
 
     "syntax": {
       "type": "markdown",
-      "title": "Basic Syntax",
-      "content": "```javascript\nconst myRef = React.useRef(initialValue);\n\nmyRef.current = newValue;\n```"
+      "title": "useRef Syntax",
+      "content": "```\nconst myRef = useRef(null);\n\n<div ref={myRef} />\n```"
     },
 
-    "example": {
+    "positive": {
       "type": "interactive-code",
-      "title": "Accessing DOM Element",
+      "title": "Focus Input Using Ref",
       "description": "Focus input on button click.",
-      "code": "function App() {\n  const inputRef = React.useRef(null);\n\n  const focusInput = () => {\n    inputRef.current.focus();\n  };\n\n  return (\n    <div>\n      <input ref={inputRef} />\n      <button onClick={focusInput}>Focus</button>\n    </div>\n  );\n}\n\nexport default App;",
-      "showPreview": false,
-      "explanation": "No state, no re-render. Direct DOM access."
+      "code": "import { useRef } from 'react';\n\nfunction FocusInput() {\n  const inputRef = useRef(null);\n\n  function focusNow() {\n    inputRef.current.focus();\n  }\n\n  return (\n    <div>\n      <input ref={inputRef} />\n      <button onClick={focusNow}>Focus</button>\n    </div>\n  );\n}\n\nexport default FocusInput;",
+      "showPreview": true,
+      "explanation": "Ref gives direct access to DOM element."
     },
 
-    "secondExample": {
-      "type": "interactive-code",
-      "title": "Store Value Without Re-render",
-      "description": "Count renders silently.",
-      "code": "function Counter() {\n  const renders = React.useRef(0);\n\n  renders.current += 1;\n\n  return <p>Renders: {renders.current}</p>;\n}\n\nexport default Counter;",
-      "showPreview": false,
-      "explanation": "Value updates but UI does not re-render."
-    },
-
-    "difference": {
+    "concept3": {
       "type": "markdown",
-      "title": "useRef vs useState",
-      "content": "useState:\n• Updates cause re-render\n• Used for UI changes\n\nuseRef:\n• No re-render\n• Used for DOM or memory"
+      "title": "Ref vs State",
+      "content": "State:\n- Causes re-render\n- Used for UI data\n\nRef:\n- No re-render\n- Used for DOM or internal values"
     },
 
-    "mistake": {
+    "positive2": {
+      "type": "interactive-code",
+      "title": "Persist Value Without Re-render",
+      "description": "Track renders using ref.",
+      "code": "import { useRef, useState } from 'react';\n\nfunction RenderCounter() {\n  const renders = useRef(0);\n  const [count, setCount] = useState(0);\n\n  renders.current += 1;\n\n  return (\n    <div>\n      <p>Count: {count}</p>\n      <p>Renders: {renders.current}</p>\n      <button onClick={() => setCount(count + 1)}>+</button>\n    </div>\n  );\n}\n\nexport default RenderCounter;",
+      "showPreview": true,
+      "explanation": "Ref value updates without triggering render."
+    },
+
+    "negative": {
       "type": "debug-quiz",
-      "title": "Common Mistake",
-      "description": "Why inputRef is null?",
-      "code": "const inputRef = useRef();\n<input ref={inputRef.current} />",
-      "question": "What is wrong?",
+      "title": "Why UI Not Updating?",
+      "description": "Using ref instead of state.",
+      "code": "const value = useRef(0);\n\nfunction add() {\n  value.current += 1;\n}",
+      "question": "Why UI doesn't update?",
       "options": [
         {
           "id": "a",
-          "text": "ref should be passed directly",
+          "text": "Refs do not cause re-render",
           "isCorrect": true,
-          "explanation": "Use ref={inputRef}, not .current."
+          "explanation": "Refs update silently."
         },
         {
           "id": "b",
-          "text": "useRef does not work with inputs",
+          "text": "useRef is broken",
           "isCorrect": false,
-          "explanation": "useRef works perfectly with DOM."
+          "explanation": "useRef works as designed."
         }
       ],
-      "lesson": "React controls ref assignment."
+      "lesson": "Use state for UI updates."
     },
 
     "task": {
       "type": "coding-task",
       "title": "Auto Focus Input",
-      "description": "Focus input on page load.",
+      "description": "Focus input when component mounts.",
       "requirements": [
-        "Use useRef",
-        "Call focus in useEffect"
+        "useRef",
+        "focus input"
       ],
-      "starterCode": "function App() {\n  return <input />;\n}",
-      "solution": "function App() {\n  const inputRef = React.useRef(null);\n\n  React.useEffect(() => {\n    inputRef.current.focus();\n  }, []);\n\n  return <input ref={inputRef} />;\n}"
+      "starterCode": "function AutoFocus() {\n  return <input />;\n}\n\nexport default AutoFocus;",
+      "solution": "import { useRef, useEffect } from 'react';\n\nfunction AutoFocus() {\n  const inputRef = useRef(null);\n\n  useEffect(() => {\n    inputRef.current.focus();\n  }, []);\n\n  return <input ref={inputRef} />;\n}\n\nexport default AutoFocus;"
     },
 
-    "realuse": {
-      "type": "markdown",
-      "title": "Real World Usage",
-      "content": "• Auto focus inputs\n• Modals\n• Timers\n• Scroll positions"
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "Stopwatch (Ref Based)",
+      "description": "Store interval ID using ref.",
+      "requirements": [
+        "useRef",
+        "start and stop timer"
+      ],
+      "solution": "import { useRef, useState } from 'react';\n\nfunction Stopwatch() {\n  const timerRef = useRef(null);\n  const [time, setTime] = useState(0);\n\n  function start() {\n    if (!timerRef.current) {\n      timerRef.current = setInterval(() => {\n        setTime(t => t + 1);\n      }, 1000);\n    }\n  }\n\n  function stop() {\n    clearInterval(timerRef.current);\n    timerRef.current = null;\n  }\n\n  return (\n    <div>\n      <p>{time}</p>\n      <button onClick={start}>Start</button>\n      <button onClick={stop}>Stop</button>\n    </div>\n  );\n}\n\nexport default Stopwatch;"
     },
 
     "memory": {
       "type": "memory-game",
-      "title": "Quick Match",
+      "title": "Refs Memory",
       "pairs": [
-        { "concept": "useRef", "code": "No re-render" },
-        { "concept": ".current", "code": "Stored value" },
-        { "concept": "DOM access", "code": "Input focus" }
+        { "concept": "useRef", "code": "mutable value" },
+        { "concept": "current", "code": "stored data" },
+        { "concept": "DOM access", "code": "direct control" },
+        { "concept": "no re-render", "code": "silent update" }
       ]
     },
 
@@ -120,27 +126,17 @@
       "type": "tower-defense",
       "concepts": [
         {
-          "question": "useRef update causes?",
-          "options": [
-            "Re-render",
-            "API call",
-            "Nothing",
-            "Crash"
-          ],
-          "correct": 2
+          "question": "useRef causes re-render?",
+          "options": ["yes", "no", "sometimes", "only first render"],
+          "correct": 1
         },
         {
-          "question": "Best use of useRef?",
-          "options": [
-            "Form values",
-            "DOM access",
-            "Styling",
-            "API fetch"
-          ],
-          "correct": 1
+          "question": "Best use of ref?",
+          "options": ["UI data", "API data", "DOM access", "routing"],
+          "correct": 2
         }
       ],
-      "waves": 2
+      "waves": 3
     }
   }
 }

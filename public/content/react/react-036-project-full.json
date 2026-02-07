@@ -1,122 +1,135 @@
 {
   "id": "react-036-project-full",
-  "title": "Full React Application",
-  "description": "Build a complete production-style React application from scratch",
-  "duration": 18,
+  "title": "Full React Project: Production Application",
+  "description": "Build a complete real-world React application from scratch to deployment",
+  "duration": 30,
   "difficulty": "advanced",
-  "tags": ["react", "architecture", "api", "auth"],
+  "tags": ["react", "project", "full-app", "production"],
   "prerequisites": ["react-035-project-dashboard"],
   "unlocks": ["react-037-best-practices"],
-  "xp": 320,
+  "xp": 300,
 
   "steps": {
     "intro": {
       "type": "game-intro",
-      "title": "Think Like a Product Team",
-      "story": "You are no longer building features. You are building a product.",
-      "preview": "Architecture, scalability, and real workflows."
+      "title": "From Idea to Product",
+      "story": "Now you stop building demos. You build real software.",
+      "preview": "Plan, build, optimize, and deploy a full React app."
+    },
+
+    "refresher": {
+      "type": "markdown",
+      "title": "What is a Full Project?",
+      "content": "# Full Project Meaning\n\nA full project:\n\n- Solves a real problem\n- Has multiple pages\n- Uses real data\n- Handles errors\n- Is deployed online\n\n---\n\nThis is how real companies build apps."
     },
 
     "concept": {
       "type": "markdown",
-      "title": "What Is a Full React App?",
-      "content": "A full React application includes:\n\n- Authentication\n- API integration\n- Global state\n- Routing\n- Error handling\n- Deployment readiness"
+      "title": "Example Project Idea",
+      "content": "We will think in terms of:\n\n- Authentication\n- Dashboard\n- CRUD operations\n- API integration\n- Role-based access\n\nExample:\nJob portal, expense tracker, admin system."
     },
 
     "concept2": {
       "type": "markdown",
-      "title": "Application Features",
-      "content": "- Login and logout\n- Protected pages\n- CRUD operations\n- API error handling\n- Loading states"
-    },
-
-    "architecture": {
-      "type": "markdown",
-      "title": "Project Architecture",
-      "content": "src/\n- api/\n- components/\n- pages/\n- layouts/\n- hooks/\n- store/\n- utils/\n- routes/"
+      "title": "Application Architecture",
+      "content": "```\nsrc/\n ├─ components/\n ├─ pages/\n ├─ hooks/\n ├─ context/\n ├─ services/\n ├─ utils/\n ├─ routes/\n ├─ assets/\n └─ App.jsx\n```"
     },
 
     "concept3": {
       "type": "markdown",
       "title": "Data Flow",
-      "content": "User action → Component → State → API → UI update\n\nThis predictable flow keeps apps maintainable."
+      "content": "User Action ➜ Component\n\nComponent ➜ API Call\n\nAPI ➜ State Update\n\nState ➜ UI Update"
     },
 
     "positive": {
       "type": "interactive-code",
-      "title": "API Service Layer",
+      "title": "Service Layer",
       "description": "Separate API logic from UI.",
-      "code": "export async function getUsers() {\n  const res = await fetch('/api/users');\n  if (!res.ok) throw new Error('Failed');\n  return res.json();\n}",
+      "code": "export async function fetchUsers() {\n  const res = await fetch('/api/users');\n  return res.json();\n}",
       "showPreview": false,
-      "explanation": "Keeping API logic isolated makes components clean."
+      "explanation": "Service files keep components clean."
     },
 
     "concept4": {
       "type": "markdown",
       "title": "Authentication Flow",
-      "content": "1. User logs in\n2. Token stored\n3. Protected routes unlocked\n4. Logout clears session"
+      "content": "1. User logs in\n2. Token stored safely\n3. Protected routes enabled\n4. Logout clears session"
+    },
+
+    "positive2": {
+      "type": "interactive-code",
+      "title": "Protected Route",
+      "description": "Restrict access to authenticated users.",
+      "code": "function ProtectedRoute({ children }) {\n  const isAuth = true;\n  return isAuth ? children : <Navigate to=\"/login\" />;\n}\n\nexport default ProtectedRoute;",
+      "showPreview": false,
+      "explanation": "Protects sensitive pages."
+    },
+
+    "concept5": {
+      "type": "markdown",
+      "title": "State Strategy",
+      "content": "Use:\n- Local state for UI\n- Context or store for global data\n- Server as source of truth"
     },
 
     "negative": {
       "type": "debug-quiz",
-      "title": "Auth Bug",
-      "description": "User can access protected page after logout.",
-      "code": "if (isLoggedIn) return <Dashboard />;",
-      "question": "What is missing?",
+      "title": "Unscalable App",
+      "description": "All logic inside components.",
+      "code": "function App() {\n  // api\n  // auth\n  // state\n  // ui\n}",
+      "question": "Why is this bad?",
       "options": [
         {
           "id": "a",
-          "text": "Auth state reset on logout",
+          "text": "Hard to maintain and scale",
           "isCorrect": true,
-          "explanation": "Logout must clear auth state."
+          "explanation": "Mixing concerns increases bugs."
         },
         {
           "id": "b",
-          "text": "More routes",
+          "text": "React does not support this",
           "isCorrect": false,
-          "explanation": "Routing is not the root cause."
+          "explanation": "React allows it, but it is poor design."
         }
       ],
-      "lesson": "Security depends on correct state management."
+      "lesson": "Separate concerns clearly."
     },
 
     "task": {
       "type": "coding-task",
-      "title": "Build Login Flow",
-      "description": "Create login and logout flow.",
-      "requirements": [
-        "Login page",
-        "Store auth state",
-        "Protect dashboard route"
-      ],
-      "starterCode": "function Login() {\n  return <div />;\n}",
-      "solution": "Use context or global store for auth",
-      "hints": [
-        "Centralize auth state",
-        "Protect routes"
-      ]
-    },
-
-    "challenge": {
-      "type": "coding-challenge",
-      "title": "CRUD Module",
-      "description": "Build a full CRUD feature.",
+      "title": "CRUD Feature",
+      "description": "Build one complete feature.",
       "requirements": [
         "Create item",
         "Read list",
         "Update item",
         "Delete item"
       ],
-      "solution": "Use REST APIs with loading and error states"
+      "starterCode": "function Feature() {\n  return null;\n}",
+      "solution": "Use useState, map, forms, and handlers."
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "Production Checklist",
+      "description": "Prepare app for real users.",
+      "requirements": [
+        "Error handling",
+        "Loading states",
+        "Environment variables",
+        "Responsive UI",
+        "Deployment build"
+      ],
+      "solution": "Combine all learned concepts."
     },
 
     "memory": {
       "type": "memory-game",
-      "title": "Full App Concepts",
+      "title": "Full Project Memory",
       "pairs": [
-        { "concept": "service layer", "code": "API abstraction" },
-        { "concept": "auth state", "code": "User session" },
-        { "concept": "protected route", "code": "Access control" },
-        { "concept": "crud", "code": "Create Read Update Delete" }
+        { "concept": "Service", "code": "API logic" },
+        { "concept": "Protected Route", "code": "auth guard" },
+        { "concept": "Context/Store", "code": "global state" },
+        { "concept": "Build", "code": "production output" }
       ]
     },
 
@@ -124,17 +137,22 @@
       "type": "tower-defense",
       "concepts": [
         {
-          "question": "Where should API logic live?",
-          "options": ["component", "service layer", "css", "router"],
+          "question": "Real apps focus on?",
+          "options": ["features only", "maintainability", "short code", "quick hacks"],
           "correct": 1
         },
         {
-          "question": "What controls page access?",
-          "options": ["props", "auth state", "html", "styles"],
+          "question": "Best architecture?",
+          "options": [
+            "everything in App",
+            "separate concerns",
+            "copy-paste",
+            "inline logic"
+          ],
           "correct": 1
         }
       ],
-      "waves": 3
+      "waves": 4
     }
   }
 }

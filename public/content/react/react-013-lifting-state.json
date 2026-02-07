@@ -1,87 +1,146 @@
 {
   "id": "react-013-lifting-state",
   "title": "Lifting State Up",
-  "description": "Share data between components by lifting state to a common parent",
+  "description": "Learn how to share state between components by lifting it to a common parent",
   "duration": 8,
   "difficulty": "beginner",
-  "tags": ["react", "state", "props", "architecture"],
+  "tags": ["react", "state", "props"],
   "prerequisites": ["react-012-forms"],
   "unlocks": ["react-014-useeffect"],
-  "xp": 90,
+  "xp": 80,
 
   "steps": {
     "intro": {
       "type": "game-intro",
-      "title": "Sharing is Power",
-      "story": "Two components want the same data. Who should own it?",
-      "preview": "Learn how React shares state correctly."
+      "title": "Shared Power",
+      "story": "Two components need the same data. One state must rule them all.",
+      "preview": "Parents manage state, children consume it."
     },
 
-    "story": {
+    "refresher": {
       "type": "markdown",
-      "title": "Real Life Example: TV Remote",
-      "content": "One TV.\n\nTwo buttons:\n• Volume Up\n• Volume Down\n\nButtons are separate.\nBut **volume value lives in TV**, not buttons.\n\n👉 State must live in the **common parent**."
+      "title": "Real-Life Example",
+      "content": "# Volume Control\n\nOne remote\n\nTwo speakers\n\n---\n\nChange volume once ➜ both update\n\n## Same in React\n\nCommon parent controls state\n\nChildren receive via props"
     },
 
     "concept": {
       "type": "markdown",
       "title": "What is Lifting State?",
-      "content": "Lifting state means:\n\n• Move state **up** to parent\n• Pass data using **props**\n• Child components only **use** it"
+      "content": "When **multiple components need the same state**, move the state to their **closest common parent**.\n\nThis is called **lifting state up**."
     },
 
     "positive": {
       "type": "interactive-code",
-      "title": "Correct Way",
-      "description": "State is in parent, shared with children.",
-      "code": "import { useState } from 'react';\n\nfunction Parent() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <div>\n      <Display count={count} />\n      <Button setCount={setCount} count={count} />\n    </div>\n  );\n}\n\nfunction Display({ count }) {\n  return <p>Count: {count}</p>;\n}\n\nfunction Button({ count, setCount }) {\n  return <button onClick={() => setCount(count + 1)}>+</button>;\n}\n\nexport default Parent;",
+      "title": "Problem Example",
+      "description": "Two components with separate state.",
+      "code": "function ChildA() {\n  const [count, setCount] = React.useState(0);\n  return <button onClick={() => setCount(count + 1)}>A: {count}</button>;\n}\n\nfunction ChildB() {\n  const [count, setCount] = React.useState(0);\n  return <button onClick={() => setCount(count + 1)}>B: {count}</button>;\n}",
+      "showPreview": false,
+      "explanation": "State is isolated. Components cannot sync."
+    },
+
+    "concept2": {
+      "type": "markdown",
+      "title": "The Solution",
+      "content": "Steps to lift state:\n\n1. Move state to parent\n2. Pass value as props\n3. Pass updater function as props"
+    },
+
+    "positive2": {
+      "type": "interactive-code",
+      "title": "Lifting State Up",
+      "description": "Parent controls state, children update it.",
+      "code": "function Parent() {\n  const [count, setCount] = React.useState(0);\n\n  return (\n    <div>\n      <ChildA count={count} setCount={setCount} />\n      <ChildB count={count} setCount={setCount} />\n    </div>\n  );\n}\n\nfunction ChildA({ count, setCount }) {\n  return <button onClick={() => setCount(count + 1)}>A: {count}</button>;\n}\n\nfunction ChildB({ count, setCount }) {\n  return <button onClick={() => setCount(count + 1)}>B: {count}</button>;\n}\n\nexport default Parent;",
       "showPreview": true,
-      "explanation": "Parent owns state. Children communicate through props."
+      "explanation": "Both components now stay in sync."
     },
 
     "negative": {
       "type": "debug-quiz",
-      "title": "Wrong Design",
-      "description": "Why is this wrong?",
-      "code": "function ChildA() {\n  const [count, setCount] = useState(0);\n}\n\nfunction ChildB() {\n  const [count, setCount] = useState(0);\n}",
-      "question": "What is the problem?",
+      "title": "Sync Bug",
+      "description": "Values are not matching.",
+      "code": "Each child has its own useState",
+      "question": "Why are values different?",
       "options": [
         {
           "id": "a",
-          "text": "State is duplicated",
+          "text": "State is not shared",
           "isCorrect": true,
-          "explanation": "Correct. Both children have separate states."
+          "explanation": "Correct. State exists separately."
         },
         {
           "id": "b",
-          "text": "useState cannot be used twice",
+          "text": "Props are broken",
           "isCorrect": false,
-          "explanation": "useState can be used multiple times."
+          "explanation": "Props are not used here."
         }
       ],
-      "lesson": "Shared data should not be duplicated."
+      "lesson": "Shared data must live in one place."
     },
 
     "task": {
       "type": "coding-task",
-      "title": "Temperature Control",
-      "description": "Two buttons control same temperature.",
+      "title": "Shared Input Value",
+      "description": "Display same input value in two components.",
       "requirements": [
-        "State in parent",
-        "Increase and decrease buttons",
-        "Display temperature"
+        "Parent holds state",
+        "Children display value",
+        "One input updates all"
       ],
-      "starterCode": "function App() {\n  return <div />;\n}\n\nexport default App;",
-      "solution": "import { useState } from 'react';\n\nfunction App() {\n  const [temp, setTemp] = useState(20);\n\n  return (\n    <div>\n      <p>Temperature: {temp}</p>\n      <button onClick={() => setTemp(temp + 1)}>+</button>\n      <button onClick={() => setTemp(temp - 1)}>-</button>\n    </div>\n  );\n}\n\nexport default App;"
+      "starterCode": "function Parent() {\n  return (\n    <div>\n      <Input />\n      <Preview />\n    </div>\n  );\n}\n\nexport default Parent;",
+      "solution": "import { useState } from 'react';\n\nfunction Parent() {\n  const [text, setText] = useState('');\n\n  return (\n    <div>\n      <Input text={text} setText={setText} />\n      <Preview text={text} />\n    </div>\n  );\n}\n\nfunction Input({ text, setText }) {\n  return <input value={text} onChange={e => setText(e.target.value)} />;\n}\n\nfunction Preview({ text }) {\n  return <p>{text}</p>;\n}\n\nexport default Parent;",
+      "hints": [
+        "State goes to parent",
+        "Pass props down"
+      ]
+    },
+
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "Theme Switcher",
+      "description": "Toggle theme from child component.",
+      "requirements": [
+        "Parent stores theme",
+        "Child toggles theme",
+        "Another child displays theme"
+      ],
+      "solution": "import { useState } from 'react';\n\nfunction App() {\n  const [dark, setDark] = useState(false);\n\n  return (\n    <div>\n      <Toggle setDark={setDark} />\n      <Status dark={dark} />\n    </div>\n  );\n}\n\nfunction Toggle({ setDark }) {\n  return <button onClick={() => setDark(d => !d)}>Toggle</button>;\n}\n\nfunction Status({ dark }) {\n  return <p>{dark ? 'Dark' : 'Light'}</p>;\n}\n\nexport default App;"
     },
 
     "memory": {
       "type": "memory-game",
-      "title": "Lift Match",
+      "title": "State Memory",
       "pairs": [
-        { "concept": "Shared state", "code": "Parent" },
-        { "concept": "Props", "code": "Data passing" },
-        { "concept": "Children", "code": "No ownership" }
+        { "concept": "lifting state", "code": "Move to parent" },
+        { "concept": "props", "code": "Pass data" },
+        { "concept": "shared state", "code": "Single source" },
+        { "concept": "parent", "code": "Controls state" }
       ]
+    },
+
+    "tower": {
+      "type": "tower-defense",
+      "concepts": [
+        {
+          "question": "When to lift state?",
+          "options": [
+            "Single component",
+            "Shared by siblings",
+            "Static UI",
+            "CSS only"
+          ],
+          "correct": 1
+        },
+        {
+          "question": "Where should shared state live?",
+          "options": [
+            "Child",
+            "Common parent",
+            "DOM",
+            "Browser"
+          ],
+          "correct": 1
+        }
+      ],
+      "waves": 3
     }
   }
 }

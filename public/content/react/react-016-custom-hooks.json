@@ -1,105 +1,120 @@
 {
   "id": "react-016-custom-hooks",
   "title": "Custom Hooks",
-  "description": "Create your own hooks to reuse logic cleanly",
-  "duration": 8,
-  "difficulty": "intermediate",
-  "tags": ["react", "hooks", "custom-hooks", "reusability"],
+  "description": "Create your own reusable hooks to share logic between components",
+  "duration": 10,
+  "difficulty": "beginner",
+  "tags": ["react", "hooks", "custom-hooks", "reuse"],
   "prerequisites": ["react-015-data-fetching"],
   "unlocks": ["react-017-context"],
-  "xp": 110,
+  "xp": 100,
 
   "steps": {
     "intro": {
       "type": "game-intro",
-      "title": "🧰 Hook Factory",
-      "story": "You are repeating the same logic again and again.",
-      "preview": "Time to build your own tools."
+      "title": "Reuse Your Logic",
+      "story": "You are writing the same code again and again.",
+      "preview": "Learn how to pack logic once and reuse everywhere."
     },
 
-    "story": {
+    "refresher": {
       "type": "markdown",
-      "title": "Real Life Story: Juice Machine",
-      "content": "Every day you make juice.\n\nSteps:\n• Cut fruits\n• Blend\n• Pour\n\nInstead of repeating, you build a machine.\n\n👉 Custom Hook = Logic Machine."
+      "title": "Real-Life Example",
+      "content": "# School Notebook\n\nYou write formulas once\n\nYou reuse them in exams\n\n---\n\n## Same in React\n\nLogic written once ➜ used in many components"
     },
 
     "concept": {
       "type": "markdown",
       "title": "What is a Custom Hook?",
-      "content": "A function that:\n• Starts with `use`\n• Uses React hooks\n• Shares logic\n\nExample:\n> useFetch\n> useToggle"
+      "content": "A custom hook is:\n\n- A normal JavaScript function\n- Name starts with `use`\n- Uses existing hooks\n\nIt helps you **reuse logic**, not UI."
     },
 
-    "rules": {
+    "syntax": {
       "type": "markdown",
-      "title": "Rules",
-      "content": "• Name must start with `use`\n• Call hooks at top level\n• Reusable logic only"
+      "title": "Basic Structure",
+      "content": "```\nfunction useSomething() {\n  const [value, setValue] = useState();\n  return value;\n}\n```"
     },
 
     "positive": {
       "type": "interactive-code",
-      "title": "Correct Example: useCounter",
-      "description": "Extract counter logic into a hook.",
-      "code": "import { useState } from 'react';\n\nfunction useCounter() {\n  const [count, setCount] = useState(0);\n\n  const increment = () => setCount(c => c + 1);\n  const decrement = () => setCount(c => c - 1);\n\n  return { count, increment, decrement };\n}\n\nexport default useCounter;",
-      "showPreview": false,
-      "explanation": "Logic moved out. UI stays clean."
+      "title": "Custom Counter Hook",
+      "description": "Move counter logic into a hook.",
+      "code": "import { useState } from 'react';\n\nfunction useCounter() {\n  const [count, setCount] = useState(0);\n\n  function increment() {\n    setCount(count + 1);\n  }\n\n  return { count, increment };\n}\n\nfunction Counter() {\n  const { count, increment } = useCounter();\n\n  return (\n    <div>\n      <p>{count}</p>\n      <button onClick={increment}>Add</button>\n    </div>\n  );\n}\n\nexport default Counter;",
+      "showPreview": true,
+      "explanation": "Logic is reused through the custom hook."
     },
 
-    "usage": {
+    "concept2": {
       "type": "markdown",
-      "title": "Using Custom Hook",
-      "content": "```js\nconst { count, increment } = useCounter();\n```"
+      "title": "Why Custom Hooks?",
+      "content": "They help to:\n\n- Avoid duplicate code\n- Keep components clean\n- Share logic safely\n\nCustom hooks do not return JSX."
     },
 
     "negative": {
       "type": "debug-quiz",
-      "title": "🐛 Wrong Custom Hook",
-      "description": "What's wrong here?",
-      "code": "function counter() {\n  const [c, setC] = useState(0);\n}",
-      "question": "Why is this invalid?",
+      "title": "Wrong Custom Hook",
+      "description": "Why is this wrong?",
+      "code": "function counterHook() {\n  return <div>Hi</div>;\n}",
+      "question": "What is the mistake?",
       "options": [
         {
           "id": "a",
-          "text": "Hook name must start with use",
+          "text": "Custom hook returns JSX",
           "isCorrect": true,
-          "explanation": "Correct. React won't treat it as a hook."
+          "explanation": "Hooks return data or functions, not JSX."
         },
         {
           "id": "b",
-          "text": "useState can't be used",
+          "text": "Function name wrong",
           "isCorrect": false,
-          "explanation": "useState is valid here."
+          "explanation": "Name is less important than behavior here."
         }
       ],
-      "lesson": "Always prefix hooks with `use`."
+      "lesson": "Custom hooks share logic, not UI."
+    },
+
+    "positive2": {
+      "type": "interactive-code",
+      "title": "Reusable Input Hook",
+      "description": "Reuse input logic.",
+      "code": "import { useState } from 'react';\n\nfunction useInput() {\n  const [value, setValue] = useState('');\n\n  function onChange(e) {\n    setValue(e.target.value);\n  }\n\n  return { value, onChange };\n}\n\nfunction Form() {\n  const name = useInput();\n\n  return (\n    <div>\n      <input {...name} placeholder=\"Name\" />\n      <p>{name.value}</p>\n    </div>\n  );\n}\n\nexport default Form;",
+      "showPreview": true,
+      "explanation": "Input logic is reusable across forms."
     },
 
     "task": {
       "type": "coding-task",
-      "title": "🔁 useToggle Hook",
-      "description": "Create a reusable toggle hook.",
+      "title": "useToggle Hook",
+      "description": "Create a toggle hook.",
       "requirements": [
-        "Initial value true/false",
+        "Boolean state",
         "Toggle function",
-        "Reusable"
+        "Return value and function"
       ],
-      "starterCode": "import { useState } from 'react';\n\nfunction useToggle() {\n  // TODO\n}\n\nexport default useToggle;",
-      "solution": "import { useState } from 'react';\n\nfunction useToggle(initial = false) {\n  const [value, setValue] = useState(initial);\n\n  const toggle = () => setValue(v => !v);\n\n  return [value, toggle];\n}\n\nexport default useToggle;"
+      "starterCode": "function useToggle() {\n}\n\nexport default useToggle;",
+      "solution": "import { useState } from 'react';\n\nfunction useToggle() {\n  const [value, setValue] = useState(false);\n\n  function toggle() {\n    setValue(!value);\n  }\n\n  return { value, toggle };\n}\n\nexport default useToggle;"
     },
 
-    "realuse": {
-      "type": "markdown",
-      "title": "Real World Uses",
-      "content": "• Fetch logic\n• Form handling\n• Theme toggles\n• Authentication"
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "Fetch Hook",
+      "description": "Move fetch logic into a hook.",
+      "requirements": [
+        "useEffect",
+        "fetch data",
+        "return data"
+      ],
+      "solution": "import { useEffect, useState } from 'react';\n\nfunction useFetch(url) {\n  const [data, setData] = useState(null);\n\n  useEffect(() => {\n    fetch(url)\n      .then(res => res.json())\n      .then(data => setData(data));\n  }, [url]);\n\n  return data;\n}\n\nexport default useFetch;"
     },
 
     "memory": {
       "type": "memory-game",
-      "title": "Hook Match",
+      "title": "Custom Hook Memory",
       "pairs": [
-        { "concept": "useFetch", "code": "API logic" },
-        { "concept": "useToggle", "code": "Boolean state" },
-        { "concept": "use", "code": "Hook prefix" },
-        { "concept": "Reuse", "code": "Main benefit" }
+        { "concept": "custom hook", "code": "reusable logic" },
+        { "concept": "use prefix", "code": "hook rule" },
+        { "concept": "returns", "code": "data or functions" },
+        { "concept": "no JSX", "code": "logic only" }
       ]
     },
 
@@ -107,27 +122,17 @@
       "type": "tower-defense",
       "concepts": [
         {
-          "question": "Why use custom hooks?",
-          "options": [
-            "For CSS",
-            "For reusability",
-            "For routing",
-            "For JSX"
-          ],
-          "correct": 1
+          "question": "Custom hook name must start with?",
+          "options": ["get", "make", "use", "set"],
+          "correct": 2
         },
         {
-          "question": "Hook naming rule?",
-          "options": [
-            "Any name",
-            "Start with use",
-            "Start with hook",
-            "End with state"
-          ],
-          "correct": 1
+          "question": "What do hooks share?",
+          "options": ["UI", "CSS", "Logic", "HTML"],
+          "correct": 2
         }
       ],
-      "waves": 2
+      "waves": 3
     }
   }
 }

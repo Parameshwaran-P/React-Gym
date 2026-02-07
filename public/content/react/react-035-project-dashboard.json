@@ -1,121 +1,127 @@
 {
   "id": "react-035-project-dashboard",
-  "title": "Dashboard Project",
-  "description": "Build a multi-page dashboard application using real-world patterns",
-  "duration": 14,
-  "difficulty": "intermediate",
-  "tags": ["react", "dashboard", "routing", "charts"],
+  "title": "Dashboard Project: Admin Panel",
+  "description": "Build a real-world dashboard using React with multiple components and state flow",
+  "duration": 20,
+  "difficulty": "advanced",
+  "tags": ["react", "dashboard", "project", "admin-panel"],
   "prerequisites": ["react-034-project-mini"],
   "unlocks": ["react-036-project-full"],
-  "xp": 240,
+  "xp": 200,
 
   "steps": {
     "intro": {
       "type": "game-intro",
-      "title": "From App to System",
-      "story": "You are now building something that looks like a real company product.",
-      "preview": "Multiple pages, shared layout, reusable components."
+      "title": "Welcome to the Control Room",
+      "story": "You are now building software used by real companies.",
+      "preview": "Learn how dashboards are structured and managed."
+    },
+
+    "refresher": {
+      "type": "markdown",
+      "title": "What is a Dashboard?",
+      "content": "# Dashboard Meaning\n\nA dashboard shows important data at one place.\n\nExamples:\n- Total users\n- Orders count\n- Revenue\n- Activity logs\n\n---\n\nDashboards focus on **clarity**, not decoration."
     },
 
     "concept": {
       "type": "markdown",
-      "title": "Project Overview",
-      "content": "You will build a **Dashboard Application**.\n\nFeatures:\n- Sidebar navigation\n- Multiple pages\n- Shared layout\n- Data-driven UI"
+      "title": "Dashboard Features",
+      "content": "- Sidebar navigation\n- Top header\n- Summary cards\n- Tables\n- Charts\n- Protected routes"
     },
 
     "concept2": {
       "type": "markdown",
-      "title": "Pages in the Dashboard",
-      "content": "- Login (mock)\n- Dashboard Home\n- Users List\n- User Details\n- Settings"
+      "title": "Project Structure",
+      "content": "```\nsrc/\n ├─ components/\n │   ├─ Sidebar.jsx\n │   ├─ Header.jsx\n │   ├─ StatCard.jsx\n │   └─ Table.jsx\n ├─ pages/\n │   ├─ Dashboard.jsx\n │   ├─ Users.jsx\n │   └─ Settings.jsx\n ├─ hooks/\n ├─ services/\n └─ App.jsx\n```"
     },
 
-    "architecture": {
+    "syntax": {
       "type": "markdown",
-      "title": "Folder Structure",
-      "content": "src/\n- components/\n- pages/\n- layouts/\n- services/\n- hooks/\n- utils/"
-    },
-
-    "concept3": {
-      "type": "markdown",
-      "title": "Layout Pattern",
-      "content": "Dashboard apps reuse the same layout.\n\nSidebar and header stay the same.\nOnly page content changes."
+      "title": "Dashboard Data Shape",
+      "content": "```\n{\n  users: number,\n  orders: number,\n  revenue: number\n}\n```"
     },
 
     "positive": {
       "type": "interactive-code",
-      "title": "Dashboard Layout",
-      "description": "Shared layout component.",
-      "code": "import { Outlet } from 'react-router-dom';\n\nfunction DashboardLayout() {\n  return (\n    <div className=\"dashboard\">\n      <aside>Sidebar</aside>\n      <main>\n        <Outlet />\n      </main>\n    </div>\n  );\n}\n\nexport default DashboardLayout;",
+      "title": "Stat Card Component",
+      "description": "Reusable card for dashboard metrics.",
+      "code": "function StatCard({ title, value }) {\n  return (\n    <div className=\"card\">\n      <h3>{title}</h3>\n      <p>{value}</p>\n    </div>\n  );\n}\n\nexport default StatCard;",
       "showPreview": false,
-      "explanation": "Outlet renders the active page inside the layout."
+      "explanation": "Reusable components reduce duplication."
     },
 
-    "concept4": {
+    "concept3": {
       "type": "markdown",
-      "title": "Routing Strategy",
-      "content": "Use nested routes.\n\nDashboardLayout wraps all dashboard pages.\nEach page becomes a child route."
+      "title": "Layout Thinking",
+      "content": "Dashboards use layout patterns:\n\n- Sidebar stays fixed\n- Content changes by route\n- Header shows global actions"
+    },
+
+    "positive2": {
+      "type": "interactive-code",
+      "title": "Dashboard Page",
+      "description": "Combine multiple components.",
+      "code": "function Dashboard() {\n  return (\n    <div>\n      <StatCard title=\"Users\" value={120} />\n      <StatCard title=\"Orders\" value={75} />\n      <StatCard title=\"Revenue\" value=\"₹45,000\" />\n    </div>\n  );\n}\n\nexport default Dashboard;",
+      "showPreview": false,
+      "explanation": "Dashboard composes many small components."
     },
 
     "negative": {
       "type": "debug-quiz",
-      "title": "Dashboard Routing Issue",
-      "description": "Sidebar disappears on navigation.",
-      "code": "<Route path=\"/dashboard\" element={<Dashboard />} />",
-      "question": "What is missing?",
+      "title": "Hard to Maintain Code",
+      "description": "Everything written in one file.",
+      "code": "function App() {\n  // sidebar\n  // header\n  // table\n  // cards\n}",
+      "question": "What is the problem?",
       "options": [
         {
           "id": "a",
-          "text": "Shared layout with nested routes",
+          "text": "No component separation",
           "isCorrect": true,
-          "explanation": "Without a layout, UI is replaced instead of shared."
+          "explanation": "Large files are hard to scale and debug."
         },
         {
           "id": "b",
-          "text": "More pages",
+          "text": "React is slow",
           "isCorrect": false,
-          "explanation": "Pages are not the issue."
+          "explanation": "React performance is not the issue."
         }
       ],
-      "lesson": "Dashboards rely on layout-based routing."
+      "lesson": "Split UI into meaningful components."
     },
 
     "task": {
       "type": "coding-task",
-      "title": "Create Sidebar Navigation",
-      "description": "Build sidebar with navigation links.",
+      "title": "Users Table",
+      "description": "Display users in a table.",
       "requirements": [
-        "Use NavLink",
-        "Highlight active route",
-        "Reusable Sidebar component"
+        "Map users array",
+        "Use key prop",
+        "Separate Table component"
       ],
-      "starterCode": "function Sidebar() {\n  return <nav></nav>;\n}",
-      "solution": "Use NavLink from react-router-dom",
-      "hints": [
-        "NavLink provides active state",
-        "Keep links data-driven"
-      ]
+      "starterCode": "function Users() {\n  return null;\n}",
+      "solution": "function Users({ users }) {\n  return (\n    <table>\n      {users.map(u => (\n        <tr key={u.id}>\n          <td>{u.name}</td>\n          <td>{u.email}</td>\n        </tr>\n      ))}\n    </table>\n  );\n}\n\nexport default Users;"
     },
 
     "challenge": {
       "type": "coding-challenge",
-      "title": "Users Page",
-      "description": "Display list of users and navigate to details page.",
+      "title": "Dashboard Enhancements",
+      "description": "Make dashboard more realistic.",
       "requirements": [
-        "Fetch users from mock API",
-        "List users",
-        "Navigate using dynamic route"
+        "Add routing between pages",
+        "Protect dashboard route",
+        "Add loading state",
+        "Handle empty data"
       ],
-      "solution": "Use useEffect for fetching and useParams for user id"
+      "solution": "Use React Router and conditional rendering."
     },
 
     "memory": {
       "type": "memory-game",
-      "title": "Dashboard Concepts",
+      "title": "Dashboard Memory",
       "pairs": [
-        { "concept": "layout", "code": "Shared UI" },
-        { "concept": "nested routes", "code": "Page inside layout" },
-        { "concept": "NavLink", "code": "Active navigation" },
-        { "concept": "Outlet", "code": "Render child route" }
+        { "concept": "StatCard", "code": "summary data" },
+        { "concept": "Sidebar", "code": "navigation" },
+        { "concept": "Table", "code": "list data" },
+        { "concept": "Route", "code": "page switch" }
       ]
     },
 
@@ -123,14 +129,19 @@
       "type": "tower-defense",
       "concepts": [
         {
-          "question": "What keeps sidebar visible?",
-          "options": ["State", "Layout", "Props", "Context"],
+          "question": "Dashboards focus on?",
+          "options": ["design only", "clarity", "animations", "colors"],
           "correct": 1
         },
         {
-          "question": "Which component renders child routes?",
-          "options": ["Link", "Outlet", "Route", "Switch"],
-          "correct": 1
+          "question": "Best practice for large UI?",
+          "options": [
+            "single file",
+            "inline JSX",
+            "component split",
+            "copy paste"
+          ],
+          "correct": 2
         }
       ],
       "waves": 3

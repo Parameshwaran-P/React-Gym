@@ -1,10 +1,10 @@
 {
   "id": "react-019-memoization",
-  "title": "Memoization (useMemo & useCallback)",
-  "description": "Avoid unnecessary work and make React apps faster",
-  "duration": 7,
+  "title": "Memoization in React",
+  "description": "Avoid unnecessary calculations and re-renders using memoization",
+  "duration": 11,
   "difficulty": "intermediate",
-  "tags": ["performance", "useMemo", "useCallback"],
+  "tags": ["react", "performance", "useMemo", "useCallback"],
   "prerequisites": ["react-018-usereducer"],
   "unlocks": ["react-020-react-memo"],
   "xp": 120,
@@ -12,109 +12,109 @@
   "steps": {
     "intro": {
       "type": "game-intro",
-      "title": "The Lazy Calculator",
-      "story": "Why calculate again if the answer is the same?",
-      "preview": "Save results. Save energy."
+      "title": "Stop Repeating Work",
+      "story": "Your app keeps doing the same heavy work again and again.",
+      "preview": "Learn how React remembers results to save effort."
     },
 
-    "story": {
+    "refresher": {
       "type": "markdown",
-      "title": "Real Life Story: Homework Notebook",
-      "content": "Imagine you solved a math problem yesterday.\n\nToday teacher asks the **same question**.\n\nInstead of solving again, you open your notebook.\n\nThat notebook is **memoization**."
-    },
-
-    "problem": {
-      "type": "markdown",
-      "title": "Why Performance Matters",
-      "content": "React re-renders often.\n\nSometimes it:\n• Recalculates heavy logic\n• Recreates functions\n• Slows the app\n\nMemoization prevents this."
+      "title": "Real-Life Example",
+      "content": "# Math Exam\n\nYou solve a hard problem once\n\nYou remember the answer\n\nNext time ➜ no need to solve again\n\n---\n\nThat memory is **memoization**."
     },
 
     "concept": {
       "type": "markdown",
       "title": "What is Memoization?",
-      "content": "Memoization means:\n• Remember previous result\n• Reuse if inputs are same\n• Skip unnecessary work"
+      "content": "Memoization means:\n\n- Save the result\n- Reuse it later\n- Skip unnecessary work\n\nReact uses memoization to improve **performance**."
     },
 
     "concept2": {
       "type": "markdown",
-      "title": "Two Important Hooks",
-      "content": "• useMemo → remembers **values**\n• useCallback → remembers **functions**"
+      "title": "When Do We Need It?",
+      "content": "Use memoization when:\n\n- Calculations are expensive\n- Components re-render often\n- Performance becomes slow"
     },
 
     "syntax": {
       "type": "markdown",
-      "title": "Basic Syntax",
-      "content": "```javascript\nconst value = useMemo(() => compute(), [deps]);\nconst fn = useCallback(() => {}, [deps]);\n```"
+      "title": "useMemo Syntax",
+      "content": "```\nconst value = useMemo(() => compute(), [dependencies]);\n```"
     },
 
     "positive": {
       "type": "interactive-code",
-      "title": "useMemo Example",
-      "description": "Heavy calculation runs only when needed.",
-      "code": "import { useMemo, useState } from 'react';\n\nfunction Calculator() {\n  const [count, setCount] = useState(0);\n  const [dark, setDark] = useState(false);\n\n  const expensiveValue = useMemo(() => {\n    console.log('Calculating...');\n    let total = 0;\n    for (let i = 0; i < 100000000; i++) {\n      total += i;\n    }\n    return total + count;\n  }, [count]);\n\n  return (\n    <div className={dark ? 'bg-black text-white' : ''}>\n      <p>{expensiveValue}</p>\n      <button onClick={() => setCount(count + 1)}>Increase</button>\n      <button onClick={() => setDark(!dark)}>Toggle Theme</button>\n    </div>\n  );\n}\n\nexport default Calculator;",
+      "title": "Problem: Heavy Calculation",
+      "description": "Calculation runs on every render.",
+      "code": "import { useState } from 'react';\n\nfunction slowCalculation(num) {\n  console.log('Calculating...');\n  let result = 0;\n  for (let i = 0; i < 100000000; i++) {\n    result += num;\n  }\n  return result;\n}\n\nfunction App() {\n  const [count, setCount] = useState(0);\n  const [text, setText] = useState('');\n\n  const value = slowCalculation(count);\n\n  return (\n    <div>\n      <p>{value}</p>\n      <button onClick={() => setCount(count + 1)}>+</button>\n      <input onChange={(e) => setText(e.target.value)} />\n    </div>\n  );\n}\n\nexport default App;",
       "showPreview": true,
-      "explanation": "Theme change does not trigger recalculation."
+      "explanation": "Calculation runs even when typing."
     },
 
-    "callback": {
+    "positive2": {
       "type": "interactive-code",
-      "title": "useCallback Example",
-      "description": "Prevent function recreation.",
-      "code": "import { useCallback, useState } from 'react';\n\nfunction Parent() {\n  const [count, setCount] = useState(0);\n\n  const increment = useCallback(() => {\n    setCount(c => c + 1);\n  }, []);\n\n  return <Child onClick={increment} />;\n}\n\nfunction Child({ onClick }) {\n  return <button onClick={onClick}>Add</button>;\n}\n\nexport default Parent;",
-      "showPreview": false,
-      "explanation": "Same function reference is reused."
+      "title": "Solution: useMemo",
+      "description": "Calculation runs only when needed.",
+      "code": "import { useState, useMemo } from 'react';\n\nfunction slowCalculation(num) {\n  console.log('Calculating...');\n  let result = 0;\n  for (let i = 0; i < 100000000; i++) {\n    result += num;\n  }\n  return result;\n}\n\nfunction App() {\n  const [count, setCount] = useState(0);\n  const [text, setText] = useState('');\n\n  const value = useMemo(() => slowCalculation(count), [count]);\n\n  return (\n    <div>\n      <p>{value}</p>\n      <button onClick={() => setCount(count + 1)}>+</button>\n      <input onChange={(e) => setText(e.target.value)} />\n    </div>\n  );\n}\n\nexport default App;",
+      "showPreview": true,
+      "explanation": "Calculation runs only when count changes."
+    },
+
+    "concept3": {
+      "type": "markdown",
+      "title": "useCallback",
+      "content": "useCallback memoizes **functions**.\n\n```\nconst fn = useCallback(() => {}, []);\n```\n\nUseful when passing functions as props."
     },
 
     "negative": {
       "type": "debug-quiz",
-      "title": "Common Mistake",
-      "description": "Why is this wrong?",
-      "code": "useMemo(() => value, []);",
+      "title": "Memoization Misuse",
+      "description": "useMemo used everywhere.",
+      "code": "const value = useMemo(() => count + 1, [count]);",
       "question": "What is the issue?",
       "options": [
         {
           "id": "a",
-          "text": "Missing dependency",
+          "text": "Over-optimization",
           "isCorrect": true,
-          "explanation": "Dependencies must include used variables."
+          "explanation": "Simple calculations don’t need memoization."
         },
         {
           "id": "b",
-          "text": "useMemo is useless",
+          "text": "Wrong dependency",
           "isCorrect": false,
-          "explanation": "useMemo is useful when used correctly."
+          "explanation": "Dependency is correct."
         }
       ],
-      "lesson": "Wrong dependencies cause bugs."
+      "lesson": "Use memoization only when needed."
     },
 
     "task": {
       "type": "coding-task",
-      "title": "Optimize Search",
-      "description": "Memoize filtered results.",
+      "title": "Memoized Total",
+      "description": "Calculate total price efficiently.",
       "requirements": [
-        "Large list",
-        "Filter by input",
-        "Use useMemo"
+        "useMemo",
+        "recalculate only when items change"
       ],
-      "starterCode": "const filteredList = useMemo(() => {\n  // filter logic\n}, []);",
-      "solution": "const filteredList = useMemo(() => {\n  return list.filter(item => item.includes(search));\n}, [list, search]);"
+      "starterCode": "function Cart({ items }) {\n  return null;\n}\n\nexport default Cart;",
+      "solution": "import { useMemo } from 'react';\n\nfunction Cart({ items }) {\n  const total = useMemo(() => {\n    return items.reduce((sum, item) => sum + item.price, 0);\n  }, [items]);\n\n  return <p>Total: {total}</p>;\n}\n\nexport default Cart;"
     },
 
-    "realuse": {
-      "type": "markdown",
-      "title": "Where Memoization Is Used",
-      "content": "• Dashboards\n• Charts\n• Large lists\n• Expensive calculations"
+    "challenge": {
+      "type": "coding-challenge",
+      "title": "Optimized Button",
+      "description": "Prevent function recreation.",
+      "requirements": [
+        "useCallback",
+        "button click handler"
+      ],
+      "solution": "import { useCallback } from 'react';\n\nfunction Button() {\n  const handleClick = useCallback(() => {\n    console.log('Clicked');\n  }, []);\n\n  return <button onClick={handleClick}>Click</button>;\n}\n\nexport default Button;"
     },
 
     "memory": {
       "type": "memory-game",
-      "title": "Match the Hook",
-      "pairs": [
-        { "concept": "useMemo", "code": "Remember value" },
-        { "concept": "useCallback", "code": "Remember function" },
-        { "concept": "deps", "code": "When to update" }
-      ]
+      "title": "Memoization Memory",
+      "content": "Remember when to use useMemo and useCallback."
     },
 
     "tower": {
@@ -122,26 +122,16 @@
       "concepts": [
         {
           "question": "useMemo is used for?",
-          "options": [
-            "API calls",
-            "Values",
-            "CSS",
-            "Routing"
-          ],
+          "options": ["styling", "memoizing value", "routing", "fetching"],
           "correct": 1
         },
         {
-          "question": "useCallback prevents?",
-          "options": [
-            "Re-render",
-            "Function recreation",
-            "State update",
-            "Errors"
-          ],
-          "correct": 1
+          "question": "useCallback memoizes?",
+          "options": ["state", "JSX", "function", "component"],
+          "correct": 2
         }
       ],
-      "waves": 2
+      "waves": 3
     }
   }
 }
