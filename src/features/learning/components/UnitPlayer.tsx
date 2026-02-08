@@ -10,8 +10,11 @@ import {
   completeUnit 
 } from '../store/progressStore';
 import ReactMarkdown from 'react-markdown';
-import { UniversalPracticeEditor } from '../components/UniversalPracticeEditor';
-import { CodeDisplay } from './CodeDisplay';
+// REPLACE THIS:
+// import { UniversalPracticeEditor } from '../components/UniversalPracticeEditor';
+// WITH THIS:
+import { CodePlayground } from './code-playground/CodePlayground';
+import type { FileMap } from './code-playground';
 import { CompletionModal } from './CompletionModal';
 import { GameRouter } from './games/GameRouter';
 import { 
@@ -375,89 +378,105 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
       {/* Main Content */}
       <div className="lg:ml-20">
         {/* Modern Header */}
-        <div className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
-          <div className="max-w-6xl mx-auto px-6 py-4">
-            {/* Top row */}
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-4">
-                <div className={`w-10 h-10 rounded-lg bg-${stepMeta.color}-100 flex items-center justify-center`}>
-                  <StepIcon className={`w-5 h-5 text-${stepMeta.color}-600`} />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <h2 className="text-lg font-bold text-gray-900">{stepMeta.title}</h2>
-                    {hasStepVideo && (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
-                        <VideoIcon className="w-3 h-3" />
-                        Video
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-sm text-gray-600">
-                    Step {currentStep + 1} of {totalSteps} • {unit.title}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                {hasUnitVideo && (
-                  <button
-                    onClick={() => setShowVideoPreview(true)}
-                    className="flex items-center gap-2 px-4 py-2 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition-colors font-medium text-sm"
-                  >
-                    <Play className="w-4 h-4" />
-                    Overview
-                  </button>
-                )}
-                
-                {hasStepVideo && (
-                  <button
-                    onClick={() => setShowStepVideo(!showStepVideo)}
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors font-medium text-sm"
-                  >
-                    <VideoIcon className="w-4 h-4" />
-                    {showStepVideo ? 'Hide' : 'Show'} Video
-                  </button>
-                )}
-
-                <div className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg">
-                  <Clock className="w-4 h-4 text-gray-600" />
-                  <span className="text-sm font-medium text-gray-700">
-                    {unit.duration} min
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Progress bar */}
-            <div className="relative">
-              <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                <div 
-                  className="h-full bg-gradient-to-r from-primary-500 to-primary-600 transition-all duration-500 ease-out rounded-full"
-                  style={{ width: `${((currentStep + 1) / totalSteps) * 100}%` }}
-                >
-                  <div className="h-full w-full bg-white/20 animate-pulse"></div>
-                </div>
-              </div>
-            </div>
-          </div>
+       <div className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+  <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
+    
+    {/* Top row */}
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-3">
+      
+      {/* Left: Step info */}
+      <div className="flex items-start sm:items-center gap-3">
+        <div
+          className={`w-10 h-10 shrink-0 rounded-lg bg-${stepMeta.color}-100 flex items-center justify-center`}
+        >
+          <StepIcon className={`w-5 h-5 text-${stepMeta.color}-600`} />
         </div>
 
+        <div>
+          <div className="flex flex-wrap items-center gap-2 mb-1">
+            <h2 className="text-base sm:text-lg font-bold text-gray-900">
+              {stepMeta.title}
+            </h2>
+
+            {hasStepVideo && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
+                <VideoIcon className="w-3 h-3" />
+                Video
+              </span>
+            )}
+          </div>
+
+          <p className="text-xs sm:text-sm text-gray-600">
+            Step {currentStep + 1} of {totalSteps} • {unit.title}
+          </p>
+        </div>
+      </div>
+
+      {/* Right: Actions */}
+      <div className="flex flex-wrap items-center gap-2">
+        {hasUnitVideo && (
+          <button
+            onClick={() => setShowVideoPreview(true)}
+            className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition-colors font-medium text-sm"
+          >
+            <Play className="w-4 h-4" />
+            Overview
+          </button>
+        )}
+
+        {hasStepVideo && (
+          <button
+            onClick={() => setShowStepVideo(!showStepVideo)}
+            className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors font-medium text-sm"
+          >
+            <VideoIcon className="w-4 h-4" />
+            {showStepVideo ? 'Hide' : 'Show'} Video
+          </button>
+        )}
+
+        <div className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-gray-100 rounded-lg">
+          <Clock className="w-4 h-4 text-gray-600" />
+          <span className="text-xs sm:text-sm font-medium text-gray-700">
+            {unit.duration} min
+          </span>
+        </div>
+      </div>
+    </div>
+
+    {/* Progress bar */}
+    <div className="relative">
+      <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+        <div
+          className="h-full bg-gradient-to-r from-primary-500 to-primary-600 transition-all duration-500 ease-out rounded-full"
+          style={{ width: `${((currentStep + 1) / totalSteps) * 100}%` }}
+        >
+          <div className="h-full w-full bg-white/20 animate-pulse" />
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
         {/* Content Area */}
-        <div className="max-w-6xl mx-auto px-6 py-8">
+        <div className="max-w-[100rem] mx-auto px-6 py-8">
           {/* Step Content Card */}
           <Card className="mb-6 shadow-lg border-0">
             {/* Step Title */}
-            {stepData.title && (
-              <div className="mb-6 pb-6 border-b border-gray-200">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                  {stepData.title}
-                </h1>
-                {stepData.description && (
-                  <p className="text-lg text-gray-600">{stepData.description}</p>
-                )}
-              </div>
-            )}
+           {stepData.title && (
+  <div className="mb-8 pb-8 border-b border-gray-200">
+    <h1 className="text-4xl font-semibold tracking-tight text-gray-900 leading-tight mb-3 font-sans">
+      {stepData.title}
+    </h1>
+
+    {stepData.description && (
+      <p className="text-lg leading-relaxed text-gray-600 max-w-3xl font-normal">
+        {stepData.description}
+      </p>
+    )}
+  </div>
+)}
 
             {/* Step Video */}
             {showStepVideo && hasStepVideo && (
@@ -473,12 +492,47 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
               </div>
             )}
 
-            {/* Step Content */}
-            {stepData.type === 'markdown' && (
-              <div className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-pre:bg-gray-900 prose-pre:text-gray-100">
-                <ReactMarkdown>{stepData.content}</ReactMarkdown>
-              </div>
-            )}
+           {/* Step Content */}
+{stepData.type === 'markdown' && (
+  <div className="
+    prose prose-xl max-w-none
+    prose-headings:font-semibold
+    prose-headings:tracking-tight
+    prose-headings:text-gray-900
+
+    prose-p:text-gray-700
+    prose-p:leading-relaxed
+
+    prose-li:text-gray-700
+    prose-li:leading-relaxed
+
+    prose-strong:text-gray-900
+
+    prose-hr:my-10
+
+    prose-code:bg-gray-100
+    prose-code:px-2
+    prose-code:py-1
+    prose-code:rounded-md
+    prose-code:text-sm
+
+    prose-pre:bg-gray-900
+    prose-pre:text-gray-100
+    prose-pre:rounded-xl
+    prose-pre:p-4
+
+    prose-blockquote:border-l-4
+    prose-blockquote:border-blue-500
+    prose-blockquote:bg-blue-50
+    prose-blockquote:px-4
+    prose-blockquote:py-2
+    prose-blockquote:text-blue-900
+    prose-blockquote:rounded-r-lg
+  ">
+    <ReactMarkdown>{stepData.content}</ReactMarkdown>
+  </div>
+)}
+
 
             {stepData.type === 'interactive-code' && (
               <PositiveCaseStep stepData={stepData} />
@@ -513,45 +567,58 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
           </Card>
 
           {/* Navigation */}
-          <div className="flex items-center justify-between bg-white rounded-xl shadow-lg p-6">
-            <Button
-              variant="outline"
-              onClick={handlePrevious}
-              disabled={currentStep === 0}
-              size="lg"
-              className="min-w-[140px]"
-            >
-              <ChevronLeft className="w-5 h-5 mr-2" />
-              Previous
-            </Button>
-            
-            <div className="text-center">
-              <div className="text-sm font-medium text-gray-700">
-                Step {currentStep + 1} of {totalSteps}
-              </div>
-              <div className="text-xs text-gray-500 mt-1">
-                {completedSteps.length} completed
-              </div>
-            </div>
+          <div className="
+  bg-white rounded-xl shadow-lg p-4 sm:p-6
+  flex flex-col gap-4
+  sm:flex-row sm:items-center sm:justify-between
+">
+  {/* Previous Button */}
+ <Button
+  variant="outline"
+  onClick={handlePrevious}
+  disabled={currentStep === 0}
+  size="lg"
+  className="w-full sm:w-auto min-w-[140px] flex items-center justify-center gap-2"
+>
+  <ChevronLeft className="w-4 h-4" />
+  <span>Previous</span>
+</Button>
 
-            <Button 
-              onClick={handleNext}
-              size="lg"
-              className="min-w-[140px] bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800"
-            >
-              {currentStep === totalSteps - 1 ? (
-                <>
-                  Complete
-                  <Trophy className="w-5 h-5 ml-2" />
-                </>
-              ) : (
-                <>
-                  Next
-                  <ChevronRight className="w-5 h-5 ml-2" />
-                </>
-              )}
-            </Button>
-          </div>
+  {/* Step Info */}
+  <div className="text-center order-first sm:order-none">
+    <div className="text-sm font-medium text-gray-700">
+      Step {currentStep + 1} of {totalSteps}
+    </div>
+    <div className="text-xs text-gray-500 mt-1">
+      {completedSteps.length} completed
+    </div>
+  </div>
+
+  {/* Next / Complete Button */}
+<Button
+  onClick={handleNext}
+  size="lg"
+  className="
+    w-full sm:w-auto min-w-[140px]
+    flex items-center justify-center gap-2
+    bg-gradient-to-r from-primary-600 to-primary-700
+    hover:from-primary-700 hover:to-primary-800
+  "
+>
+  {currentStep === totalSteps - 1 ? (
+    <>
+      <span>Complete</span>
+      <Trophy className="w-4 h-4" />
+    </>
+  ) : (
+    <>
+      <span>Next</span>
+      <ChevronRight className="w-4 h-4" />
+    </>
+  )}
+</Button>
+</div>
+
         </div>
       </div>
     </div>
@@ -703,76 +770,107 @@ function VideoPlayerEmbedded({
 }
 
 // ============================================
-// STEP COMPONENTS
+// STEP COMPONENTS WITH CODE PLAYGROUND
 // ============================================
 
-function PositiveCaseStep({ stepData }: { stepData: any }) {
-  // Detect language from code content or use default
- const detectLanguage = (code: string): 'html' | 'react' | 'javascript' => {
+/**
+ * Utility: Convert your existing step data format to CodePlayground format
+ */
+function convertStepDataToPlaygroundFiles(stepData: any): { files: FileMap; language: any } {
+  // Detect language from code content or use provided language
+  const detectLanguage = (code: string): 'html' | 'react' | 'javascript' => {
     const trimmedCode = code.trim();
     
-    // Check for HTML first (most specific)
     if (
       trimmedCode.includes('<!DOCTYPE') || 
       trimmedCode.includes('<html>') ||
       trimmedCode.includes('<head>') ||
-      trimmedCode.includes('<body>') ||
-      // Check if it starts with HTML tags (not JSX)
-      (/^<(h1|h2|h3|h4|h5|h6|div|p|span|button|input|form|table|ul|ol|li|a|img)/i.test(trimmedCode) && 
-       !trimmedCode.includes('import') && 
-       !trimmedCode.includes('export') &&
-       !trimmedCode.includes('function') &&
-       !trimmedCode.includes('const ') &&
-       !trimmedCode.includes('let ') &&
-       !trimmedCode.includes('var '))
+      trimmedCode.includes('<body>')
     ) {
       return 'html';
     }
     
-    // Check for React/JSX
     if (
       code.includes('import React') || 
       code.includes('export default') || 
       code.includes('useState') ||
-      code.includes('useEffect') ||
-      (code.includes('function') && code.includes('return ('))
+      code.includes('useEffect')
     ) {
       return 'react';
     }
     
-    // Default to JavaScript
     return 'javascript';
   };
 
-  const language = stepData.language || detectLanguage(stepData.code);
+  const language = stepData.language || detectLanguage(stepData.code || stepData.starterCode || '');
   
   // Determine the main file path based on language
   const getMainFilePath = (lang: string): string => {
     const paths: Record<string, string> = {
-      html: '/index.html',
-      css: '/styles.css',
-      javascript: '/index.js',
-      react: '/App.js',
-      nextjs: '/pages/index.js',
-      nodejs: '/index.js',
+      html: 'index.html',
+      css: 'styles.css',
+      javascript: 'script.js',
+      react: 'App.jsx',
     };
-    return paths[lang] || '/App.js';
+    return paths[lang] || 'App.jsx';
   };
 
   const mainFilePath = getMainFilePath(language);
+  const code = stepData.code || stepData.starterCode || '';
+
+  // Build files object
+  const files: FileMap = {
+    [mainFilePath]: {
+      language: language === 'react' ? 'javascript' : language,
+      code: code,
+    },
+  };
+
+  // Add CSS file if it exists
+  if (stepData.css) {
+    files['styles.css'] = {
+      language: 'css',
+      code: stepData.css,
+    };
+  }
+
+  // Add HTML wrapper for JavaScript if needed
+  if (language === 'javascript' && !stepData.code?.includes('<!DOCTYPE')) {
+    files['index.html'] = {
+      language: 'html',
+      code: `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code Preview</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app"></div>
+  <script src="${mainFilePath}"></script>
+</body>
+</html>`,
+    };
+  }
+
+  return { files, language };
+}
+
+function PositiveCaseStep({ stepData }: { stepData: any }) {
+  const { files, language } = convertStepDataToPlaygroundFiles(stepData);
 
   return (
     <div className="space-y-6">
-      <UniversalPracticeEditor
+      <CodePlayground
         config={{
           language: language,
-          title: stepData.title,
-          description: 'Review this working example',
-          files: {
-            [mainFilePath]: stepData.code,
-          },
+          files: files,
           showPreview: stepData.showPreview ?? true,
-          showConsole: false,
+          showConsole: stepData.showConsole ?? false,
+          readOnly: true, // Read-only for positive examples
+          theme: 'dark',
+          height: '600px',
         }}
       />
      
@@ -797,6 +895,10 @@ function DebugQuizStep({ stepData }: { stepData: any }) {
   };
 
   const selectedAnswer = stepData.options.find((o: any) => o.id === selectedOption);
+  const { files: brokenFiles, language } = convertStepDataToPlaygroundFiles({ 
+    code: stepData.code, 
+    language: stepData.language 
+  });
 
   return (
     <div className="space-y-6">
@@ -805,7 +907,17 @@ function DebugQuizStep({ stepData }: { stepData: any }) {
           <AlertCircle className="w-5 h-5 text-orange-600" />
           <h3 className="font-bold text-gray-900">Broken Code</h3>
         </div>
-        <CodeDisplay code={stepData.code} />
+        <CodePlayground
+          config={{
+            language: language,
+            files: brokenFiles,
+            showPreview: true,
+            showConsole: true,
+            readOnly: true,
+            theme: 'dark',
+            height: '400px',
+          }}
+        />
       </div>
 
       <div className="bg-orange-50 border-l-4 border-orange-500 p-6 rounded-r-lg">
@@ -875,7 +987,20 @@ function DebugQuizStep({ stepData }: { stepData: any }) {
               <CheckCircle2 className="w-5 h-5 text-green-600" />
               <h3 className="font-bold text-gray-900">Fixed Code</h3>
             </div>
-            <CodeDisplay code={stepData.correctCode} />
+            <CodePlayground
+              config={{
+                language: language,
+                files: convertStepDataToPlaygroundFiles({ 
+                  code: stepData.correctCode, 
+                  language: stepData.language 
+                }).files,
+                showPreview: true,
+                showConsole: true,
+                readOnly: true,
+                theme: 'dark',
+                height: '400px',
+              }}
+            />
           </div>
           
           {stepData.lesson && (
@@ -892,25 +1017,21 @@ function DebugQuizStep({ stepData }: { stepData: any }) {
 }
 
 function CodingTaskStep({ stepData, showHelpVideo, onToggleHelpVideo }: any) {
-  const [code, setCode] = useState(stepData.starterCode);
   const [showHints, setShowHints] = useState(false);
   const [showSolution, setShowSolution] = useState(false);
+  const [userFiles, setUserFiles] = useState<FileMap>(() => {
+    const { files } = convertStepDataToPlaygroundFiles(stepData);
+    return files;
+  });
 
   const hasHelpVideo = !!stepData.helpVideo?.videoUrl;
+  const { language } = convertStepDataToPlaygroundFiles(stepData);
 
-  // Detect language
-  const language = stepData.language || 'react';
-  const getMainFilePath = (lang: string): string => {
-    const paths: Record<string, string> = {
-      html: '/index.html',
-      javascript: '/index.js',
-      react: '/App.js',
-      nextjs: '/pages/index.js',
-      nodejs: '/index.js',
-    };
-    return paths[lang] || '/App.js';
+  const handleCodeChange = (files: FileMap) => {
+    setUserFiles(files);
+    // Optional: Save progress to localStorage or backend
+    // localStorage.setItem(`task-${stepData.id}`, JSON.stringify(files));
   };
-  const mainFilePath = getMainFilePath(language);
 
   return (
     <div className="space-y-6">
@@ -938,23 +1059,18 @@ function CodingTaskStep({ stepData, showHelpVideo, onToggleHelpVideo }: any) {
             Your Code
           </h3>
         </div>
-        <UniversalPracticeEditor
+        
+        <CodePlayground
           config={{
             language: language,
-            title: 'Practice Editor',
-            description: 'Edit the code and see live results',
-            files: {
-              [mainFilePath]: code,
-            },
+            files: userFiles,
             showPreview: true,
             showConsole: true,
+            readOnly: false, // Editable
+            theme: 'dark',
+            height: '600px',
           }}
-          onCodeChange={(files) => {
-            setCode(files[mainFilePath] || '');
-          }}
-          initialFiles={{
-            [mainFilePath]: stepData.starterCode,
-          }}
+          onChange={handleCodeChange}
         />
       </div>
 
@@ -1009,13 +1125,26 @@ function CodingTaskStep({ stepData, showHelpVideo, onToggleHelpVideo }: any) {
         </div>
       )}
 
-      {showSolution && (
+      {showSolution && stepData.solution && (
         <div className="bg-green-50 rounded-xl p-6 border border-green-200">
           <div className="flex items-center gap-2 mb-4">
             <CheckCircle2 className="w-5 h-5 text-green-600" />
             <h3 className="font-bold text-gray-900">Solution</h3>
           </div>
-          <CodeDisplay code={stepData.solution} />
+          <CodePlayground
+            config={{
+              language: language,
+              files: convertStepDataToPlaygroundFiles({ 
+                code: stepData.solution, 
+                language: stepData.language 
+              }).files,
+              showPreview: true,
+              showConsole: true,
+              readOnly: true,
+              theme: 'dark',
+              height: '500px',
+            }}
+          />
         </div>
       )}
 

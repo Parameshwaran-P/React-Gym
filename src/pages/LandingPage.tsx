@@ -190,9 +190,9 @@ export default function LandingPage() {
             Master React Through
             <span className="block text-primary-600 mt-2 relative inline-block">
               Practice & Debugging
-              <svg className="absolute -bottom-2 left-0 w-full" height="12" viewBox="0 0 300 12" fill="none">
+               {/* <svg className="absolute -bottom-2 left-0 w-full" height="12" viewBox="0 0 300 12" fill="none">
                 <path d="M2 10C50 2, 100 2, 150 6C200 10, 250 8, 298 4" stroke="#4F46E5" strokeWidth="3" strokeLinecap="round" className="animate-draw-line"/>
-              </svg>
+              </svg> */}
             </span>
           </h1>
           <p className="hero-subtitle text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
@@ -208,13 +208,21 @@ export default function LandingPage() {
                 </span>
               </Button>
             </Link>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="hover:bg-gray-50 hover:scale-105 transition-all duration-300 shadow-md hover:shadow-lg"
-            >
-              See How It Works
-            </Button>
+           <Button
+  variant="outline"
+  size="lg"
+  className="
+    opacity-100 !opacity-100
+    translate-y-0 !translate-y-0
+    transform-none !transform-none
+    hover:scale-105
+    transition-all duration-300
+    shadow-md hover:shadow-lg
+  "
+>
+  See How It Works
+</Button>
+
           </div>
           <p className="text-sm text-gray-500 mt-4 opacity-75">
             No credit card required • 5-10 min per unit
