@@ -4,6 +4,7 @@ import LandingPage from '../pages/LandingPage';
 import DashboardPage from '../pages/DashboardPage';
 import UnitPage from '../pages/UnitPage';
 import RoadmapPage from '../pages/RoadmapPage';
+import HowItsWorksPage from '../pages/Howitworks';
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ export const router = createBrowserRouter([
   {
     path: '/roadmap',
     element: <RoadmapPage />,
+  },
+   {
+    path: '/how-it-works',
+    element: <HowItsWorksPage/>,
   },
   {
     path: '/learn/:contentId/:unitId',

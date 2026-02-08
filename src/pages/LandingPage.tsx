@@ -208,7 +208,8 @@ export default function LandingPage() {
                 </span>
               </Button>
             </Link>
-           <Button
+             <Link to="/how-it-works">
+                <Button
   variant="outline"
   size="lg"
   className="
@@ -222,6 +223,8 @@ export default function LandingPage() {
 >
   See How It Works
 </Button>
+             </Link>
+        
 
           </div>
           <p className="text-sm text-gray-500 mt-4 opacity-75">
