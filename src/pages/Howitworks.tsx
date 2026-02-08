@@ -11,10 +11,10 @@ import {
   Trophy,
   AlertTriangle,
   BookOpen,
-  GitBranch,
-  Play,
-  Link
+  GitBranch
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Button } from '../shared/components/Button';
 
 // ============================================
 // TYPE DEFINITIONS
@@ -135,6 +135,32 @@ export function HowItWorksPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
+ {/* Navbar */}
+      <nav className="border-b border-gray-200 bg-white/80 backdrop-blur-md sticky top-0 z-50 transition-all duration-300 hover:shadow-lg">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center gap-2 group cursor-pointer">
+                 <Link to="/" className="flex items-center gap-2">
+                   <span className="text-3xl transition-transform group-hover:scale-110 duration-300">🏋️</span>
+              <span className="text-xl font-bold text-gray-900">React Gym</span>
+                 </Link>
+            
+            </div>
+            <div className="flex items-center gap-4">
+              <Link to="/roadmap" className="text-gray-600 hover:text-gray-900 transition-all duration-300 relative group">
+                Roadmap
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-600 group-hover:w-full transition-all duration-300"></span>
+              </Link>
+              <Link to="/dashboard">
+                <Button variant="outline" size="sm" className="hover:scale-105 transition-transform duration-200">
+                  Login
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </nav>
+
       {/* Hero Section */}
       <HeroSection />
 
@@ -158,6 +184,37 @@ export function HowItWorksPage() {
 
       {/* CTA */}
       <CTASection />
+        <footer className="bg-gray-900 text-gray-400 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="flex items-center gap-2 mb-4 md:mb-0 group cursor-pointer">
+              <span className="text-2xl transition-transform group-hover:scale-110 duration-300">🏋️</span>
+              <span className="text-lg font-bold text-white">React Gym</span>
+            </div>
+            <div className="flex gap-6 text-sm">
+              <a href="#" className="hover:text-white transition-all duration-300 relative group">
+                About
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-300"></span>
+              </a>
+              <a href="#" className="hover:text-white transition-all duration-300 relative group">
+                Blog
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-300"></span>
+              </a>
+              <Link to="/roadmap" className="hover:text-white transition-all duration-300 relative group">
+                Roadmap
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-300"></span>
+              </Link>
+              <a href="#" className="hover:text-white transition-all duration-300 relative group">
+                Discord
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-300"></span>
+              </a>
+            </div>
+          </div>
+          <div className="text-center mt-8 text-sm">
+            © 2026 React Gym. Built with ❤️ for developers.
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
@@ -196,12 +253,12 @@ function HeroSection() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link to="/dashboard">
-             <button className="group px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold text-lg transition-all flex items-center gap-2 shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40">
+           <Link to="/dashboard">
+            <button className="group px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold text-lg transition-all flex items-center gap-2 shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40">
               Start Learning Free
               <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
-            </Link>
+          </Link>
           </div>
 
           {/* Stats */}
@@ -651,17 +708,16 @@ function CTASection() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-             <Link to="/dashboard">
-              <button className="group px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold text-lg transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-600/25">
-            Start Learning Free
-            <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </button>
-             </Link>
-         
-          <button className="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-lg font-semibold text-lg transition-all flex items-center justify-center gap-2">
+           <Link to="/dashboard">
+            <button className="group px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold text-lg transition-all flex items-center gap-2 shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40">
+              Start Learning Free
+              <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </Link>
+          {/* <button className="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-lg font-semibold text-lg transition-all flex items-center justify-center gap-2">
             <Play className="w-5 h-5" />
             Watch Demo
-          </button>
+          </button> */}
         </div>
 
         <p className="text-slate-500 text-sm mt-8">

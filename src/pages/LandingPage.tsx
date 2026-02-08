@@ -6,6 +6,9 @@ import { Card } from '../shared/components/Card';
 import { Code, Zap, Bug, Trophy, Blocks, Gamepad2 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import image1 from '../assets/scattered_learn.png';
+import image2 from '../assets/happy_paths.png';
+import image3 from '../assets/revision_sys.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -242,17 +245,17 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                img: '/public/scattered_learn.png',
+                img: image1,
                 title: 'Scattered Resources',
                 desc: 'YouTube, docs, courses everywhere. You waste hours searching instead of learning.',
               },
               {
-                img: '/public/happy_paths.png',
+                img: image2,
                 title: 'Only Happy Paths',
                 desc: 'Tutorials show perfect code. But real projects break. You never learn debugging.',
               },
               {
-                img: '/public/revision_sys.png',
+                img: image3,
                 title: 'No Revision System',
                 desc: 'You forget everything after 2 months. Start from scratch every time.',
               },
