@@ -67,7 +67,7 @@ export function getDefaultFilesForLanguage(
 // 🔧 CRITICAL FIX: This function prevents the error
 // ============================================
 function normalizeVanillaFiles(
-userFiles: Record<string, string>, language: string, 
+userFiles: Record<string, string>, _language: string,
   // language: SupportedLanguage
 ): Record<string, string> {
   const normalized: Record<string, string> = {};

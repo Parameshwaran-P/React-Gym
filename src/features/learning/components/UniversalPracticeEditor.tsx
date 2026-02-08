@@ -7,7 +7,7 @@ import {
   SandpackCodeEditor,
   SandpackPreview,
   SandpackConsole,
-  useSandpack,
+  // useSandpack,
 } from '@codesandbox/sandpack-react';
 import type { UniversalPracticeEditorProps } from '../types/editor.types';
 import {

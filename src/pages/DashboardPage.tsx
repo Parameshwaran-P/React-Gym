@@ -7,7 +7,7 @@ import { getStats } from '../features/learning/store/progressStore';
 import { getNextUnlockedUnit } from '../features/learning/store/progressStore';
 import { useRoadmap } from '../features/content/hooks/useRoadmap';
 import { useUnitMetadata } from '../features/content/hooks/useUnitMetadata';
-import { Lock, CheckCircle, Trophy } from 'lucide-react';
+import { Lock, CheckCircle} from 'lucide-react';
 import { LoadingCard } from '../shared/components/LoadingStates';
 
 export default function DashboardPage() {
