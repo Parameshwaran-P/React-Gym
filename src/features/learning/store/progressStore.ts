@@ -171,7 +171,7 @@ export function getStats() {
  * Check if a unit is unlocked based on prerequisites
  */
 export function isUnitUnlocked(
-contentId: string, id: string, // unitId: string, 
+contentId: string, _id: string, // unitId: string, 
 prerequisites: string[]): boolean {
   if (prerequisites.length === 0) {
     return true; // No prerequisites = always unlocked

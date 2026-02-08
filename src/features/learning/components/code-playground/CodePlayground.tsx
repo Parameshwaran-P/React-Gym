@@ -123,7 +123,7 @@ export const CodePlayground: React.FC<CodePlaygroundProps> = ({
   const theme = config.theme || 'dark';
   const monacoTheme = theme === 'dark' ? 'vs-dark' : 'vs-light';
 
-  function setLayoutRatio(arg0: number) {
+  function setLayoutRatio(_arg0: number) {
     throw new Error('Function not implemented.');
   }
 
