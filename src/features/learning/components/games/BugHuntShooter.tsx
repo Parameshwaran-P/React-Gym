@@ -23,7 +23,7 @@ export function BugHuntShooter({ code, bugs, timeLimit, onComplete }: BugHuntSho
   const [timeLeft, setTimeLeft] = useState(timeLimit);
   const [lives, setLives] = useState(3);
   const [foundBugs, setFoundBugs] = useState<string[]>([]);
-  const [missedShots, setMissedShots] = useState(0);
+  const [_missedShots, setMissedShots] = useState(0);
   const [combo, setCombo] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedLine, setSelectedLine] = useState<number | null>(null);

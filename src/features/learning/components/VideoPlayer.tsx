@@ -3,18 +3,18 @@
 // ============================================
 
 // src/features/learning/components/VideoPlayer.tsx
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { 
   Play, 
-  Pause, 
-  Volume2, 
-  VolumeX, 
+  // Pause, 
+  // Volume2, 
+  // VolumeX, 
   Maximize2, 
   Minimize2, 
   X,
-  SkipBack,
-  SkipForward,
-  Settings,
+  // SkipBack,
+  // SkipForward,
+  // Settings,
   Loader
 } from 'lucide-react';
 
@@ -124,25 +124,25 @@ export function VideoPlayer({
   autoPlay = false,
   showControls = true,
   onClose,
-  onComplete,
-  onTimeUpdate,
+  // onComplete,
+  // onTimeUpdate,
   startTime = 0,
   endTime,
-  playbackSpeed = 1,
-  quality = 'auto'
+  // playbackSpeed = 1,
+  // quality = 'auto'
 }: VideoPlayerProps) {
   
-  const [isPlaying, setIsPlaying] = useState(false);
+  // const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [totalDuration, setTotalDuration] = useState(0);
-  const [volume, setVolume] = useState(1);
-  const [isMuted, setIsMuted] = useState(false);
+  // const [currentTime, setCurrentTime] = useState(0);
+  // const [totalDuration, setTotalDuration] = useState(0);
+  // const [volume, setVolume] = useState(1);
+  // const [isMuted, setIsMuted] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
+  // const [showSettings, setShowSettings] = useState(false);
   
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  // const iframeRef = useRef<HTMLIFrameElement>(null);
+  // const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   
   // Detect platform if auto

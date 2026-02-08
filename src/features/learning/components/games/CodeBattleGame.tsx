@@ -28,7 +28,7 @@ interface CodeBattleGameProps {
 export function CodeBattleGame({ challenge, onComplete }: CodeBattleGameProps) {
   const [playerHealth, setPlayerHealth] = useState(100);
   const [enemyHealth, setEnemyHealth] = useState(challenge.enemy.health);
-  const [currentCode, setCurrentCode] = useState(challenge.starterCode);
+  const [currentCode, _setCurrentCode] = useState(challenge.starterCode);
   const [gameState, setGameState] = useState<'playing' | 'won' | 'lost'>('playing');
   const [combo, setCombo] = useState(0);
   const [score, setScore] = useState(0);
@@ -70,7 +70,7 @@ export function CodeBattleGame({ challenge, onComplete }: CodeBattleGameProps) {
       // Simple test runner (in real app, use sandboxed eval)
       let passed = 0;
       
-      challenge.tests.forEach(test => {
+      challenge.tests.forEach(_test => {
         try {
           // Mock test execution
           passed++;

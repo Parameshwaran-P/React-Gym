@@ -1,5 +1,4 @@
-// src/features/learning/components/CodeDisplay.tsx
-import { SandpackProvider, SandpackCodeEditor } from '@codesandbox/sandpack-react';
+import { SandpackProvider, SandpackCodeEditor } from "@codesandbox/sandpack-react";
 
 interface CodeDisplayProps {
   code: string;
@@ -7,22 +6,29 @@ interface CodeDisplayProps {
 }
 
 export function CodeDisplay({ code, language = 'jsx' }: CodeDisplayProps) {
+  const fileName =
+    language === 'tsx'
+      ? '/App.tsx'
+      : language === 'ts'
+      ? '/App.ts'
+      : language === 'jsx'
+      ? '/App.jsx'
+      : '/App.js';
+
   return (
     <div className="border border-gray-300 rounded-lg overflow-hidden">
       <SandpackProvider
         template="react"
         theme="dark"
         files={{
-           "/App.js": {
-      code,
-      active: true,
-    },
-        }}
-        options={{
-          readOnly: true,
+          [fileName]: {
+            code,
+            active: true,
+          },
         }}
       >
         <SandpackCodeEditor
+          readOnly
           showLineNumbers
           showInlineErrors={false}
           wrapContent

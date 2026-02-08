@@ -48,17 +48,18 @@ class FrontendExecutionStrategy extends BaseExecutionStrategy {
     return ['html', 'css', 'javascript'].includes(language);
   }
 
-  async execute(files: FileMap): Promise<ExecutionResult> {
-    // Frontend execution happens in the iframe (PreviewPanel)
-    // This strategy just validates and prepares the result
-    
-    this.logConsole('log', 'Code preview updated');
-    
-    return {
-      success: true,
-      output: 'Preview rendered successfully',
-    };
-  }
+
+async execute(_files: FileMap): Promise<ExecutionResult> {
+  // Frontend execution happens in the iframe (PreviewPanel)
+  // This strategy just validates and prepares the result
+
+  this.logConsole('log', 'Code preview updated');
+
+  return {
+    success: true,
+    output: 'Preview rendered successfully',
+  };
+}
 }
 
 /**
@@ -72,37 +73,35 @@ class ReactExecutionStrategy extends BaseExecutionStrategy {
 
   async execute(files: FileMap): Promise<ExecutionResult> {
     try {
-      // Validate React component structure
-      const jsxFile = Object.keys(files).find(f => f.endsWith('.jsx') || f.endsWith('.js'));
-      
-      if (!jsxFile) {
-        throw new Error('No JSX file found');
-      }
+      const reactFile = Object.keys(files).find(f =>
+        f.endsWith('.jsx') ||
+        f.endsWith('.tsx') ||
+        f.endsWith('.js') ||
+        f.endsWith('.ts')
+      );
 
-      const code = files[jsxFile].code;
-      
-      // Basic validation
-      if (!code.includes('App') && !code.includes('export')) {
-        this.logConsole('warn', 'Component should export an App component');
+      if (!reactFile) {
+        return {
+          success: false,
+          error: 'No React entry file found',
+        };
       }
 
       this.logConsole('log', 'React component rendered');
-      
+
       return {
         success: true,
         output: 'React component rendered successfully',
       };
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      this.logConsole('error', errorMessage);
-      
       return {
         success: false,
-        error: errorMessage,
+        error: error instanceof Error ? error.message : 'Unknown error',
       };
     }
   }
 }
+
 
 /**
  * Node.js Execution Strategy
@@ -113,7 +112,7 @@ class NodeExecutionStrategy extends BaseExecutionStrategy {
     return language === 'node';
   }
 
-  async execute(files: FileMap): Promise<ExecutionResult> {
+  async execute(_files: FileMap): Promise<ExecutionResult> {
     // This is a stub implementation
     // In production, this would send code to a backend execution service
     
@@ -137,7 +136,7 @@ class PythonExecutionStrategy extends BaseExecutionStrategy {
     return language === 'python';
   }
 
-  async execute(files: FileMap): Promise<ExecutionResult> {
+  async execute(_files: FileMap): Promise<ExecutionResult> {
     // This is a stub implementation
     // In production, this would send code to a backend execution service
     // Could use services like: Pyodide (WASM), Judge0 API, custom Docker containers

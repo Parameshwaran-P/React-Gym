@@ -49,17 +49,31 @@ export const AVAILABLE_CONTENTS = [
 /**
  * Custom error class for content loading errors
  */
+export type ContentLoadErrorCode =
+  | 'NOT_FOUND'
+  | 'NETWORK_ERROR'
+  | 'PARSE_ERROR'
+  | 'INVALID_DATA';
+
 export class ContentLoadError extends Error {
+  public code: ContentLoadErrorCode;
+  public contentId?: string;
+  public unitId?: string;
+
   constructor(
     message: string,
-    public code: 'NOT_FOUND' | 'NETWORK_ERROR' | 'PARSE_ERROR' | 'INVALID_DATA',
-    public contentId?: string,
-    public unitId?: string
+    code: ContentLoadErrorCode,
+    contentId?: string,
+    unitId?: string
   ) {
     super(message);
     this.name = 'ContentLoadError';
+    this.code = code;
+    this.contentId = contentId;
+    this.unitId = unitId;
   }
 }
+
 
 /**
  * Validate JSON response

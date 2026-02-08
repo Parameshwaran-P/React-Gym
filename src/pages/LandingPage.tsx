@@ -10,7 +10,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function LandingPage() {
-  const heroRef = useRef(null);
+  // const heroRef = useRef(null);
   const problemCardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const stepsRef = useRef<(HTMLDivElement | null)[]>([]);
   const featuresRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -256,7 +256,7 @@ export default function LandingPage() {
             ].map((item, idx) => (
               <div
                 key={idx}
-                ref={(el) => (problemCardsRef.current[idx] = el)}
+                ref={(el) => { problemCardsRef.current[idx] = el; }}
                 className="group"
               >
                 <Card className="text-center h-full transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 cursor-pointer border-2 border-transparent hover:border-primary-200">
@@ -298,7 +298,7 @@ export default function LandingPage() {
             ].map((step, idx) => (
               <div
                 key={step.num}
-                ref={(el) => (stepsRef.current[idx] = el)}
+                ref={(el) => {stepsRef.current[idx] = el;}}
                 className="text-center group"
               >
                 <div className={`relative w-16 h-16 rounded-full bg-gradient-to-br ${step.color} text-white flex items-center justify-center text-2xl font-bold mx-auto mb-3 cursor-pointer transition-all duration-500 hover:scale-125 hover:rotate-12 shadow-lg group-hover:shadow-2xl`}>
@@ -415,7 +415,7 @@ export default function LandingPage() {
             ].map((feature, idx) => (
               <div
                 key={idx}
-                ref={(el) => (featuresRef.current[idx] = el)}
+                ref={(el) => {featuresRef.current[idx] = el;}}
                 className="group"
               >
                 <Card className="text-center h-full cursor-pointer transition-all duration-500 hover:shadow-2xl hover:-translate-y-3 border-2 border-transparent hover:border-primary-200">

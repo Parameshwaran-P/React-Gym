@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Play, Pause, Volume2, VolumeX, Maximize2, Minimize2, X, BookOpen } from 'lucide-react';
+import { useState } from 'react';
+import { Play, Maximize2, Minimize2, X, BookOpen } from 'lucide-react';
 
 // Example unit data with preview
 const exampleUnit = {

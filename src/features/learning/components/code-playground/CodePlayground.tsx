@@ -50,7 +50,7 @@ export const CodePlayground: React.FC<CodePlaygroundProps> = ({
 
   const [consoleMessages, setConsoleMessages] = useState<ConsoleMessage[]>([]);
   const [isExecuting, setIsExecuting] = useState(false);
-  const [layoutRatio, setLayoutRatio] = useState(50); // Left/Right split percentage
+ // const [layoutRatio, setLayoutRatio] = useState(50); // Left/Right split percentage
   const editorRef = useRef<any>(null);
 
   // ============================================
@@ -122,6 +122,10 @@ export const CodePlayground: React.FC<CodePlaygroundProps> = ({
 
   const theme = config.theme || 'dark';
   const monacoTheme = theme === 'dark' ? 'vs-dark' : 'vs-light';
+
+  function setLayoutRatio(arg0: number) {
+    throw new Error('Function not implemented.');
+  }
 
   // ============================================
   // RENDER

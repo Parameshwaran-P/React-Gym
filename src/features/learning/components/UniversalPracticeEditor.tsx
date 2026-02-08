@@ -23,7 +23,6 @@ export function UniversalPracticeEditor({
   config,
   onCodeChange,
   onReset,
-  initialFiles,
 }: UniversalPracticeEditorProps) {
   const { language, title, description, files: configFiles } = config;
 
@@ -33,7 +32,7 @@ export function UniversalPracticeEditor({
   }, [language, configFiles]);
 
   // Store initial state for reset
-  const [originalFiles] = useState(normalizedFiles);
+  // const [originalFiles] = useState(normalizedFiles);
 
   // Determine Sandpack template
   const template = getTemplateForLanguage(language);
@@ -110,24 +109,24 @@ export function UniversalPracticeEditor({
 function EditorContent({
   showPreview,
   showConsole,
-  onCodeChange,
+  // onCodeChange,
 }: {
   showPreview: boolean;
   showConsole: boolean;
   onCodeChange?: (files: Record<string, string>) => void;
 }) {
-  const { sandpack } = useSandpack();
+  // const { sandpack } = useSandpack();
 
   // Track file changes
-  const handleCodeUpdate = useCallback(() => {
-    if (onCodeChange) {
-      const files: Record<string, string> = {};
-      Object.entries(sandpack.files).forEach(([path, file]) => {
-        files[path] = file.code;
-      });
-      onCodeChange(files);
-    }
-  }, [sandpack.files, onCodeChange]);
+  // const handleCodeUpdate = useCallback(() => {
+  //   if (onCodeChange) {
+  //     const files: Record<string, string> = {};
+  //     Object.entries(sandpack.files).forEach(([path, file]) => {
+  //       files[path] = file.code;
+  //     });
+  //     onCodeChange(files);
+  //   }
+  // }, [sandpack.files, onCodeChange]);
 
   return (
     <SandpackLayout>

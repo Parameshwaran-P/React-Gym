@@ -246,7 +246,7 @@ export default function RoadmapPage() {
                           ) : unlocked ? (
                             <Link to={`/learn/${contentId}/${unit.id}`}>
                               <Button size="sm">
-                                {progress?.currentStep > 0 ? 'Continue' : 'Start'} →
+                                {progress && progress.currentStep > 0 ? 'Continue' : 'Start'} →
                               </Button>
                             </Link>
                           ) : (

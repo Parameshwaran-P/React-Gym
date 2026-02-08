@@ -68,7 +68,7 @@ export function UnitPlayer({ contentId, unitId }: UnitPlayerProps) {
 
   const hasUnitVideo = !!unit?.preview?.videoUrl;
   const hasStepVideo = !!stepData?.video?.videoUrl;
-  const hasHelpVideo = !!stepData?.helpVideo?.videoUrl;
+  // const hasHelpVideo = !!stepData?.helpVideo?.videoUrl;
 
   // Auto-show video preview on first visit
   useEffect(() => {

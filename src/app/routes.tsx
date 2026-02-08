@@ -1,9 +1,9 @@
 // src/app/routes.tsxts
 import { createBrowserRouter } from 'react-router-dom';
-import LandingPage from '@/pages/LandingPage';
-import DashboardPage from '@/pages/DashboardPage';
-import UnitPage from '@/pages/UnitPage';
-import RoadmapPage from '@/pages/RoadmapPage';
+import LandingPage from '../pages/LandingPage';
+import DashboardPage from '../pages/DashboardPage';
+import UnitPage from '../pages/UnitPage';
+import RoadmapPage from '../pages/RoadmapPage';
 
 export const router = createBrowserRouter([
   {

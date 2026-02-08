@@ -12,7 +12,6 @@ export function InteractiveCodeEditor({
   code,
   readOnly = false,
   showPreview = true,
-  onCodeChange,
 }: InteractiveCodeEditorProps) {
   return (
     <div className="border border-gray-300 rounded-lg overflow-hidden">

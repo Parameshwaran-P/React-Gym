@@ -1,7 +1,7 @@
 // src/features/learning/components/games/CodeMemoryGame.tsx
 import { useState, useEffect } from 'react';
-import { Button } from '../../../../shared/components/Button';
-import { Card } from '../../../../shared/components/Card';
+// import { Button } from '../../../../shared/components/Button';
+// import { Card } from '../../../../shared/components/Card';
 
 interface MemoryCard {
   id: string;
@@ -64,7 +64,7 @@ export function CodeMemoryGame({ title, pairs, onComplete }: CodeMemoryGameProps
       const firstCard = cards.find(c => c.id === first);
       const secondCard = cards.find(c => c.id === second);
 
-      if (firstCard?.pairId === secondCard?.pairId) {
+      if (firstCard && secondCard && firstCard.pairId === secondCard.pairId) {
         // Match!
         setMatchedPairs(prev => [...prev, firstCard.pairId]);
         setFlippedCards([]);

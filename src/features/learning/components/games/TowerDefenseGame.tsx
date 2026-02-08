@@ -40,7 +40,7 @@ export function TowerDefenseGame({ concepts, waves, onComplete }: TowerDefenseGa
   const [towers, setTowers] = useState<Tower[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
-  const [resources, setResources] = useState(100);
+  const [_resources, setResources] = useState(100);
 
   // Start building phase
   const startBuilding = () => {
