@@ -1,6 +1,6 @@
 // src/shared/components/Button.tsx
-import { ButtonHTMLAttributes, ReactNode } from 'react';
-import { cn } from '@/shared/utils/cn';
+import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import { cn } from '../utils/cn';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
