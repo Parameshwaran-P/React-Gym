@@ -5,6 +5,7 @@ import DashboardPage from '../pages/DashboardPage';
 import UnitPage from '../pages/UnitPage';
 import RoadmapPage from '../pages/RoadmapPage';
 import HowItsWorksPage from '../pages/Howitworks';
+import Login from '../features/auth/Login';
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
    {
     path: '/how-it-works',
     element: <HowItsWorksPage/>,
+  },
+   {
+    path: '/login',
+    element: <Login/>,
   },
   {
     path: '/learn/:contentId/:unitId',
