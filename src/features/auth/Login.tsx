@@ -152,7 +152,7 @@ const Login = () => {
         {/* Footer */}
         <p className="mt-6 text-center text-sm text-gray-600">
           Don’t have an account?{" "}
-          <a href="#" className="text-indigo-600 hover:underline">
+          <a href="/signup" className="text-indigo-600 hover:underline">
             Sign up
           </a>
         </p>
