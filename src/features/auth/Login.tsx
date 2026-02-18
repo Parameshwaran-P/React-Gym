@@ -1,164 +1,83 @@
-import { useState } from "react";
+import { useState } from 'react';
+import { useAuth } from './context/AuthContext';
+import { useNavigate, Link } from 'react-router-dom';
 
-interface LoginFormData {
-  email: string;
-  password: string;
-}
-
-interface LoginErrors {
-  email?: string;
-  password?: string;
-  general?: string;
-}
-
-const Login = () => {
-  const [formData, setFormData] = useState<LoginFormData>({
-    email: "",
-    password: "",
-  });
-
-  const [errors, setErrors] = useState<LoginErrors>({});
+export default function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const validate = (): LoginErrors => {
-    const newErrors: LoginErrors = {};
-
-    if (!formData.email) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Enter a valid email address";
-    }
-
-    if (!formData.password) {
-      newErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
-    }
-
-    return newErrors;
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-
-    // Clear error while typing
-    setErrors({ ...errors, [e.target.name]: undefined });
-  };
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
+    setError('');
+    setIsLoading(true);
 
     try {
-      setIsLoading(true);
-
-      // 🔌 API integration goes here
-      // await loginUser(formData);
-
-      console.log("Login Data:", formData);
-    } catch (error) {
-      setErrors({ general: "Invalid email or password" });
+      await login(email, password);
+      navigate('/dashboard');
+    } catch (err: any) {
+      setError(err.message || 'Login failed. Please check your credentials.');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
-        <h1 className="text-2xl font-semibold text-gray-800 text-center mb-6">
-          Welcome Back
-        </h1>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
+        <h2 className="text-3xl font-bold mb-6 text-center">Login</h2>
 
-        {errors.general && (
-          <p className="mb-4 text-sm text-red-600 text-center">
-            {errors.general}
-          </p>
+        {error && (
+          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md">
+            {error}
+          </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Email */}
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email address
-            </label>
+            <label className="block text-sm font-medium mb-1">Email</label>
             <input
-              id="email"
-              name="email"
               type="email"
-              value={formData.email}
-              onChange={handleChange}
-              className={`mt-1 w-full rounded-lg border px-4 py-2 text-sm focus:outline-none focus:ring-2 ${
-                errors.email
-                  ? "border-red-500 focus:ring-red-300"
-                  : "border-gray-300 focus:ring-indigo-300"
-              }`}
-              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+              placeholder="your@email.com"
+              required
             />
-            {errors.email && (
-              <p className="mt-1 text-xs text-red-500">{errors.email}</p>
-            )}
           </div>
 
-          {/* Password */}
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Password
-            </label>
+            <label className="block text-sm font-medium mb-1">Password</label>
             <input
-              id="password"
-              name="password"
               type="password"
-              value={formData.password}
-              onChange={handleChange}
-              className={`mt-1 w-full rounded-lg border px-4 py-2 text-sm focus:outline-none focus:ring-2 ${
-                errors.password
-                  ? "border-red-500 focus:ring-red-300"
-                  : "border-gray-300 focus:ring-indigo-300"
-              }`}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
               placeholder="••••••••"
+              required
             />
-            {errors.password && (
-              <p className="mt-1 text-xs text-red-500">
-                {errors.password}
-              </p>
-            )}
           </div>
 
-          {/* Submit */}
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full rounded-lg bg-indigo-600 py-2.5 text-white text-sm font-medium hover:bg-indigo-700 transition disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-full py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
           >
-            {isLoading ? "Signing in..." : "Sign In"}
+            {isLoading ? 'Logging in...' : 'Login'}
           </button>
         </form>
 
-        {/* Footer */}
-        <p className="mt-6 text-center text-sm text-gray-600">
-          Don’t have an account?{" "}
-          <a href="/signup" className="text-indigo-600 hover:underline">
+        <p className="mt-4 text-center text-sm text-gray-600">
+          Don't have an account?{' '}
+          <Link to="/signup" className="text-blue-600 hover:underline">
             Sign up
-          </a>
+          </Link>
         </p>
       </div>
     </div>
   );
-};
-
-export default Login;
+}
