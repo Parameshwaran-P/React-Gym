@@ -61,7 +61,7 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center gap-2 mb-4 group">
               <span className="text-3xl group-hover:scale-110 transition-transform">
-                <img src="./public/react-gym-logo.png" alt="React Gym" className="w-35 h-20" />
+                <img src="/src/assets/react-gym-logo.png" alt="React Gym" className="w-35 h-20" />
               </span>
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 React Gym
