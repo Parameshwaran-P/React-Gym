@@ -9,6 +9,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import image1 from '../assets/scattered_learn.png';
 import image2 from '../assets/happy_paths.png';
 import image3 from '../assets/revision_sys.png';
+import { Footer } from '../features/components/Footer';
+import { Header } from '../features/components/Header';
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -165,7 +167,8 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       {/* Navbar */}
-      <nav className="border-b border-gray-200 bg-white/80 backdrop-blur-md sticky top-0 z-50 transition-all duration-300 hover:shadow-lg">
+      <Header/>
+      {/* <nav className="border-b border-gray-200 bg-white/80 backdrop-blur-md sticky top-0 z-50 transition-all duration-300 hover:shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-2 group cursor-pointer">
@@ -185,7 +188,7 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
-      </nav>
+      </nav> */}
 
       {/* Hero Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
@@ -466,9 +469,9 @@ export default function LandingPage() {
           </p>
         </div>
       </section>
-
+<Footer />
       {/* Footer */}
-      <footer className="bg-gray-900 text-gray-400 py-12">
+      {/* <footer className="bg-gray-900 text-gray-400 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center gap-2 mb-4 md:mb-0 group cursor-pointer">
@@ -498,7 +501,7 @@ export default function LandingPage() {
             © 2026 React Gym. Built with ❤️ for developers.
           </div>
         </div>
-      </footer>
+      </footer> */}
 
       <style>{`
         @keyframes draw-line {

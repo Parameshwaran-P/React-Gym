@@ -9,6 +9,8 @@ import { useRoadmap } from '../features/content/hooks/useRoadmap';
 import { useUnitMetadata } from '../features/content/hooks/useUnitMetadata';
 import { Lock, CheckCircle} from 'lucide-react';
 import { LoadingCard } from '../shared/components/LoadingStates';
+import { Footer } from '../features/components/Footer';
+import { Header } from '../features/components/Header';
 
 export default function DashboardPage() {
   // Available tracks — just add new ones here when you create their folders!
@@ -59,7 +61,7 @@ export default function DashboardPage() {
   return (
 <div className="min-h-screen bg-gray-50">
   {/* Navbar */}
-  <nav className="bg-white border-b border-gray-200 shadow-sm">
+  {/* <nav className="bg-white border-b border-gray-200 shadow-sm">
     <div className="max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 py-3 sm:h-16">
         
@@ -80,8 +82,8 @@ export default function DashboardPage() {
         </div>
       </div>
     </div>
-  </nav>
-
+  </nav> */}
+<Header />
   {/* Track Selector */}
   <div className="bg-white border-b border-gray-200">
     <div className="max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8">
@@ -263,6 +265,7 @@ export default function DashboardPage() {
       </>
     )}
   </div>
+  <Footer/>
 </div>
 
   );

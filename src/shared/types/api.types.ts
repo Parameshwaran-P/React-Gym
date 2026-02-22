@@ -29,6 +29,7 @@ export interface User {
   role: 'ADMIN' | 'CONTENT_EDITOR' | 'USER';
   totalXp: number;
   level: number;
+  avatar_url: string | null;
   currentStreak: number;
   longestStreak: number;
 }

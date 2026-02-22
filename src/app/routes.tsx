@@ -52,6 +52,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { ProtectedRoute } from '../features/auth/components/ProtectedRoute';
 import Login from '../features/auth/Login';
 import SignUp from '../features/auth/SignUp';
+import ForgotModal from '../features/auth/ForgotModal';
 import DashboardPage from '../pages/DashboardPage';
 import UnitPage from '../pages/UnitPage';
 import LandingPage from '../pages/LandingPage';
@@ -65,6 +66,7 @@ export default function AppRoutes() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/forgot-password" element={<ForgotModal />} />
       <Route path="/roadmap" element={<RoadmapPage />} />
       <Route path="/how-it-works" element={<HowitworksPage />} />
 

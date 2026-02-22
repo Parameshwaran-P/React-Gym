@@ -15,6 +15,8 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '../shared/components/Button';
+import { Header } from '../features/components/Header';
+import { Footer } from '../features/components/Footer';
 
 // ============================================
 // TYPE DEFINITIONS
@@ -136,7 +138,8 @@ export function HowItWorksPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
  {/* Navbar */}
-      <nav className="border-b border-gray-200 bg-white/80 backdrop-blur-md sticky top-0 z-50 transition-all duration-300 hover:shadow-lg">
+ <Header />
+      {/* <nav className="border-b border-gray-200 bg-white/80 backdrop-blur-md sticky top-0 z-50 transition-all duration-300 hover:shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-2 group cursor-pointer">
@@ -159,7 +162,7 @@ export function HowItWorksPage() {
             </div>
           </div>
         </div>
-      </nav>
+      </nav> */}
 
       {/* Hero Section */}
       <HeroSection />
@@ -184,7 +187,7 @@ export function HowItWorksPage() {
 
       {/* CTA */}
       <CTASection />
-        <footer className="bg-gray-900 text-gray-400 py-12">
+        {/* <footer className="bg-gray-900 text-gray-400 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center gap-2 mb-4 md:mb-0 group cursor-pointer">
@@ -214,7 +217,8 @@ export function HowItWorksPage() {
             © 2026 React Gym. Built with ❤️ for developers.
           </div>
         </div>
-      </footer>
+      </footer> */}
+      <Footer />
     </div>
   );
 }

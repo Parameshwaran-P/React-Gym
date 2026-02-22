@@ -4,6 +4,8 @@ import { Link, useParams } from 'react-router-dom';
 import { Button } from '../shared/components/Button';
 import { UnitPlayer } from '../features/learning/components/UnitPlayer';
 import { updateUnitProgress } from '../features/learning/store/progressStore';
+import { Header } from '../features/components/Header';
+import { Footer } from '../features/components/Footer';
 
 export default function UnitPage() {
   const { contentId, unitId } = useParams();
@@ -32,7 +34,7 @@ export default function UnitPage() {
   return (
     <div>
       {/* Simple Navbar */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
+      {/* <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link to="/dashboard" className="flex items-center gap-2">
@@ -44,10 +46,11 @@ export default function UnitPage() {
             </Link>
           </div>
         </div>
-      </nav>
-
+      </nav> */}
+<Header />
       {/* Unit Player */}
       <UnitPlayer contentId={contentId} unitId={unitId} />
+      <Footer />
     </div>
   );
 }

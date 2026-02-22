@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useAuth } from '../auth/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, LogIn, Sparkles, Link } from 'lucide-react';
-import { Button } from '../../shared/components/Button';
+import { Mail, Lock, Eye, EyeOff, LogIn, Sparkles } from 'lucide-react';
+import { Header } from '../components/Header';
+import { Footer } from '../components/Footer';
+// import { Button } from '../../shared/components/Button';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -30,7 +32,9 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-black p-4">
+    <>
+    <Header />
+     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-black p-4">
       <div className="w-full max-w-md bg-white/10 backdrop-blur-2xl border border-white/20 rounded-2xl shadow-2xl p-8">
 
         <div className="text-center mb-8">
@@ -93,18 +97,14 @@ export default function Login() {
           </div>
 
           {/* Forgot password */}
-          <div className="flex justify-end" >
-              <Link to="/forgot" className="text-sm text-blue-400 hover:text-blue-300">
-            <Button variant="ghost" size="sm"> Forgot password?</Button>
-          </Link>
-            {/* <button
-              type="button"
-              onClick={() => navigate('/forgot-password')}
-              className="text-sm text-blue-400 hover:text-blue-300"
-            >
-              Forgot password?
-            </button> */}
-          </div>
+        <div className="flex justify-end">
+  <a
+    href="/forgot-password"
+    className="text-blue-400 hover:text-blue-300 text-sm font-medium"
+  >
+    Forgot password?
+  </a>
+</div>
 
           {/* Submit */}
           <button
@@ -136,5 +136,8 @@ export default function Login() {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
+   
   );
 }

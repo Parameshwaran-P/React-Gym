@@ -8,6 +8,8 @@ import { getStats, isUnitUnlocked, getUnitProgress } from '../features/learning/
 import { useRoadmap } from '../features/content/hooks/useRoadmap';
 import { useUnitMetadata } from '../features/content/hooks/useUnitMetadata';
 import { LoadingPage } from '../shared/components/LoadingStates';
+import { Header } from '../features/components/Header';
+import { Footer } from '../features/components/Footer';
 
 // Group units by category based on naming convention
 function categorizeUnits(units: any[]): Array<{ category: string; units: any[] }> {
@@ -105,7 +107,7 @@ export default function RoadmapPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navbar */}
-      <nav className="bg-white border-b border-gray-200">
+      {/* <nav className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link to="/" className="flex items-center gap-2">
@@ -119,7 +121,8 @@ export default function RoadmapPage() {
             </div>
           </div>
         </div>
-      </nav>
+      </nav> */}
+      <Header />
 
       {/* Content */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
@@ -291,6 +294,7 @@ export default function RoadmapPage() {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 }
