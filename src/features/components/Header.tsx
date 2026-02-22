@@ -12,7 +12,6 @@ import {
   Target,
   Menu,
   X,
-  Sparkles,
   BarChart3,
   HelpCircle
 } from 'lucide-react';
@@ -440,13 +439,13 @@ export function Header() {
                 </button>
               </Link>
               <button
-                onClick={() => {/* Open login modal */}}
+                onClick={() => navigate('/login')}
                 className="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
               >
                 Login
               </button>
               <button
-                onClick={() => {/* Open signup modal */}}
+                onClick={() => navigate('/signup')}
                 className="px-6 py-2 text-sm font-semibold bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg shadow-blue-500/25"
               >
                 Get Started

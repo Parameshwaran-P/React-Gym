@@ -11,6 +11,8 @@ import {
   Sparkles,
   CheckCircle2,
 } from "lucide-react";
+import { Footer } from "../components/Footer";
+import { Header } from "../components/Header";
 
 export default function Signup() {
   const [name, setName] = useState("");
@@ -26,16 +28,36 @@ export default function Signup() {
   const { register } = useAuth();
   const navigate = useNavigate();
 
-  const getPasswordStrength = (pass: string) => {
-    if (pass.length === 0) return { strength: 0, label: "", color: "" };
-    if (pass.length < 6)
-      return { strength: 1, label: "Weak", color: "bg-red-500" };
-    if (pass.length < 10)
-      return { strength: 2, label: "Medium", color: "bg-yellow-500" };
-    if (pass.length >= 10 && /[A-Z]/.test(pass) && /[0-9]/.test(pass)) {
-      return { strength: 3, label: "Strong", color: "bg-green-500" };
-    }
-    return { strength: 2, label: "Medium", color: "bg-yellow-500" };
+  const getPasswordStrength = (password: string) => {
+     let score = 0;
+
+  const checks = {
+    length: password.length >= 8,
+    uppercase: /[A-Z]/.test(password),
+    lowercase: /[a-z]/.test(password),
+    number: /\d/.test(password),
+    special: /[^A-Za-z0-9]/.test(password),
+  };
+
+  Object.values(checks).forEach(Boolean => {
+    if (Boolean) score++;
+  });
+
+  let label = "Weak";
+  let color = "bg-red-500";
+
+  if (score >= 4) {
+    label = "Strong";
+    color = "bg-green-500";
+  } else if (score >= 3) {
+    label = "Good";
+    color = "bg-yellow-500";
+  } else if (score >= 2) {
+    label = "Fair";
+    color = "bg-orange-500";
+  }
+
+  return { score, label, color, checks };
   };
 
   const passwordStrength = getPasswordStrength(password);
@@ -71,7 +93,9 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-900 via-black to-indigo-900 p-6">
+    <>
+    <Header />
+     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-900 via-black to-indigo-900 p-6">
       <div className="w-full max-w-md bg-white/10 backdrop-blur-2xl border border-white/20 rounded-2xl shadow-2xl p-8">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl mb-4 shadow-lg">
@@ -118,25 +142,69 @@ export default function Signup() {
             />
           </div>
 
-          {/* Password */}
-          <div className="relative">
-            <Lock className="absolute left-4 top-3.5 w-5 h-5 text-gray-400" />
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              className="w-full pl-12 pr-12 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-3.5 text-gray-400"
-            >
-              {showPassword ? <EyeOff /> : <Eye />}
-            </button>
-          </div>
+       <div className="mt-3 space-y-2">
+<div className="relative">
+  {/* Lock Icon */}
+  <Lock className="absolute left-4 top-3.5 w-5 h-5 text-gray-400" />
+
+  {/* Input Field */}
+  <input
+    type={showPassword ? "text" : "password"}
+    placeholder="Password"
+    className="w-full pl-12 pr-12 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 outline-none"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    required
+  />
+
+  {/* Show / Hide Button */}
+  <button
+    type="button"
+    onClick={() => setShowPassword(!showPassword)}
+    className="absolute right-4 top-3.5 text-gray-400 hover:text-white transition"
+  >
+    {showPassword ? <EyeOff /> : <Eye />}
+  </button>
+</div>
+
+{/* Strength Section */}
+{password.length > 0 && (
+  <div className="mt-3 space-y-2">
+    {/* Strength Label */}
+    <div className="flex justify-between items-center text-sm">
+      <span className="text-gray-400">Strength:</span>
+      <span className={`font-semibold ${passwordStrength.color.replace("bg-", "text-")}`}>
+        {passwordStrength.label}
+      </span>
+    </div>
+
+    {/* Progress Bar */}
+    <div className="h-2 w-full bg-white/20 rounded-full overflow-hidden">
+      <div
+        className={`${passwordStrength.color} h-full transition-all duration-300`}
+        style={{ width: `${(passwordStrength.score / 5) * 100}%` }}
+      />
+    </div>
+
+    {/* Checklist */}
+    <ul className="text-xs space-y-1">
+      <li className={passwordStrength.checks.length ? "text-green-400" : "text-gray-400"}>
+        ✓ At least 8 characters
+      </li>
+      <li className={passwordStrength.checks.uppercase ? "text-green-400" : "text-gray-400"}>
+        ✓ One uppercase letter
+      </li>
+      <li className={passwordStrength.checks.number ? "text-green-400" : "text-gray-400"}>
+        ✓ One number
+      </li>
+      <li className={passwordStrength.checks.special ? "text-green-400" : "text-gray-400"}>
+        ✓ One special character
+      </li>
+    </ul>
+  </div>
+)}
+
+</div>
 
           {/* Confirm Password */}
           <div className="relative">
@@ -199,5 +267,8 @@ export default function Signup() {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
+   
   );
 }

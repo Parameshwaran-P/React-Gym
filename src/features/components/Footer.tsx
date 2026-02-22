@@ -4,7 +4,6 @@ import {
   Twitter, 
   Linkedin, 
   Youtube,
-  Mail,
   Heart,
   ArrowRight,
   Sparkles,
