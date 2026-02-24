@@ -126,7 +126,7 @@ async function fetchWithRetry(
       await new Promise(resolve => setTimeout(resolve, Math.pow(2, i) * 1000));
     }
   }
-  throw new ContentLoadError('Failed after retries', 'NETWORK_ERROR');
+  throw new ContentLoadError('Failed after retries attempts', 'NETWORK_ERROR');
 }
 
 /**
