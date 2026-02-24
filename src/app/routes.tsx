@@ -80,7 +80,7 @@ export default function AppRoutes() {
         }
       />
       <Route
-        path="/unit/:slug"
+        path="/learn/:contentId/:unitId"
         element={
           <ProtectedRoute>
             <UnitPage />
