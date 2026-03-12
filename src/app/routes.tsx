@@ -58,6 +58,7 @@ import UnitPage from '../pages/UnitPage';
 import LandingPage from '../pages/LandingPage';
 import RoadmapPage from '../pages/RoadmapPage';
 import HowitworksPage from '../pages/Howitworks';
+import ResetPassword from '../features/auth/ResetPassword';
 
 export default function AppRoutes() {
   return (
@@ -66,6 +67,7 @@ export default function AppRoutes() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/forgot-password" element={<ForgotModal />} />
       <Route path="/roadmap" element={<RoadmapPage />} />
       <Route path="/how-it-works" element={<HowitworksPage />} />

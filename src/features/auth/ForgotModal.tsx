@@ -1,35 +1,40 @@
 import { useState } from 'react';
+import { useAuth } from '../auth/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Mail, ArrowLeft, Send, CheckCircle2, Sparkles } from 'lucide-react';
+import { Header } from '../components/Header';
+import { Footer } from '../components/Footer';
 
 export default function ForgotPassword() {
   const navigate = useNavigate();
-
+const { forgotPassword } = useAuth();
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setIsLoading(true);
+  e.preventDefault();
+  setError('');
+  setIsLoading(true);
 
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      setIsSuccess(true);
-    } catch (err: any) {
-      setError(err.message || 'Failed to send reset email. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  try {
+    await forgotPassword(email); // ✅ call backend
+    setIsSuccess(true);
+  } catch (err: any) {
+    setError(err?.response?.data?.message || 'Failed to send reset email.');
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const handleBackToLogin = () => {
     navigate('/login');
   };
 
   return (
+    <>
+    <Header />
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-black p-4">
       <div className="relative w-full max-w-md">
         <div className="bg-white/10 backdrop-blur-2xl border border-white/20 rounded-2xl shadow-2xl p-8">
@@ -128,5 +133,8 @@ export default function ForgotPassword() {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
+    
   );
 }
