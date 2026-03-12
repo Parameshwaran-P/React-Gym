@@ -228,6 +228,7 @@ export function Footer() {
             {/* Language Selector (Optional) */}
             <div className="flex items-center gap-2">
               <select className="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                <option value="ind">ind India</option>
                 <option value="en">🇺🇸 English</option>
                 <option value="es">🇪🇸 Español</option>
                 <option value="fr">🇫🇷 Français</option>
